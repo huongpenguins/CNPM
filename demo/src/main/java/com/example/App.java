@@ -18,10 +18,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("com/example/picture/home_picture.png");
-
-
-        scene = new Scene(loadFXML("primary"), 1000, 600);
+        scene = new Scene(loadFXML("home"), 1000, 600);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

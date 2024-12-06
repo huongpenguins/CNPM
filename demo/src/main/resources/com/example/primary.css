@@ -29,3 +29,15 @@
     -fx-background-position: center;
     -fx-background-color: transparent;
 }
+.button2{
+    -fx-background-color:#dfe4e5 ;
+    -fx-effect: dropshadow(three-pass-box, #000000, 6, 0.5, 2, 2);
+
+}
+.sidebar{
+    -fx-background-color: #3f3e3e;
+    
+}
+.sidebutton{
+    -fx-background-color: transparent;
+}
