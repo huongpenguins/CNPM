@@ -1,0 +1,31 @@
+.AnchorPane1{
+    -fx-background-color: #ffffff;
+}
+.button1{
+    -fx-background-image: url("picture/menu2.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: #c5c2c2;
+
+}
+.Anchor2{
+    -fx-background-image: url("picture/home_picture.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.account{
+    -fx-background-image: url("picture/account.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+.signout{
+    -fx-background-image: url("picture/signout.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}

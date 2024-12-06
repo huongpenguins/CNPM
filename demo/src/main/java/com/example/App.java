@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * JavaFX App
@@ -17,7 +18,10 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("com/example/picture/home_picture.png");
+
+
+        scene = new Scene(loadFXML("primary"), 1000, 600);
         stage.setScene(scene);
         stage.show();
     }
