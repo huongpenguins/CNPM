@@ -1,9 +1,12 @@
 package com.example.login;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -11,71 +14,75 @@ import java.util.Random;
 
 public class ResetPasswordApp extends Application {
 
-    private String verificationCode; // Mã xác thực giả lập
-    private String userEmail = AccountManager.getEmail(); // Email giả lập của người dùng
-    private String userPhoneNumber = AccountManager.getPhonenumber(); //SDT giả lâp người dùng
+    private String verificationCode;
+    private String userEmail = AccountManager.getEmail();
+    private String userPhoneNumber = AccountManager.getPhonenumber();
 
     @Override
     public void start(Stage primaryStage) {
-        // Giao diện đăng nhập
-        Label lblInstruction = new Label("Nhập email/sđt để đặt lại mật khẩu:");
+        Label lblInstruction = new Label("Nhập email hoặc số điện thoại để đặt lại mật khẩu:");
+        lblInstruction.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50;");
+
         TextField txtEmailorPhoneNumber = new TextField();
+        txtEmailorPhoneNumber.setPromptText("Nhập email/sdt");
+        txtEmailorPhoneNumber.setStyle("-fx-font-size: 14px; -fx-border-color: #D5D8DC;");
+
         Button btnSendCode = new Button("Gửi mã xác thực");
+        btnSendCode.setStyle("-fx-background-color: #5DADE2; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5px;");
+
         Label lblStatus = new Label();
+        lblStatus.setStyle("-fx-font-size: 13px;");
 
         btnSendCode.setOnAction(event -> {
-            String email = txtEmailorPhoneNumber.getText();
-            String phone_number = txtEmailorPhoneNumber.getText();
-            if (email.isEmpty() && phone_number.isEmpty()) {
-                lblStatus.setText("Vui lòng nhập email/sdt.");
+            String input = txtEmailorPhoneNumber.getText();
+            if (input.isEmpty()) {
+                lblStatus.setText("Vui lòng nhập email hoặc số điện thoại.");
                 lblStatus.setStyle("-fx-text-fill: red;");
-            } else if (email.equals(userEmail)) {
-                sendVerificationCode(email);
+            } else if (input.equals(userEmail) || input.equals(userPhoneNumber)) {
+                sendVerificationCode(input);
                 lblStatus.setText("Mã xác thực đã được gửi!");
                 lblStatus.setStyle("-fx-text-fill: green;");
-                openVerificationWindow(primaryStage); // Mở cửa sổ nhập mã xác thực
-            } else if (phone_number.equals(userPhoneNumber)) {
-                sendVerificationCode(phone_number);
-                lblStatus.setText("Mã xác thực đã được gửi!");
-                lblStatus.setStyle("-fx-text-fill: green;");
-                openVerificationWindow(primaryStage); // Mở cửa sổ nhập mã xác thực
-            }   else {
-                lblStatus.setText("Email/sdt không đúng.");
+                openVerificationWindow(primaryStage);
+            } else {
+                lblStatus.setText("Email hoặc số điện thoại không đúng.");
                 lblStatus.setStyle("-fx-text-fill: red;");
             }
         });
 
-        VBox vbox = new VBox(10, lblInstruction, txtEmailorPhoneNumber, btnSendCode, lblStatus);
-        vbox.setStyle("-fx-padding: 20; -fx-alignment: center;");
+        VBox vbox = new VBox(15, lblInstruction, txtEmailorPhoneNumber, btnSendCode, lblStatus);
+        vbox.setStyle("-fx-padding: 20; -fx-background-color: #F2F4F4; -fx-border-color: #D5D8DC; -fx-border-radius: 5px;");
+        vbox.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(vbox, 350, 200);
+        Scene scene = new Scene(vbox, 400, 250);
         primaryStage.setTitle("Quên mật khẩu");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    // Gửi mã xác thực (giả lập)
-    private void sendVerificationCode(String email_or_phone_number) {
+    private void sendVerificationCode(String input) {
         Random random = new Random();
-        verificationCode = String.format("%06d", random.nextInt(999999)); // Tạo mã 6 chữ số
-        System.out.println("Mã xác thực gửi đến email " + email_or_phone_number + ": " + verificationCode);
+        verificationCode = String.format("%06d", random.nextInt(999999));
+        System.out.println("Mã xác thực gửi đến: " + input + " -> " + verificationCode);
     }
 
-    // Cửa sổ xác thực mã
     private void openVerificationWindow(Stage parentStage) {
         Stage verificationStage = new Stage();
         verificationStage.setTitle("Xác thực mã");
-
-        // Đặt modality để chặn tương tác với cửa sổ gốc
         verificationStage.initModality(Modality.APPLICATION_MODAL);
-
-        // Liên kết với cửa sổ gốc
         verificationStage.initOwner(parentStage);
 
         Label lblInstruction = new Label("Nhập mã xác thực đã nhận:");
+        lblInstruction.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50;");
+
         TextField txtCode = new TextField();
+        txtCode.setPromptText("Nhập mã xác thực");
+        txtCode.setStyle("-fx-font-size: 14px; -fx-border-color: #D5D8DC;");
+
         Button btnVerify = new Button("Xác thực");
+        btnVerify.setStyle("-fx-background-color: #5DADE2; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5px;");
+
         Label lblStatus = new Label();
+        lblStatus.setStyle("-fx-font-size: 13px;");
 
         btnVerify.setOnAction(event -> {
             String inputCode = txtCode.getText();
@@ -88,37 +95,45 @@ public class ResetPasswordApp extends Application {
             } else {
                 lblStatus.setText("Xác thực thành công!");
                 lblStatus.setStyle("-fx-text-fill: green;");
-                openResetPasswordWindow(parentStage); // Mở cửa sổ đặt lại mật khẩu
+                openResetPasswordWindow(parentStage);
                 verificationStage.close();
             }
         });
 
-        VBox vbox = new VBox(10, lblInstruction, txtCode, btnVerify, lblStatus);
-        vbox.setStyle("-fx-padding: 20; -fx-alignment: center;");
+        VBox vbox = new VBox(15, lblInstruction, txtCode, btnVerify, lblStatus);
+        vbox.setStyle("-fx-padding: 20; -fx-background-color: #F2F4F4; -fx-border-color: #D5D8DC; -fx-border-radius: 5px;");
+        vbox.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(vbox, 350, 200);
+        Scene scene = new Scene(vbox, 400, 250);
         verificationStage.setScene(scene);
         verificationStage.show();
     }
 
-    // Cửa sổ đặt lại mật khẩu
     private void openResetPasswordWindow(Stage parentStage) {
         Stage resetPasswordStage = new Stage();
         resetPasswordStage.setTitle("Đặt lại mật khẩu");
-
-        // Đặt modality để chặn tương tác với cửa sổ gốc
         resetPasswordStage.initModality(Modality.APPLICATION_MODAL);
-
-        // Liên kết với cửa sổ gốc
         resetPasswordStage.initOwner(parentStage);
 
-
         Label lblNewPassword = new Label("Mật khẩu mới:");
+        lblNewPassword.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50;");
+
         PasswordField txtNewPassword = new PasswordField();
+        txtNewPassword.setPromptText("Nhập mật khẩu mới");
+        txtNewPassword.setStyle("-fx-font-size: 14px; -fx-border-color: #D5D8DC;");
+
         Label lblConfirmPassword = new Label("Xác nhận mật khẩu:");
+        lblConfirmPassword.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C3E50;");
+
         PasswordField txtConfirmPassword = new PasswordField();
+        txtConfirmPassword.setPromptText("Nhập lại mật khẩu");
+        txtConfirmPassword.setStyle("-fx-font-size: 14px; -fx-border-color: #D5D8DC;");
+
         Button btnReset = new Button("Đặt lại mật khẩu");
+        btnReset.setStyle("-fx-background-color: #5DADE2; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5px;");
+
         Label lblStatus = new Label();
+        lblStatus.setStyle("-fx-font-size: 13px;");
 
         btnReset.setOnAction(event -> {
             String newPassword = txtNewPassword.getText();
@@ -138,11 +153,11 @@ public class ResetPasswordApp extends Application {
             }
         });
 
-        VBox vbox = new VBox(10, lblNewPassword, txtNewPassword, lblConfirmPassword, txtConfirmPassword, btnReset, lblStatus);
-        vbox.setStyle("-fx-padding: 20; -fx-alignment: center;");
+        VBox vbox = new VBox(15, lblNewPassword, txtNewPassword, lblConfirmPassword, txtConfirmPassword, btnReset, lblStatus);
+        vbox.setStyle("-fx-padding: 20; -fx-background-color: #F2F4F4; -fx-border-color: #D5D8DC; -fx-border-radius: 5px;");
+        vbox.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(vbox, 400, 250);
-        resetPasswordStage.setResizable(true);
+        Scene scene = new Scene(vbox, 450, 300);
         resetPasswordStage.setScene(scene);
         resetPasswordStage.show();
     }
