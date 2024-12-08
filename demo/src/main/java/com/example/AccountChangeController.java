@@ -38,14 +38,14 @@ public class AccountChangeController {
     @FXML
     DatePicker ngsinh;
     
-    
+    // khoi tao thanh phanh trong giao dien
     public void initialize(){
-        
+         // them lua chon vao chuc vu
         chucvu.getItems().add("Kế toán");
         chucvu.getItems().add("Quản lý");
         chucvu.getItems().add("Nhà đầu tư");
 
-        
+        // kiem tra hoten sau khi nhap xong
         hoten.focusedProperty().addListener((ob,oldValue,newValue)->{
          
             if(oldValue==true&&newValue==false){
@@ -69,6 +69,7 @@ public class AccountChangeController {
 
         });
         
+        // kiem tra cccd
         cccd.focusedProperty().addListener((ob,oldValue,newValue)->{
          
             if(oldValue==true&&newValue==false){
@@ -98,6 +99,7 @@ public class AccountChangeController {
 
         });
 
+        // kiem tra sdt
         sdt.focusedProperty().addListener((ob,oldValue,newValue)->{
          
             if(oldValue==true&&newValue==false){
@@ -127,6 +129,7 @@ public class AccountChangeController {
 
         });
 
+            // kiem tra email
         email.focusedProperty().addListener((ob,oldValue,newValue)->{
          
             if(oldValue==true&&newValue==false){
@@ -149,7 +152,7 @@ public class AccountChangeController {
         
     }
 
-   
+   // kiem tra khi an xac nhan va chuyen ve man hinh thong tin account
     @FXML
     private void xacNhan() throws IOException{
         if (!hoten.getText().isEmpty() && !sdt.getText().isEmpty() && !cccd.getText().isEmpty() && 
@@ -161,16 +164,20 @@ public class AccountChangeController {
             }
         
     }
-    
+
+    // bỏ chọn ô nữ khi ấn chọn nam
     @FXML
     private void checkMale(){
         if(female.isSelected()) female.setSelected(false);
     }
+
+    // bỏ chọn ô nam khi ấn chọn nữ
     @FXML 
     private void checkFemale(){
         if(male.isSelected()) male.setSelected(false);
     }
 
+    // hiên menu chuyển màn hình
     @FXML
     private void menuClick(){
         if(sidebar.getLayoutX()<0){
@@ -179,6 +186,7 @@ public class AccountChangeController {
         else sidebar.setLayoutX(-sidebar.getWidth());
     }
 
+        // đăng xuất
     @FXML 
     private void signout(){
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -188,6 +196,7 @@ public class AccountChangeController {
         if(alert.getResult()==ButtonType.OK){
             switchToSignIn();
         }
+        // tất cả hàm dưới để chuyển màn hình
     }
     @FXML
     private void switchToAccount() throws IOException {

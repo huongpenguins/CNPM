@@ -15,6 +15,7 @@ public class AccountController {
     @FXML
     Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu,doimk,suaTTin;
     
+    //hien menu chuyen man hinh
     @FXML
     private void menuClick(){
         if(sidebar.getLayoutX()<0){
@@ -23,6 +24,7 @@ public class AccountController {
         else sidebar.setLayoutX(-sidebar.getWidth());
     }
 
+    // dang xuat
     @FXML 
     private void signout(){
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -35,6 +37,7 @@ public class AccountController {
 
 
     }
+    // tat ca ham duoi deu chuyen sang man hinh khac
     @FXML
     private void switchToChangeAccount() throws IOException {
         App.setRoot("accountchange");
