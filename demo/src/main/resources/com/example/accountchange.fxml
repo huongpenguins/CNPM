@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="AnchorPane" stylesheets="@home.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.AccountChangeController">
+   <children>
+      <AnchorPane prefHeight="26.0" prefWidth="1000.0" style="-fx-background-color: #6c7071;" styleClass="AnchorPane1" stylesheets="@home.css">
+         <children>
+            <Button fx:id="menu" mnemonicParsing="false" onAction="#menuClick" prefHeight="49.0" prefWidth="51.0" styleClass="button1" stylesheets="@home.css" />
+            <Button fx:id="signout" contentDisplay="CENTER" layoutX="949.0" mnemonicParsing="false" onAction="#signout" prefHeight="49.0" prefWidth="51.0" styleClass="signout" stylesheets="@home.css" />
+            <Label layoutX="385.0" layoutY="-1.0" prefHeight="49.0" prefWidth="264.0" text="Chung cư BlueMoon" textFill="#0b0b0b">
+               <font>
+                  <Font name="Arial" size="25.0" />
+               </font>
+            </Label>
+            <Button fx:id="account" layoutX="890.0" mnemonicParsing="false" onAction="#switchToAccount" prefHeight="49.0" prefWidth="51.0" styleClass="account" stylesheets="@home.css" />
+         </children>
+      </AnchorPane>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="448.0" layoutY="66.0" prefHeight="41.0" prefWidth="362.0" text="Thông tin cá nhân" textFill="#b35d5d">
+         <font>
+            <Font name="Arial Bold" size="20.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="khunganh" fitHeight="250.0" fitWidth="187.5" layoutX="39.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@picture/avt_macdinh.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="39.0" layoutY="358.0" prefHeight="31.0" prefWidth="104.0" text="Mã nhân viên:">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="300.0" layoutY="118.0" prefHeight="31.0" prefWidth="59.0" text="Họ tên:">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="702.0" layoutY="120.0" prefHeight="31.0" prefWidth="74.0" text="Giới tính:">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="300.0" layoutY="266.0" prefHeight="31.0" prefWidth="171.0" text="Điện thoại (username):">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="300.0" layoutY="418.0" prefHeight="31.0" prefWidth="59.0" text="Địa chỉ:">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="702.0" layoutY="194.0" prefHeight="31.0" prefWidth="71.0" text="Chức vụ:">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="299.0" layoutY="345.0" prefHeight="31.0" prefWidth="51.0" text="Email:">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="300.0" layoutY="192.0" prefHeight="31.0" prefWidth="153.0" text="Căn cước công dân:">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="702.0" layoutY="268.0" prefHeight="31.0" prefWidth="83.0" text="Ngày sinh:">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="suaTTin" layoutX="810.0" layoutY="495.0" mnemonicParsing="false" onAction="#xacNhan" prefHeight="61.0" prefWidth="135.0" text="Xác nhận" textAlignment="CENTER">
+         <font>
+            <Font name="Arial" size="17.0" />
+         </font>
+      </Button>
+      <Line endX="-5.3333587646484375" endY="-54.66666793823242" layoutX="258.0" layoutY="104.0" opacity="0.71" startX="-5.3333587646484375" startY="496.0" />
+      <TextField fx:id="manv" editable="false" layoutX="143.0" layoutY="361.0" prefHeight="25.0" prefWidth="95.0" styleClass="textfield1" stylesheets="@account.css" text="KT001">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="hoten" layoutX="360.0" layoutY="121.0" prefHeight="25.0" prefWidth="277.0" promptText="Họ tên" styleClass="textfield1" stylesheets="@changeaccount.css">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="sdt" layoutX="471.0" layoutY="269.0" prefHeight="29.0" prefWidth="170.0" promptText="10 chữ số" styleClass="textfield1" stylesheets="@changeaccount.css">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="cccd" layoutX="455.0" layoutY="195.0" prefHeight="25.0" prefWidth="184.0" promptText="Số cccd" styleClass="textfield1" stylesheets="@changeaccount.css">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="diachi" layoutX="360.0" layoutY="421.0" prefHeight="29.0" prefWidth="587.0" promptText="Địa chỉ" styleClass="textfield1" stylesheets="@changeaccount.css">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="email" layoutX="352.0" layoutY="348.0" prefHeight="29.0" prefWidth="593.0" promptText="Email" styleClass="textfield1" stylesheets="@changeaccount.css">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </TextField>
+      <CheckBox fx:id="male" layoutX="783.0" layoutY="125.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#checkMale" prefHeight="21.0" prefWidth="71.0" stylesheets="@changeaccount.css" text="Nam" textAlignment="CENTER">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="female" layoutX="856.0" layoutY="125.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#checkFemale" prefHeight="21.0" prefWidth="59.0" stylesheets="@changeaccount.css" text="Nữ" textAlignment="CENTER">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </CheckBox>
+      <Label alignment="CENTER" layoutX="282.0" layoutY="125.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+      <Label alignment="CENTER" layoutX="282.0" layoutY="199.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+      <Label alignment="CENTER" layoutX="282.0" layoutY="274.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+      <Label alignment="CENTER" layoutX="282.0" layoutY="425.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+      <Label alignment="CENTER" layoutX="686.0" layoutY="127.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+      <Label alignment="CENTER" layoutX="686.0" layoutY="201.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+      <Label alignment="CENTER" layoutX="686.0" layoutY="275.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+      <ComboBox fx:id="chucvu" layoutX="779.0" layoutY="199.0" prefWidth="150.0" styleClass="textfield1" stylesheets="@changeaccount.css" />
+      <VBox id="sidebar" fx:id="sidebar" alignment="CENTER" layoutX="-200.0" layoutY="49.0" prefHeight="553.0" prefWidth="200.0" spacing="35.0" styleClass="sidebar" stylesheets="@home.css" AnchorPane.topAnchor="49.0">
+         <children>
+            <ImageView fitHeight="140.0" fitWidth="112.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@picture/bluemoon.png" />
+               </image>
+            </ImageView>
+            <VBox alignment="TOP_CENTER" prefHeight="397.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="trangchu" mnemonicParsing="false" onAction="#switchToHome" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Trang chủ" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="giadinh" mnemonicParsing="false" onAction="#switchToGiaDinh" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý hộ gia đình" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="dancu" mnemonicParsing="false" onAction="#switchToDanCu" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý dân cư" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="khoanthu" mnemonicParsing="false" onAction="#switchToKhoanThu" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý khoản thu" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="canho" mnemonicParsing="false" onAction="#switchToCanHo" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý căn hộ" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="tamtru" mnemonicParsing="false" onAction="#switchToTamTru" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý tạm trú" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="tamvang" mnemonicParsing="false" onAction="#switchToTamVang" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý tạm vắng" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <Label fx:id="checkhoten" layoutX="301.0" layoutY="159.0" prefHeight="16.0" prefWidth="339.0" textFill="RED">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="checkcccd" layoutX="301.0" layoutY="238.0" prefHeight="16.0" prefWidth="339.0" textFill="RED">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="checksdt" layoutX="301.0" layoutY="309.0" prefHeight="16.0" prefWidth="339.0" textFill="RED">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="checkemail" layoutX="301.0" layoutY="389.0" prefHeight="16.0" prefWidth="647.0" textFill="RED">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="ngsinh" layoutX="785.0" layoutY="273.0" prefHeight="25.0" prefWidth="153.0" promptText="mm/dd/yyyy" />
+      <Label alignment="CENTER" layoutX="282.0" layoutY="352.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+   </children>
+</AnchorPane>

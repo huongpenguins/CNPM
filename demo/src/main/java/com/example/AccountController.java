@@ -1,6 +1,7 @@
 package com.example;
 
 import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -8,11 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 
-public class PrimaryController {
+public class AccountController {
     @FXML
     VBox sidebar;
     @FXML
-    Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu;
+    Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu,doimk,suaTTin;
     
     @FXML
     private void menuClick(){
@@ -33,6 +34,14 @@ public class PrimaryController {
         }
 
 
+    }
+    @FXML
+    private void switchToChangeAccount() throws IOException {
+        App.setRoot("accountchange");
+    }
+    @FXML
+    private void switchToDoiMK() throws IOException {
+        App.setRoot("home");
     }
     @FXML
     private void switchToHome() throws IOException {
@@ -68,11 +77,11 @@ public class PrimaryController {
     }
     @FXML
     private void switchToAccount() throws IOException {
-        App.setRoot("account");
-    }
-    @FXML
-    private void switchToSecondary() throws IOException {
         App.setRoot("secondary");
     }
-
+    
+    @FXML
+    private void switchToPrimary() throws IOException {
+        App.setRoot("primary");
+    }
 }

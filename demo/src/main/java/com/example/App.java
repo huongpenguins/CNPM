@@ -17,7 +17,8 @@ public class App extends Application {
     private static Scene scene;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException { 
+        
         scene = new Scene(loadFXML("home"), 1000, 600);
         stage.setResizable(false);
         stage.setScene(scene);

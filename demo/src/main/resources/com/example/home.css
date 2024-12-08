@@ -32,7 +32,8 @@
 .button2{
     -fx-background-color:#dfe4e5 ;
     -fx-effect: dropshadow(three-pass-box, #000000, 6, 0.5, 2, 2);
-
+    -fx-border-radius: 85;
+    -fx-background-radius: 85;
 }
 .sidebar{
     -fx-background-color: #3f3e3e;
