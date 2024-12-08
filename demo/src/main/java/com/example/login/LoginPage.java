@@ -68,8 +68,8 @@ public class LoginPage extends Application {
                 pause.setOnFinished(e -> {
                     App app = new App();
                     try {
-                        loginStage.close();
-                        app.start(new Stage());
+                        loginStage.close();// closmh login
+                        app.start(new Stage());//motran chu
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
