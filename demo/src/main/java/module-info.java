@@ -7,4 +7,5 @@ module com.example {
     exports com.example;
     exports com.example.login;
     opens com.example.login to javafx.fxml;
+    exports com.example.manager; //New by Phong
 }

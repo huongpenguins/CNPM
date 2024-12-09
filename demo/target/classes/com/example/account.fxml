@@ -80,15 +80,9 @@
             <Font name="Arial Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="300.0" layoutY="371.0" prefHeight="31.0" prefWidth="135.0" text="Mật khẩu hiện tại:">
+      <Button fx:id="doimk" layoutX="812.0" layoutY="400.0" mnemonicParsing="false" onAction="#switchToDoiMK" prefHeight="40.0" prefWidth="135.0" text="Đổi mật khẩu">
          <font>
-            <Font name="Arial Bold" size="15.0" />
-         </font>
-      </Label>
-      <PasswordField editable="false" layoutX="440.0" layoutY="374.0" prefHeight="25.0" prefWidth="188.0" text="00000000" />
-      <Button fx:id="doimk" layoutX="673.0" layoutY="371.0" mnemonicParsing="false" onAction="#switchToDoiMK" prefHeight="31.0" prefWidth="95.0" text="Đổi mật khẩu">
-         <font>
-            <Font name="Arial" size="12.0" />
+            <Font name="Arial" size="17.0" />
          </font>
       </Button>
       <Button fx:id="suaTTin" layoutX="812.0" layoutY="448.0" mnemonicParsing="false" onAction="#switchToChangeAccount" prefHeight="61.0" prefWidth="135.0" text="Chỉnh sửa&#10;thông tin" textAlignment="CENTER">
