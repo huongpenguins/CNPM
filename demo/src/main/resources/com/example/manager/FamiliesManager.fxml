@@ -6,22 +6,23 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<!-- Chú ý controller ở cuối dòng dưới -->
+
 <AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #daeaf1;" fx:controller="com.example.manager.FamiliesManagerController">
     <children>
         <!-- Header -->
         <AnchorPane prefHeight="60.0" prefWidth="1000.0" style="-fx-background-color: #6c7071;">
             <children>
-                <Label layoutX="20.0" layoutY="15.0" text="Quản lý hộ gia đình" textFill="WHITE">
+                <Label layoutX="400.0" layoutY="5.0" prefHeight="49.0" prefWidth="264.0" text="Quản lí hộ gia đình" textFill="#0b0b0b">
                     <font>
-                        <Font size="24.0" />
+                        <Font name="Arial" size="25.0" />
                     </font>
                 </Label>
+
                 <!-- Nút Quay lại -->
-                <Button fx:id="btnBack" layoutX="830.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="60.0" text="←" />
+                <Button fx:id="btnBack" contentDisplay="CENTER" layoutX="15.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="51.0" styleClass="return" stylesheets="@home2.css" />
 
                 <!-- Nút Đăng xuất -->
-                <Button fx:id="btnLogout" layoutX="900.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="Đăng xuất" />
+                <Button fx:id="btnLogout" contentDisplay="CENTER" layoutX="949.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="51.0" styleClass="signout" stylesheets="@home2.css" />
             </children>
         </AnchorPane>
 
@@ -37,18 +38,18 @@
         <!-- Action Buttons -->
         <AnchorPane layoutX="780.0" layoutY="80.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5; -fx-border-width: 1.0;">
             <children>
-                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Thêm hộ khẩu" />
-                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Sửa hộ khẩu" />
-                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Xóa hộ khẩu" />
-                <Button fx:id="btnViewDetails" layoutX="20.0" layoutY="240.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Xem chi tiết" />
-                <Button fx:id="btnSearch" layoutX="20.0" layoutY="310.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Tìm kiếm" />
+                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Thêm hộ khẩu" styleClass="button2" stylesheets="@home2.css" />
+                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Sửa hộ khẩu" styleClass="button2" stylesheets="@home2.css" />
+                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Xóa hộ khẩu" styleClass="button2" stylesheets="@home2.css" />
+                <Button fx:id="btnViewDetails" layoutX="20.0" layoutY="240.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Xem chi tiết" styleClass="button2" stylesheets="@home2.css" />
+                <Button fx:id="btnSearch" layoutX="20.0" layoutY="310.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Tìm kiếm" styleClass="button2" stylesheets="@home2.css" />
             </children>
         </AnchorPane>
 
         <!-- Footer -->
-        <AnchorPane layoutY="500.0" prefHeight="100.0" prefWidth="1000.0" style="-fx-background-color: #f5f5f5;">
+        <AnchorPane layoutY="550.0" prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: #f5f5f5;">
             <children>
-                <Label layoutX="20.0" layoutY="40.0" text="© Chung cư BlueMoon - 2024" textFill="#6c7071" />
+                <Label layoutX="20.0" layoutY="15.0" text="© Chung cư BlueMoon - 2024" textFill="#6c7071" />
             </children>
         </AnchorPane>
     </children>
