@@ -1,0 +1,51 @@
+.AnchorPane1{
+    -fx-background-color: #ffffff;
+}
+.button1{
+    -fx-background-image: url("picture/menu2.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: #c5c2c2;
+
+}
+.Anchor2{
+    -fx-background-image: url("picture/home_picture.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.account{
+    -fx-background-image: url("picture/account.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+.signout{
+    -fx-background-image: url("signout.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+.return{
+    -fx-background-image: url("return.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+.button2{
+    -fx-background-color:#dfe4e5 ;
+    -fx-effect: dropshadow(three-pass-box, #000000, 6, 0.5, 2, 2);
+    -fx-border-radius: 85;
+    -fx-background-radius: 85;
+}
+.sidebar{
+    -fx-background-color: #3f3e3e;
+    
+}
+.sidebutton{
+    -fx-background-color: transparent;
+}

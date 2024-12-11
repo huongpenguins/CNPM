@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #daeaf1;" styleClass="AnchorPane" stylesheets="@primary.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
+   <children>
+      <AnchorPane prefHeight="26.0" prefWidth="1000.0" style="-fx-background-color: #6c7071;" styleClass="AnchorPane1" stylesheets="@primary.css">
+         <children>
+            <Button fx:id="menu" mnemonicParsing="false" onAction="#menuClick" prefHeight="49.0" prefWidth="51.0" styleClass="button1" stylesheets="@primary.css" />
+            <Button fx:id="signout" contentDisplay="CENTER" layoutX="949.0" mnemonicParsing="false" onAction="#signout" prefHeight="49.0" prefWidth="51.0" styleClass="signout" stylesheets="@primary.css" />
+            <Label layoutX="385.0" layoutY="-1.0" prefHeight="49.0" prefWidth="264.0" text="Chung cư BlueMoon" textFill="#0b0b0b">
+               <font>
+                  <Font name="Arial" size="25.0" />
+               </font>
+            </Label>
+            <Button fx:id="account" layoutX="890.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="51.0" styleClass="account" stylesheets="@primary.css" />
+         </children>
+      </AnchorPane>
+      <VBox id="sidebar" fx:id="sidebar" alignment="CENTER" layoutX="-200.0" layoutY="49.0" prefHeight="553.0" prefWidth="200.0" spacing="35.0" styleClass="sidebar" stylesheets="@primary.css" AnchorPane.topAnchor="49.0">
+         <children>
+            <ImageView fitHeight="140.0" fitWidth="112.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@picture/bluemoon.png" />
+               </image>
+            </ImageView>
+            <VBox alignment="TOP_CENTER" prefHeight="397.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="trangchu" mnemonicParsing="false" onAction="#switchToHome" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@primary.css" text="Trang chủ" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" style="-fx-background-color: #daeaf1;" styleClass="sidebutton" stylesheets="@primary.css" text="Quản lý hộ gia đình" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@primary.css" text="Quản lý dân cư" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@primary.css" text="Quản lý khoản thu" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@primary.css" text="Quản lý căn hộ" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@primary.css" text="Quản lý tạm trú" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@primary.css" text="Quản lý tạm vắng" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <BorderPane layoutY="48.0" prefHeight="552.0" prefWidth="1000.0">
+         <left>
+            <VBox prefHeight="552.0" prefWidth="169.0" BorderPane.alignment="CENTER" />
+         </left>
+      </BorderPane>
+   </children>
+</AnchorPane>
