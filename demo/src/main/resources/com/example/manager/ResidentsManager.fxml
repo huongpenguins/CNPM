@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #daeaf1;" fx:controller="com.example.manager.ResidentsManagerController">
+    <children>
+        <!-- Header -->
+        <AnchorPane prefHeight="60.0" prefWidth="1000.0" style="-fx-background-color: #6c7071;">
+            <children>
+                <Label layoutX="400.0" layoutY="5.0" prefHeight="49.0" prefWidth="264.0" text="Quản lí dân cư" textFill="#0b0b0b">
+                    <font>
+                        <Font name="Arial" size="25.0" />
+                    </font>
+                </Label>
+                <!-- Nút Quay lại -->
+
+                <Button fx:id="btnBack" contentDisplay="CENTER" layoutX="15.0"  mnemonicParsing="false"  prefHeight="49.0" prefWidth="51.0" styleClass="return" stylesheets="@home2.css" />
+                <!-- Nút Đăng xuất -->
+                <Button fx:id="btnLogout" contentDisplay="CENTER" layoutX="949.0" mnemonicParsing="false"  prefHeight="49.0" prefWidth="51.0" styleClass="signout" stylesheets="@home2.css" />
+
+            </children>
+        </AnchorPane>
+
+        <!-- Search Section -->
+        <TextField fx:id="txtSearch" layoutX="20.0" layoutY="80.0" prefHeight="30.0" prefWidth="400.0" promptText="Tìm kiếm cư dân (Mã hoặc Tên)" />
+        <Button fx:id="btnSearch" layoutX="430.0" layoutY="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Tìm kiếm" styleClass="button2" stylesheets="@home2.css" />
+
+        <!-- Table Section -->
+        <TableView fx:id="tableResidents" layoutX="20.0" layoutY="130.0" prefHeight="400.0" prefWidth="750.0">
+            <columns>
+                <TableColumn fx:id="colResidentId" prefWidth="100.0" text="Mã cư dân" />
+                <TableColumn fx:id="colResidentName" prefWidth="200.0" text="Họ và Tên" />
+                <TableColumn fx:id="colDateOfBirth" prefWidth="150.0" text="Ngày sinh" />
+                <TableColumn fx:id="colPhone" prefWidth="150.0" text="Số điện thoại" />
+                <TableColumn fx:id="colAddress" prefWidth="150.0" text="Địa chỉ" />
+            </columns>
+        </TableView>
+
+        <!-- Action Buttons -->
+        <AnchorPane layoutX="780.0" layoutY="130.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5; -fx-border-width: 1.0;">
+            <children>
+                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Thêm cư dân" styleClass="button2" stylesheets="@home2.css" />
+                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Sửa cư dân" styleClass="button2" stylesheets="@home2.css" />
+                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Xóa cư dân" styleClass="button2" stylesheets="@home2.css" />
+            </children>
+        </AnchorPane>
+
+        <!-- Footer -->
+        <AnchorPane layoutY="550.0" prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: #f5f5f5;">
+            <children>
+                <Label layoutX="20.0" layoutY="15.0" text="© Chung cư BlueMoon - 2024" textFill="#6c7071" />
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

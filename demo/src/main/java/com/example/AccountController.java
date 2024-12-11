@@ -2,19 +2,25 @@ package com.example;
 
 import java.io.IOException;
 
+import com.example.login.AccountManager;
+import com.example.login.ChangePassword;
+import com.example.login.LoginPage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.PasswordField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class AccountController {
     @FXML
     VBox sidebar;
     @FXML
     Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu,doimk,suaTTin;
-    
+
     //hien menu chuyen man hinh
     @FXML
     private void menuClick(){
@@ -42,10 +48,19 @@ public class AccountController {
     private void switchToChangeAccount() throws IOException {
         App.setRoot("accountchange");
     }
+
     @FXML
     private void switchToDoiMK() throws IOException {
-        App.setRoot("home");
+
+        // Tạo cửa sổ mới (ChangePassword)
+        ChangePassword changePassword = new ChangePassword();
+        Stage newStage = new Stage();  // Tạo một Stage mới cho cửa sổ thay đổi mật khẩu
+        // Mở cửa sổ mới và tạm dừng thực thi các câu lệnh tiếp theo cho đến khi cửa sổ mới đóng lại
+        changePassword.start(newStage);
+        // Sau khi cửa sổ mới đóng lại, thực hiện tiếp các câu lệnh sau
+        AccountManager accountManager = new AccountManager();
     }
+
     @FXML
     private void switchToHome() throws IOException {
         App.setRoot("home");
