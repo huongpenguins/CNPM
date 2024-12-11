@@ -60,7 +60,7 @@ public class AccountController {
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("khoanthu");
     }
     @FXML
     private void switchToCanHo() throws IOException {

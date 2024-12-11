@@ -48,7 +48,7 @@ public class PrimaryController {
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("fee");
     }
     @FXML
     private void switchToCanHo() throws IOException {
