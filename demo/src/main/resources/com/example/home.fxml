@@ -48,7 +48,7 @@
                   <Font name="Arial" size="24.0" />
                </font>
             </Button>
-            <Button fx:id="khoanthu" alignment="CENTER" mnemonicParsing="false" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý&#10;khoản thu" textAlignment="CENTER" GridPane.columnIndex="2">
+            <Button fx:id="khoanthu" alignment="CENTER" mnemonicParsing="false" onAction="#switchToKhoanThu" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý&#10;khoản thu" textAlignment="CENTER" GridPane.columnIndex="2">
                <font>
                   <Font name="Arial" size="24.0" />
                </font>

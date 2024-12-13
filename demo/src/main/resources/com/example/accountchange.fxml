@@ -32,7 +32,7 @@
             <Font name="Arial Bold" size="20.0" />
          </font>
       </Label>
-      <ImageView fx:id="khunganh" fitHeight="250.0" fitWidth="187.5" layoutX="39.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="khunganh" fitHeight="250.0" fitWidth="187.5" layoutX="32.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@picture/avt_macdinh.png" />
          </image>

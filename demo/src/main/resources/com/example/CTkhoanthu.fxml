@@ -74,13 +74,13 @@
             </VBox>
          </children>
       </VBox>
-      <Label layoutX="39.0" layoutY="63.0" prefHeight="38.0" prefWidth="180.0" text="Danh sách khoản thu">
+      <Label layoutX="39.0" layoutY="63.0" prefHeight="38.0" prefWidth="180.0" text="Chi tiết khoản thu">
          <font>
             <Font name="Arial Bold" size="17.0" />
          </font>
       </Label>
       <TextField fx:id="search" layoutX="698.0" layoutY="72.0" prefHeight="28.0" prefWidth="264.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" />
-      <Button layoutX="926.0" layoutY="71.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: transparent;">
+      <Button layoutX="698.0" layoutY="72.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -128,10 +128,5 @@
          </font>
       </Label>
       <TextField layoutX="668.0" layoutY="546.0" prefHeight="25.0" prefWidth="51.0" />
-      <Label layoutX="34.0" layoutY="550.0" prefHeight="17.0" prefWidth="227.0" text="Ngày tháng dạng yyyy/mm/dd" textFill="#ae2323">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>
