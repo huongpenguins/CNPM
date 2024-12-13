@@ -10,7 +10,7 @@ public class connect_sqpserver {
     public static void main(String[] args) {
         SQLServerDataSource ds = new SQLServerDataSource();
         ds.setServerName("DESKTOP-7Q188UV\\SQLEXPRESS");
-        ds.setDatabaseName("QuanLyNhaHang");
+        ds.setDatabaseName("AccountAdmin");
         ds.setUser("sa");
         ds.setPassword("pass");
         ds.setPortNumber(1433);
