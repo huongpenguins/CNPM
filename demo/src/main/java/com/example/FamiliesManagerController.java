@@ -1,19 +1,26 @@
 package com.example;
 
-import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 
-public class PrimaryController {
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class FamiliesManagerController  {
+
+    public void initialize() {
+        // Không cần xử lý gì trong hàm khởi tạo
+    }
+
     @FXML
     VBox sidebar;
     @FXML
     Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu;
-    
+
     @FXML
     private void menuClick(){
         if(sidebar.getLayoutX()<0){
@@ -22,9 +29,9 @@ public class PrimaryController {
         else sidebar.setLayoutX(-sidebar.getWidth());
     }
 
-    @FXML 
+    @FXML
     private void signout(){
-        Alert alert = new Alert(AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Đăng xuất");
         alert.setContentText("Bạn muốn đăng xuất");
         alert.showAndWait();
@@ -36,7 +43,7 @@ public class PrimaryController {
     }
     @FXML
     private void switchToHome() throws IOException {
-        App.setRoot("home");
+        App.setRoot("com/example/home.fxml");
     }
     @FXML
     private void switchToGiaDinh() throws IOException {
@@ -48,7 +55,7 @@ public class PrimaryController {
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
-        App.setRoot("fee");
+        App.setRoot("com/example/fee.fxml");
     }
     @FXML
     private void switchToCanHo() throws IOException {
@@ -62,9 +69,9 @@ public class PrimaryController {
     private void switchToTamVang() throws IOException {
         App.setRoot("secondary");
     }
-    @FXML 
+    @FXML
     private void switchToSignIn(){
-        
+
     }
     @FXML
     private void switchToAccount() throws IOException {
@@ -74,5 +81,5 @@ public class PrimaryController {
     private void switchToSecondary() throws IOException {
         App.setRoot("secondary");
     }
-
 }
+

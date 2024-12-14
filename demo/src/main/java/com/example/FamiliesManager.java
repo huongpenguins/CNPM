@@ -1,4 +1,4 @@
-package com.example.manager;
+package com.example;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +14,7 @@ public class FamiliesManager extends Application {
     public void start(Stage stage) {
         try {
             // Tải tệp FXML
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/manager/FamiliesManager.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/FamiliesManager.fxml"));
 
             // Tạo Scene với kích thước đã định
             Scene scene = new Scene(root, 1000, 600);
