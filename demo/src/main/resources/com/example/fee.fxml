@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.TableColumn?>
@@ -102,7 +103,7 @@
         </columns>
       </TableView>
       <Pagination fx:id="pagination" layoutX="439.0" layoutY="535.0" prefHeight="49.0" prefWidth="121.0" />
-      <Button fx:id="filter" layoutX="148.0" layoutY="109.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">
+      <Button fx:id="filter" layoutX="148.0" layoutY="109.0" mnemonicParsing="false" onAction="#showFilterBar" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">
          <font>
             <Font name="Arial Bold" size="15.0" />
          </font>
@@ -133,5 +134,49 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
+      <AnchorPane fx:id="filterbar" layoutY="-137.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="600.0" style="-fx-background-color: #3f3e3e;">
+         <children>
+            <Label layoutX="25.0" layoutY="63.0" prefHeight="23.0" prefWidth="55.0" text="Từ ngày" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="221.0" layoutY="63.0" prefHeight="23.0" prefWidth="64.0" text="Đến ngày" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="25.0" layoutY="25.0" prefHeight="23.0" prefWidth="55.0" text="Tên" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="text_ten" layoutX="61.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
+            <Label layoutX="212.0" layoutY="25.0" prefHeight="23.0" prefWidth="35.0" text="Loại" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="text_loai" layoutX="247.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
+            <Label layoutX="395.0" layoutY="25.0" prefHeight="23.0" prefWidth="55.0" text="Ghi chú" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="text_ghichu" layoutX="450.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
+            <DatePicker fx:id="tungay" layoutX="80.0" layoutY="62.0" prefHeight="25.0" prefWidth="123.0" />
+            <DatePicker fx:id="denngay" layoutX="285.0" layoutY="62.0" prefHeight="25.0" prefWidth="123.0" />
+            <Button fx:id="remove" layoutX="512.0" layoutY="59.0" mnemonicParsing="false" onAction="#Remove" prefHeight="31.0" prefWidth="70.0" text="Remove">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Button>
+            <Button fx:id="apply" layoutX="440.0" layoutY="59.0" mnemonicParsing="false" onAction="#applyFilter" prefHeight="31.0" prefWidth="64.0" text="Apply">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

@@ -12,5 +12,8 @@ public class AddFeeController {
     DatePicker batdau,hannop;
     @FXML
     Button save;
-    
+    @FXML
+    private void xacnhan(){
+        
+    }
 }

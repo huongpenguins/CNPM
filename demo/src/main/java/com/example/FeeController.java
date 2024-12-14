@@ -10,9 +10,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.function.Predicate;
 
 import javax.security.auth.callback.Callback;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import com.example.Entities.KhoanThu;
+
 import javafx.scene.control.TableCell;
-import Entities.KhoanThu;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -27,6 +30,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -34,13 +38,14 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 public class FeeController {
     int pageIndex;
-    final int ROW_PER_PAGE = 10;
+    final int ROW_PER_PAGE = 1;
     ResultSet resultSet;
     // noi luu tru data
     ObservableList<KhoanThu> data = FXCollections.observableArrayList(
@@ -54,9 +59,9 @@ public class FeeController {
     @FXML
     VBox sidebar;
     @FXML
-    Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu,add;
+    Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu,apply,remove;
     @FXML
-    TextField search;
+    TextField search,text_ten,text_loai,text_ghichu;
     @FXML
     Pagination pagination;
     @FXML
@@ -67,9 +72,19 @@ public class FeeController {
     TableColumn<KhoanThu,LocalDate> batdau,hannop;
     @FXML
     TableColumn<KhoanThu,Void> chinhsua,chitiet,xoa;
+    @FXML
+    AnchorPane filterbar;
+    @FXML
+    DatePicker tungay,denngay;
+
+    IntegerProperty pageCount = new SimpleIntegerProperty(data.size()%ROW_PER_PAGE==0?data.size()/ROW_PER_PAGE:data.size()/ROW_PER_PAGE+1);
     
     public void initialize(){
         table.setEditable(false);
+
+        //pageCount.set(data.size()%ROW_PER_PAGE==0?data.size()/ROW_PER_PAGE:data.size()/ROW_PER_PAGE+1);
+        pagination.pageCountProperty().bind(pageCount);
+        
         // lien ket cot voi thuoc tinh trong KhoanThu
         id.setCellValueFactory(new PropertyValueFactory<KhoanThu,String>("id"));
         ten.setCellValueFactory(new PropertyValueFactory<KhoanThu,String>("ten"));
@@ -146,7 +161,7 @@ public class FeeController {
                     }
                     @Override
                     public LocalDate fromString(String string){
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd");
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
                         LocalDate date = LocalDate.parse(string, formatter);
                         if(date==null){
                         Alert alert = new Alert(Alert.AlertType.ERROR, "Định dạng ngày không hợp lệ! Vui lòng nhập theo định dạng yyyy-MM-dd.");
@@ -221,8 +236,9 @@ public class FeeController {
 
             {
               btn1.setOnAction(event->{
-                    int curIndex = getTableRow().getIndex();
-                    table.getItems().remove(curIndex);
+                
+                    KhoanThu curItem = getTableRow().getItem();
+                    data.remove(curItem);
 
                     // Xoa trong csdl
 
@@ -272,6 +288,7 @@ public class FeeController {
          
 
     }
+    
     FilteredList<KhoanThu> filter = new FilteredList<>(data,p->true);
     @FXML
     private void search(){
@@ -307,6 +324,44 @@ public class FeeController {
         subStage.setScene(scene);
         subStage.setTitle("Thêm phí thu");
         subStage.show();
+    }
+    @FXML 
+    private void applyFilter(){
+        Predicate<KhoanThu> pFilter = khoanThu ->{
+            boolean chk_ten = text_ten.getText().isEmpty()||khoanThu.getTen().toLowerCase().contains(text_ten.getText().toLowerCase());
+            boolean chk_loai=text_loai.getText().isEmpty()||khoanThu.getLoai().toLowerCase().contains(text_loai.getText().toLowerCase());
+            boolean chk_ghichu = text_ghichu.getText().isEmpty()||khoanThu.getGhichu().toLowerCase().contains(text_ghichu.getText().toLowerCase());
+            boolean chk_tungay = tungay.getValue()==null||(tungay.getValue()!=null&&tungay.getValue().isBefore(batdau.getCellData(khoanThu)));
+            boolean chk_dennhay = denngay.getValue()==null||(denngay.getValue()!=null&&denngay.getValue().isAfter(hannop.getCellData(khoanThu)));
+            
+            return chk_ten&&chk_loai&&chk_ghichu&&chk_dennhay&&chk_tungay;
+        };
+
+        filter.setPredicate(pFilter);
+        table.setItems(filter);
+        filterbar.setLayoutY(-131);
+    }
+    @FXML
+    private void Remove(){
+        text_ten.clear();
+        text_ghichu.clear();
+        text_loai.clear();
+        tungay.setValue(null);
+        denngay.setValue(null);
+        Predicate<KhoanThu> remove = khoanThu ->true;
+        filter.setPredicate(remove);
+        table.setItems(filter);
+        filterbar.setLayoutY(-131);
+    }
+
+    @FXML 
+    private void showFilterBar(){
+        if(filterbar.getLayoutY()<0){
+            filterbar.setLayoutY(160);
+        }
+        else if(filterbar.getLayoutY()>=0){
+            filterbar.setLayoutY(-131);
+        }
     }
     @FXML
     private void menuClick(){
