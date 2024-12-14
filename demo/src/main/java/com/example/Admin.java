@@ -2,7 +2,9 @@ package com.example;
 import com.example.connect.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Admin {
@@ -21,9 +23,10 @@ public class Admin {
 
     /**
      * Hàm insert chung, nhập dữ liệu trực tiếp từ bàn phím
+     *
      * @param tableName Tên bảng cần chèn dữ liệu
-     * @param columns Danh sách các cột cần chèn
-     * @param types Kiểu dữ liệu tương ứng của các cột ("String", "int", "float", "long", "boolean")
+     * @param columns   Danh sách các cột cần chèn
+     * @param types     Kiểu dữ liệu tương ứng của các cột ("String", "int", "float", "long", "boolean")
      * @return true nếu thêm thành công, false nếu thất bại
      */
     public boolean insert(String tableName, String[] columns, String[] types) {
@@ -95,11 +98,12 @@ public class Admin {
     }
     /**
      * Vùng 2: Chức năng sửa dữ liệu
-     * @param tableName Tên bảng cần sửa dữ liệu
-     * @param columnName Tên cột cần sửa
-     * @param newValue Giá trị mới nhập từ bàn phím
+     *
+     * @param tableName       Tên bảng cần sửa dữ liệu
+     * @param columnName      Tên cột cần sửa
+     * @param newValue        Giá trị mới nhập từ bàn phím
      * @param conditionColumn Ten cot thay the
-     * @param conditionValue dieu kieen where
+     * @param conditionValue  dieu kieen where
      * @return true nếu sửa thành công, false nếu thất bại
      */
     // Kiểm tra quyền admin
@@ -132,4 +136,55 @@ public class Admin {
             return false;
         }
     }
+
+    // method xoa du lieu theo hang
+    public static boolean delete(String tableName, String conditionColumn, String ColumnValue) {
+        String query = "DELETE FROM " + tableName + " WHERE " + conditionColumn + " = ?";
+        try (PreparedStatement preparedStatement = connection_admin.prepareStatement(query)) {
+            preparedStatement.setString(1, ColumnValue);
+            int rowsDeleted = preparedStatement.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi xóa dữ liệu: " + e.getMessage());
+            return false;
+        }
+    }
+    /**
+     * Hàm tìm kiếm chung cho admin.
+     *
+     * @param tableName Tên bảng cần tìm kiếm dữ liệu
+     * @param columnName Tên cột làm điều kiện tìm kiếm
+     * @param searchValue Giá trị cần tìm kiếm
+     * @return ArrayList<Object[]> chứa kết quả tìm kiếm (mỗi dòng là Object[])
+     */
+    public ArrayList<Object[]> search(String tableName, String columnName, String searchValue) {
+        ArrayList<Object[]> resultList = new ArrayList<>();
+
+        // SQL truy vấn linh hoạt với tham số
+        String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
+
+        try (PreparedStatement preStatement = connection_admin.prepareStatement(sql)) {
+            preStatement.setString(1, searchValue);
+            ResultSet resultSet = preStatement.executeQuery();
+
+            // Lấy số lượng cột của bảng
+            int columnCount = resultSet.getMetaData().getColumnCount();
+
+            // Duyệt qua từng dòng kết quả
+            while (resultSet.next()) {
+                Object[] row = new Object[columnCount]; // Mảng chứa dữ liệu của một dòng
+                for (int i = 1; i <= columnCount; i++) {
+                    row[i - 1] = resultSet.getObject(i); // Gán giá trị từng cột vào mảng
+                }
+                resultList.add(row); // Thêm dòng vào danh sách kết quả
+            }
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi tìm kiếm dữ liệu: " + e.getMessage());
+        }
+
+        return resultList; // Trả về danh sách kết quả
+    }
+
 }
+
+

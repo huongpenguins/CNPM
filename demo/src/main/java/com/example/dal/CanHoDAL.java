@@ -2,6 +2,7 @@ package com.example.dal;
 import com.example.Admin;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CanHoDAL extends Admin {
 
@@ -23,5 +24,8 @@ public class CanHoDAL extends Admin {
     public static boolean updateCanHo(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) throws SQLException {
 
         return update(tableName, columnName, newValue, conditionColumn,conditionValue);
+    }
+    public static boolean deleteCanHo(String tableName,String columnName,String columnValue){
+        return delete(tableName,columnName,columnValue);
     }
 }
