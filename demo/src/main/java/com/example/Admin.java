@@ -6,13 +6,18 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Admin {
-    private Connection connection_admin;
+    private static Connection connection_admin;
     protected connect_mysql c_mysql;
 
     public Admin() {
         c_mysql = new connect_mysql(); // Kết nối MySQL
         connection_admin = c_mysql.getConnection();
     }
+//    public boolean isAuthenticated() {
+//        // Xác thực tài khoản admin (dùng giá trị cứng)
+//        return "admin".equals(username) && "admin123".equals(password);
+//    }
+
 
     /**
      * Hàm insert chung, nhập dữ liệu trực tiếp từ bàn phím
@@ -85,6 +90,45 @@ public class Admin {
             return false;
         } catch (Exception e) {
             System.err.println("Lỗi nhập dữ liệu: " + e.getMessage());
+            return false;
+        }
+    }
+    /**
+     * Vùng 2: Chức năng sửa dữ liệu
+     * @param tableName Tên bảng cần sửa dữ liệu
+     * @param columnName Tên cột cần sửa
+     * @param newValue Giá trị mới nhập từ bàn phím
+     * @param conditionColumn Ten cot thay the
+     * @param conditionValue dieu kieen where
+     * @return true nếu sửa thành công, false nếu thất bại
+     */
+    // Kiểm tra quyền admin
+
+    // Hàm cập nhật chung
+    public static boolean update(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) {
+        // Kiểm tra quyền trước khi thực hiện
+//        if (!isAuthenticated()) {
+//            System.out.println("Bạn không có quyền thực hiện thao tác này.");
+//            return false;
+//        }
+
+        // Tạo câu lệnh SQL động
+        String query = "UPDATE " + tableName + " SET " + columnName + " = ? WHERE " + conditionColumn + " = ?";
+
+        try (PreparedStatement preparedStatement = connection_admin.prepareStatement(query)) {
+            // Gán giá trị tham số vào câu lệnh SQL
+            preparedStatement.setString(1, newValue);  // Thay thế giá trị cột
+            preparedStatement.setString(2, conditionValue); // Điều kiện WHERE
+
+            // Thực thi câu lệnh UPDATE
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            // Trả về true nếu có ít nhất một hàng bị ảnh hưởng
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            // Xử lý ngoại lệ trong quá trình cập nhật
+            System.err.println("Lỗi khi cập nhật dữ liệu: " + e.getMessage());
             return false;
         }
     }

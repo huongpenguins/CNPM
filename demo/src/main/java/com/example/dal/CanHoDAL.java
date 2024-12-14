@@ -1,6 +1,8 @@
 package com.example.dal;
 import com.example.Admin;
 
+import java.sql.SQLException;
+
 public class CanHoDAL extends Admin {
 
     public CanHoDAL() {
@@ -11,11 +13,15 @@ public class CanHoDAL extends Admin {
      * Hàm thêm dữ liệu vào bảng CanHo
      * @return true nếu thêm thành công, false nếu thất bại
      */
+    static String tableName = "canhotbl";
     public boolean insertCanHo() {
-        String tableName = "canhotbl";
         String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
         String[] types = {"int","String","String","int","float","String"};
 
         return insert(tableName, columns, types); // Gọi hàm insert từ Admin
+    }
+    public static boolean updateCanHo(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) throws SQLException {
+
+        return update(tableName, columnName, newValue, conditionColumn,conditionValue);
     }
 }
