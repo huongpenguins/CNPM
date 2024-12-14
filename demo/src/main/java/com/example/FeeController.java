@@ -334,7 +334,7 @@ public class FeeController {
     }
     @FXML
     private void switchToGiaDinh() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("FamiliesManager");
     }
     @FXML
     private void switchToDanCu() throws IOException {
