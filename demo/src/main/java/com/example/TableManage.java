@@ -8,8 +8,5 @@ public class TableManage<S> {
     public TableManage (TableView<S> table){
         this.table = table;
     }
-    
 
-
-    
 }

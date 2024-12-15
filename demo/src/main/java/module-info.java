@@ -18,5 +18,6 @@ module com.example {
     opens com.example.login to javafx.fxml;
     exports com.example.manager;
     exports com.example.connect;
-    opens com.example.connect to javafx.fxml; //New by Phong
+    opens com.example.connect to javafx.fxml;
+    opens com.example.Entities to javafx.base; //New by Phong
 }
