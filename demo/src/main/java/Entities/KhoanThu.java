@@ -1,4 +1,4 @@
-package com.example.Entities;
+package Entities;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -15,15 +15,15 @@ public class KhoanThu {
     SimpleObjectProperty<LocalDate> hannop;
     SimpleStringProperty ghichu;
 
-    public KhoanThu(String id, String ten,String loai,
-                    LocalDate batdau, LocalDate hannop,String ghichu) {
+    public KhoanThu(String id, String ten,String loai, 
+    LocalDate batdau, LocalDate hannop,String ghichu) {
         this.id = new SimpleStringProperty(id);
         this.ten = new SimpleStringProperty(ten);
         this.loai = new SimpleStringProperty(loai);
         this.ghichu = new SimpleStringProperty(ghichu);
         this.batdau = new SimpleObjectProperty<>(batdau);
         this.hannop = new SimpleObjectProperty<>(hannop);
-
+        
     }
 
     public String getId() {
@@ -67,7 +67,7 @@ public class KhoanThu {
     public void setHannop(LocalDate hannop) {
         this.hannop = new SimpleObjectProperty<>(hannop);
     }
-
+ 
 
     public String getGhichu() {
         return this.ghichu.get();
