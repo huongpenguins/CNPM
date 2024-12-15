@@ -14,6 +14,10 @@ public class FamiliesManagerController  {
 
     public void initialize() {
         // Không cần xử lý gì trong hàm khởi tạo
+        // Đặt sidebar ra ngoài màn hình khi khởi chạy
+        if (sidebar != null) {
+            sidebar.setLayoutX(-sidebar.getPrefWidth());
+        }
     }
 
     @FXML
@@ -22,12 +26,24 @@ public class FamiliesManagerController  {
     Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu;
 
     @FXML
-    private void menuClick(){
-        if(sidebar.getLayoutX()<0){
-            sidebar.setLayoutX(0);
+    private void menuClick() {
+        // Kiểm tra nếu sidebar đã được khởi tạo
+        if (sidebar != null) {
+            double currentPosition = sidebar.getLayoutX();
+            double sidebarWidth = sidebar.getPrefWidth();
+
+            // Nếu sidebar hiện tại ở ngoài màn hình -> kéo vào
+            if (currentPosition < 0) {
+                sidebar.setLayoutX(0);
+            } else {
+                // Nếu sidebar đã hiển thị -> đẩy ra khỏi màn hình
+                sidebar.setLayoutX(-sidebarWidth);
+            }
+        } else {
+            System.out.println("Sidebar chưa được khởi tạo!");
         }
-        else sidebar.setLayoutX(-sidebar.getWidth());
     }
+
 
     @FXML
     private void signout(){
@@ -43,7 +59,7 @@ public class FamiliesManagerController  {
     }
     @FXML
     private void switchToHome() throws IOException {
-        App.setRoot("com/example/home.fxml");
+        App.setRoot("home");
     }
     @FXML
     private void switchToGiaDinh() throws IOException {
@@ -51,11 +67,11 @@ public class FamiliesManagerController  {
     }
     @FXML
     private void switchToDanCu() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("ResidentsManager");
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
-        App.setRoot("com/example/fee.fxml");
+        App.setRoot("fee");
     }
     @FXML
     private void switchToCanHo() throws IOException {
@@ -74,12 +90,14 @@ public class FamiliesManagerController  {
 
     }
     @FXML
-    private void switchToAccount() throws IOException {
-        App.setRoot("account");
+    private void switchToAccount() {
+        try {
+            App.setRoot("account"); // Đảm bảo "account.fxml" tồn tại
+        } catch (IOException e) {
+            System.out.println("Lỗi: Không thể chuyển sang màn hình tài khoản. Kiểm tra đường dẫn của account.fxml.");
+            e.printStackTrace();
+        }
     }
-    @FXML
-    private void switchToSecondary() throws IOException {
-        App.setRoot("secondary");
-    }
+
 }
 

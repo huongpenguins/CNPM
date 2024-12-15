@@ -44,7 +44,7 @@ public class PrimaryController {
     }
     @FXML
     private void switchToDanCu() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("ResidentsManager");
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
