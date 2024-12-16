@@ -95,9 +95,18 @@
         <!-- Action Buttons -->
         <AnchorPane layoutX="780.0" layoutY="130.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5; -fx-border-width: 1.0;">
             <children>
-                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Thêm cư dân" styleClass="button2" stylesheets="@manager/home2.css" />
-                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Sửa cư dân" styleClass="button2" stylesheets="@manager/home2.css" />
-                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Xóa cư dân" styleClass="button2" stylesheets="@manager/home2.css" />
+                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" mnemonicParsing="false"
+                        onAction="#addResident"
+                        prefHeight="50.0" prefWidth="160.0" text="Thêm cư dân" styleClass="button2" stylesheets="@manager/home2.css" />
+
+                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" mnemonicParsing="false"
+                        onAction="#editResident"
+                        prefHeight="50.0" prefWidth="160.0" text="Sửa cư dân" styleClass="button2" stylesheets="@manager/home2.css" />
+
+                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" mnemonicParsing="false"
+                        onAction="#deleteResident"
+                        prefHeight="50.0" prefWidth="160.0" text="Xóa cư dân" styleClass="button2" stylesheets="@manager/home2.css" />
+
             </children>
         </AnchorPane>
 

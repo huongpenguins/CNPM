@@ -77,7 +77,7 @@
 
         <!-- Search Section -->
         <TextField fx:id="txtSearch" layoutX="20.0" layoutY="80.0" prefHeight="30.0" prefWidth="400.0" promptText="Tìm kiếm hộ khẩu (Mã hoặc Tên)" />
-        <Button fx:id="btnSearch" layoutX="430.0" layoutY="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Tìm kiếm" styleClass="button2" stylesheets="@manager/home2.css" />
+        <Button fx:id="btnSearch" layoutX="430.0" layoutY="80.0" mnemonicParsing="false" onAction="#searchHouseholds" prefHeight="30.0" prefWidth="100.0" text="Tìm kiếm" styleClass="button2" stylesheets="@manager/home2.css" />
 
         <!-- Table Section -->
         <TableView fx:id="tableHouseholds" layoutX="20.0" layoutY="130.0" prefHeight="400.0" prefWidth="750.0">
@@ -91,11 +91,10 @@
         <!-- Action Buttons -->
         <AnchorPane layoutX="780.0" layoutY="130.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5; -fx-border-width: 1.0;">
             <children>
-                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Thêm hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css" />
-                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Sửa hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css" />
-                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Xóa hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css" />
-                <Button fx:id="btnViewDetails" layoutX="20.0" layoutY="240.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Xem chi tiết" styleClass="button2" stylesheets="@manager/home2.css" />
-            </children>
+                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" mnemonicParsing="false" onAction="#addHousehold" prefHeight="50.0" prefWidth="160.0" text="Thêm hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css" />
+                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" onAction="#editHousehold" prefHeight="50.0" prefWidth="160.0" text="Sửa hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css" />
+                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" mnemonicParsing="false" onAction="#deleteHousehold" prefHeight="50.0" prefWidth="160.0" text="Xóa hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css" />
+                <Button fx:id="btnViewDetails" layoutX="20.0" layoutY="240.0" mnemonicParsing="false" onAction="#viewHouseholdDetails" prefHeight="50.0" prefWidth="160.0" text="Xem chi tiết" styleClass="button2" stylesheets="@manager/home2.css" /> </children>
         </AnchorPane>
 
 
