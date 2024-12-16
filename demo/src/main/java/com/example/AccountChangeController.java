@@ -1,13 +1,10 @@
 package com.example;
 
 import java.io.IOException;
-import java.time.LocalDate;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -15,9 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 
 public class AccountChangeController {
    
@@ -32,7 +27,7 @@ public class AccountChangeController {
     @FXML
     ImageView khunganh; 
     @FXML
-    ComboBox chucvu;
+    ComboBox<String> chucvu;
     @FXML 
     Label checkhoten,checkemail,checkcccd,checksdt;
     @FXML
@@ -216,7 +211,7 @@ public class AccountChangeController {
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
-        App.setRoot("khoanthu");
+        App.setRoot("fee");
     }
     @FXML
     private void switchToCanHo() throws IOException {

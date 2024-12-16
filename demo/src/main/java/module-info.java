@@ -1,26 +1,17 @@
 module com.example {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.sql;
-<<<<<<< HEAD
-    requires javafx.graphics;
+    requires transitive java.sql;
+    requires transitive javafx.graphics;
     requires javafx.base;
-=======
+    //opens Entities to javafx.base;
 
-    requires javafx.graphics;
-    requires javafx.base;
-
-    opens Entities to javafx.base;
-
->>>>>>> e0d1c95316e943c228b69f1cd21ed2a0a45fbada
     requires com.microsoft.sqlserver.jdbc;
     requires java.naming;
+    requires org.controlsfx.controls;
 
 
-<<<<<<< HEAD
     opens com.example.Entities to javafx.base;
-=======
->>>>>>> e0d1c95316e943c228b69f1cd21ed2a0a45fbada
     opens com.example to javafx.fxml;
     exports com.example;
     exports com.example.login;

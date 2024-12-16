@@ -1,9 +1,8 @@
 package com.example.Entities;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -13,14 +12,14 @@ public class KhoanThu {
     SimpleStringProperty loai;
     SimpleObjectProperty<LocalDate> batdau;
     SimpleObjectProperty<LocalDate> hannop;
-    SimpleStringProperty ghichu;
+    SimpleIntegerProperty ghichu;
 
     public KhoanThu(String id, String ten,String loai, 
-    LocalDate batdau, LocalDate hannop,String ghichu) {
+    LocalDate batdau, LocalDate hannop,int ghichu) {
         this.id = new SimpleStringProperty(id);
         this.ten = new SimpleStringProperty(ten);
         this.loai = new SimpleStringProperty(loai);
-        this.ghichu = new SimpleStringProperty(ghichu);
+        this.ghichu = new SimpleIntegerProperty(ghichu);
         this.batdau = new SimpleObjectProperty<>(batdau);
         this.hannop = new SimpleObjectProperty<>(hannop);
         
@@ -39,7 +38,7 @@ public class KhoanThu {
     }
 
     public void setTen(String ten) {
-        this.ten = new SimpleStringProperty(ten);
+        this.ten.set(ten);
     }
 
     public String getLoai() {
@@ -47,7 +46,7 @@ public class KhoanThu {
     }
 
     public void setLoai(String loai) {
-        this.loai = new SimpleStringProperty(loai);
+        this.loai.set(loai);
     }
 
 
@@ -57,7 +56,7 @@ public class KhoanThu {
     }
 
     public void setBatdau(LocalDate batdau) {
-        this.batdau = new SimpleObjectProperty<>(batdau);
+        this.batdau.set(batdau);
     }
 
     public LocalDate getHannop() {
@@ -65,16 +64,16 @@ public class KhoanThu {
     }
 
     public void setHannop(LocalDate hannop) {
-        this.hannop = new SimpleObjectProperty<>(hannop);
+        this.hannop.set(hannop);
     }
  
 
-    public String getGhichu() {
+    public int getGhichu() {
         return this.ghichu.get();
     }
 
-    public void setGhichu(String ghichu) {
-        this.ghichu = new SimpleStringProperty(ghichu);
+    public void setGhichu(int ghichu) {
+        this.ghichu.set(ghichu);
     }
 
 }

@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -25,6 +24,102 @@
                </font>
             </Label>
             <Button fx:id="account" layoutX="890.0" mnemonicParsing="false" onAction="#switchToAccount" prefHeight="49.0" prefWidth="51.0" styleClass="account" stylesheets="@home.css" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="39.0" layoutY="63.0" prefHeight="38.0" prefWidth="180.0" text="Danh sách khoản thu">
+         <font>
+            <Font name="Arial Bold" size="17.0" />
+         </font>
+      </Label>
+      <TextField fx:id="search" layoutX="698.0" layoutY="72.0" prefHeight="28.0" prefWidth="264.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" />
+      <Button layoutX="926.0" layoutY="71.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@picture/search.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <TableView fx:id="table" layoutX="26.0" layoutY="154.0" prefHeight="381.0" prefWidth="948.0">
+        <columns>
+            <TableColumn fx:id="id" prefWidth="105.33330726623535" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Mã phí" />
+          <TableColumn fx:id="ten" prefWidth="125.99996948242188" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Tên" />
+          <TableColumn fx:id="loai" minWidth="0.0" prefWidth="98.00001525878906" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Loại" />
+            <TableColumn fx:id="batdau" minWidth="6.000030517578125" prefWidth="158.66673278808594" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Bắt đầu" />
+            <TableColumn fx:id="hannop" prefWidth="149.99996948242188" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Hạn nộp" />
+            <TableColumn fx:id="ghichu" prefWidth="132.66668701171875" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Đơn giá" />
+            <TableColumn prefWidth="50.6666259765625" fx:id="xoa" />
+            <TableColumn fx:id="chinhsua" prefWidth="53.3333740234375" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-alignment: CENTER;" />
+            <TableColumn fx:id="chitiet" prefWidth="69.33331298828125" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
+        </columns>
+      </TableView>
+      <Button fx:id="filter" layoutX="148.0" layoutY="109.0" mnemonicParsing="false" onAction="#showFilterBar" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="167.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@picture/Filter.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="add" layoutX="39.0" layoutY="108.0" mnemonicParsing="false" onAction="#add_fee" prefHeight="38.0" prefWidth="91.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="     Add">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="50.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@picture/add_icon.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="34.0" layoutY="550.0" prefHeight="17.0" prefWidth="227.0" text="Ngày tháng dạng yyyy/mm/dd" textFill="#ae2323">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="filterbar" layoutY="-137.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="600.0" style="-fx-background-color: #3f3e3e;">
+         <children>
+            <Label layoutX="25.0" layoutY="63.0" prefHeight="23.0" prefWidth="55.0" text="Từ ngày" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="221.0" layoutY="63.0" prefHeight="23.0" prefWidth="64.0" text="Đến ngày" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="25.0" layoutY="25.0" prefHeight="23.0" prefWidth="55.0" text="Tên" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="text_ten" layoutX="61.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
+            <Label layoutX="212.0" layoutY="25.0" prefHeight="23.0" prefWidth="35.0" text="Loại" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="text_loai" layoutX="247.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
+            <Label layoutX="395.0" layoutY="25.0" prefHeight="23.0" prefWidth="55.0" text="Ghi chú" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="text_ghichu" layoutX="450.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
+            <DatePicker fx:id="tungay" layoutX="80.0" layoutY="62.0" prefHeight="25.0" prefWidth="123.0" />
+            <DatePicker fx:id="denngay" layoutX="285.0" layoutY="62.0" prefHeight="25.0" prefWidth="123.0" />
+            <Button fx:id="remove" layoutX="512.0" layoutY="59.0" mnemonicParsing="false" onAction="#Remove" prefHeight="31.0" prefWidth="70.0" text="Remove">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Button>
+            <Button fx:id="apply" layoutX="440.0" layoutY="59.0" mnemonicParsing="false" onAction="#applyFilter" prefHeight="31.0" prefWidth="64.0" text="Apply">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <VBox id="sidebar" fx:id="sidebar" alignment="CENTER" layoutX="-200.0" layoutY="49.0" prefHeight="553.0" prefWidth="200.0" spacing="35.0" styleClass="sidebar" stylesheets="@home.css" AnchorPane.topAnchor="49.0">
@@ -75,108 +170,5 @@
             </VBox>
          </children>
       </VBox>
-      <Label layoutX="39.0" layoutY="63.0" prefHeight="38.0" prefWidth="180.0" text="Danh sách khoản thu">
-         <font>
-            <Font name="Arial Bold" size="17.0" />
-         </font>
-      </Label>
-      <TextField fx:id="search" layoutX="698.0" layoutY="72.0" prefHeight="28.0" prefWidth="264.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" />
-      <Button layoutX="926.0" layoutY="71.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: transparent;">
-         <graphic>
-            <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@picture/search.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
-      <TableView fx:id="table" layoutX="26.0" layoutY="154.0" prefHeight="381.0" prefWidth="948.0">
-        <columns>
-            <TableColumn fx:id="id" prefWidth="105.33330726623535" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Mã phí" />
-          <TableColumn fx:id="ten" prefWidth="125.99996948242188" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Tên" />
-          <TableColumn fx:id="loai" minWidth="0.0" prefWidth="98.00001525878906" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Loại" />
-            <TableColumn fx:id="batdau" minWidth="6.000030517578125" prefWidth="158.66673278808594" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Bắt đầu" />
-            <TableColumn fx:id="hannop" prefWidth="149.99996948242188" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Hạn nộp" />
-            <TableColumn fx:id="ghichu" prefWidth="132.66668701171875" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Ghi chú" />
-            <TableColumn prefWidth="50.6666259765625" fx:id="xoa" />
-            <TableColumn fx:id="chinhsua" prefWidth="53.3333740234375" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-alignment: CENTER;" />
-            <TableColumn fx:id="chitiet" prefWidth="69.33331298828125" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
-        </columns>
-      </TableView>
-      <Pagination fx:id="pagination" layoutX="439.0" layoutY="535.0" prefHeight="49.0" prefWidth="121.0" />
-      <Button fx:id="filter" layoutX="148.0" layoutY="109.0" mnemonicParsing="false" onAction="#showFilterBar" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">
-         <font>
-            <Font name="Arial Bold" size="15.0" />
-         </font>
-      </Button>
-      <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="167.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@picture/Filter.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="add" layoutX="39.0" layoutY="108.0" mnemonicParsing="false" onAction="#add_fee" prefHeight="38.0" prefWidth="91.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="     Add">
-         <font>
-            <Font name="Arial Bold" size="15.0" />
-         </font>
-      </Button>
-      <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="50.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@picture/add_icon.png" />
-         </image>
-      </ImageView>
-      <Label layoutX="590.0" layoutY="548.0" prefHeight="17.0" prefWidth="79.0" text="Go to page">
-         <font>
-            <Font name="Arial" size="15.0" />
-         </font>
-      </Label>
-      <TextField layoutX="668.0" layoutY="546.0" prefHeight="25.0" prefWidth="51.0" />
-      <Label layoutX="34.0" layoutY="550.0" prefHeight="17.0" prefWidth="227.0" text="Ngày tháng dạng yyyy/mm/dd" textFill="#ae2323">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font>
-      </Label>
-      <AnchorPane fx:id="filterbar" layoutY="-137.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="600.0" style="-fx-background-color: #3f3e3e;">
-         <children>
-            <Label layoutX="25.0" layoutY="63.0" prefHeight="23.0" prefWidth="55.0" text="Từ ngày" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="221.0" layoutY="63.0" prefHeight="23.0" prefWidth="64.0" text="Đến ngày" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="25.0" layoutY="25.0" prefHeight="23.0" prefWidth="55.0" text="Tên" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Label>
-            <TextField fx:id="text_ten" layoutX="61.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
-            <Label layoutX="212.0" layoutY="25.0" prefHeight="23.0" prefWidth="35.0" text="Loại" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Label>
-            <TextField fx:id="text_loai" layoutX="247.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
-            <Label layoutX="395.0" layoutY="25.0" prefHeight="23.0" prefWidth="55.0" text="Ghi chú" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Label>
-            <TextField fx:id="text_ghichu" layoutX="450.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
-            <DatePicker fx:id="tungay" layoutX="80.0" layoutY="62.0" prefHeight="25.0" prefWidth="123.0" />
-            <DatePicker fx:id="denngay" layoutX="285.0" layoutY="62.0" prefHeight="25.0" prefWidth="123.0" />
-            <Button fx:id="remove" layoutX="512.0" layoutY="59.0" mnemonicParsing="false" onAction="#Remove" prefHeight="31.0" prefWidth="70.0" text="Remove">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Button>
-            <Button fx:id="apply" layoutX="440.0" layoutY="59.0" mnemonicParsing="false" onAction="#applyFilter" prefHeight="31.0" prefWidth="64.0" text="Apply">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Button>
-         </children>
-      </AnchorPane>
    </children>
 </AnchorPane>
