@@ -5,12 +5,16 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Pair;
+
 import java.io.IOException;
 import java.util.Optional;
-import javafx.scene.control.cell.PropertyValueFactory;
+// import java.sql.Connection;
+// import java.sql.DriverManager;
+// import java.sql.PreparedStatement;
+// import java.sql.ResultSet;
 
 public class ResidentsManagerController {
 
@@ -19,13 +23,21 @@ public class ResidentsManagerController {
     @FXML
     private TableColumn<Resident, String> colResidentId;
     @FXML
+    private TableColumn<Resident, String> colHouseholdId;
+    @FXML
     private TableColumn<Resident, String> colResidentName;
+    @FXML
+    private TableColumn<Resident, String> colIdentityCard;
     @FXML
     private TableColumn<Resident, String> colDateOfBirth;
     @FXML
-    private TableColumn<Resident, String> colPhone;
+    private TableColumn<Resident, String> colPlaceOfBirth;
     @FXML
-    private TableColumn<Resident, String> colAddress;
+    private TableColumn<Resident, String> colEthnicity;
+    @FXML
+    private TableColumn<Resident, String> colOccupation;
+    @FXML
+    private TableColumn<Resident, String> colRelationship;
 
     @FXML
     private Button btnAdd, btnEdit, btnDelete;
@@ -40,14 +52,18 @@ public class ResidentsManagerController {
     private FilteredList<Resident> filteredData;
 
     public void initialize() {
-        // Thiết lập cellValueFactory với PropertyValueFactory
-        colResidentId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colResidentName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
-        colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        // Thiết lập cellValueFactory cho các cột theo các trường mới
+        colResidentId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getId()));
+        colHouseholdId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getHouseholdId()));
+        colResidentName.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getName()));
+        colIdentityCard.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getIdentityCard()));
+        colDateOfBirth.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDateOfBirth()));
+        colPlaceOfBirth.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getPlaceOfBirth()));
+        colEthnicity.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEthnicity()));
+        colOccupation.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getOccupation()));
+        colRelationship.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getRelationship()));
 
-        // Sidebar ẩn khi khởi tạo
+        // Ẩn sidebar khi khởi động
         if (sidebar != null) {
             sidebar.setLayoutX(-sidebar.getPrefWidth());
         }
@@ -55,46 +71,56 @@ public class ResidentsManagerController {
         // Tải dữ liệu
         loadResidentData();
 
-        // Disable nút Sửa và Xóa ban đầu
+        // Ban đầu disable nút Sửa, Xóa
         btnEdit.setDisable(true);
         btnDelete.setDisable(true);
 
-        // Theo dõi lựa chọn
+        // Theo dõi lựa chọn trên bảng
         tableResidents.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             boolean isSelected = newSelection != null;
             btnEdit.setDisable(!isSelected);
             btnDelete.setDisable(!isSelected);
         });
 
-        // Gắn listener cho ô tìm kiếm (khi gõ tự động lọc)
+        // Tìm kiếm khi thay đổi txtSearch
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             filterResidents(newValue);
         });
+
+        // Nút thêm, sửa, xóa
+        btnAdd.setOnAction(event -> addResident());
+        btnEdit.setOnAction(event -> editResident());
+        btnDelete.setOnAction(event -> deleteResident());
     }
 
     private void loadResidentData() {
         masterData.clear();
         try {
-            // Chỗ này dành cho kết nối CSDL, hiện để comment
+            // SQL: Lấy dữ liệu từ CSDL
             // Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbname", "username", "password");
-            // PreparedStatement pstmt = conn.prepareStatement("SELECT id, name, dob, phone, address FROM residents");
+            // String sql = "SELECT id, household_id, name, identity_card, date_of_birth, place_of_birth, ethnicity, occupation, relationship FROM residents";
+            // PreparedStatement pstmt = conn.prepareStatement(sql);
             // ResultSet rs = pstmt.executeQuery();
-            // while(rs.next()) {
+            // while (rs.next()) {
             //     masterData.add(new Resident(
-            //       rs.getString("id"),
-            //       rs.getString("name"),
-            //       rs.getString("dob"),
-            //       rs.getString("phone"),
-            //       rs.getString("address")
+            //         rs.getString("id"),
+            //         rs.getString("household_id"),
+            //         rs.getString("name"),
+            //         rs.getString("identity_card"),
+            //         rs.getString("date_of_birth"),
+            //         rs.getString("place_of_birth"),
+            //         rs.getString("ethnicity"),
+            //         rs.getString("occupation"),
+            //         rs.getString("relationship")
             //     ));
             // }
             // conn.close();
 
             // Dữ liệu giả lập
             masterData.addAll(
-                    new Resident("001", "Nguyễn Văn A", "01/01/1990", "0123456789", "Hà Nội"),
-                    new Resident("002", "Trần Thị B", "15/05/1985", "0987654321", "TP.HCM"),
-                    new Resident("003", "Lê Văn C", "22/12/1992", "0934567890", "Đà Nẵng")
+                    new Resident("NK001", "HK001", "Nguyễn Văn A", "123456789012", "01/01/1990", "Hà Nội", "Kinh", "Công nhân", "Chủ hộ"),
+                    new Resident("NK002", "HK001", "Nguyễn Thị B", "123456789013", "15/05/1992", "Hà Nội", "Kinh", "Giáo viên", "Vợ"),
+                    new Resident("NK003", "HK002", "Trần Văn C", "123456789014", "22/12/1985", "TP.HCM", "Kinh", "Kỹ sư", "Chủ hộ")
             );
 
             filteredData = new FilteredList<>(masterData, p -> true);
@@ -105,7 +131,6 @@ public class ResidentsManagerController {
         }
     }
 
-    // Hàm searchResidents gọi khi bấm nút (lấy text từ txtSearch):
     @FXML
     private void searchResidents() {
         filterResidents(txtSearch.getText());
@@ -130,11 +155,20 @@ public class ResidentsManagerController {
         result.ifPresent(data -> {
             String residentId = data.getKey();
             String[] details = data.getValue();
-            System.out.println("Thêm cư dân: Mã = " + residentId + ", Tên = " + details[0] +
-                    ", Ngày sinh = " + details[1] + ", Số phone = " + details[2] + ", Địa chỉ = " + details[3]);
-            // SQL: INSERT ...
+            String householdId = details[0];
+            String name = details[1];
+            String identityCard = details[2];
+            String dob = details[3];
+            String placeOfBirth = details[4];
+            String ethnicity = details[5];
+            String occupation = details[6];
+            String relationship = details[7];
+
+            System.out.println("Thêm cư dân: Mã = " + residentId + ", Hộ gia đình = " + householdId + ", Tên = " + name +
+                    ", CCCD = " + identityCard + ", Ngày sinh = " + dob + ", Nơi sinh = " + placeOfBirth +
+                    ", Dân tộc = " + ethnicity + ", Nghề nghiệp = " + occupation + ", Quan hệ = " + relationship);
+            // SQL xử lý: INSERT INTO residents (...)
             showAlert("Thêm thành công", "Cư dân mới đã được thêm!");
-            // Sau khi thêm xong, reload dữ liệu
             // loadResidentData();
         });
     }
@@ -148,9 +182,19 @@ public class ResidentsManagerController {
             result.ifPresent(data -> {
                 String residentId = data.getKey();
                 String[] details = data.getValue();
-                System.out.println("Cập nhật cư dân: Mã = " + residentId + ", Tên = " + details[0] +
-                        ", Ngày sinh = " + details[1] + ", Số phone = " + details[2] + ", Địa chỉ = " + details[3]);
-                // SQL: UPDATE ...
+                String householdId = details[0];
+                String name = details[1];
+                String identityCard = details[2];
+                String dob = details[3];
+                String placeOfBirth = details[4];
+                String ethnicity = details[5];
+                String occupation = details[6];
+                String relationship = details[7];
+
+                System.out.println("Cập nhật cư dân: Mã = " + residentId + ", Hộ gia đình = " + householdId + ", Tên = " + name +
+                        ", CCCD = " + identityCard + ", Ngày sinh = " + dob + ", Nơi sinh = " + placeOfBirth +
+                        ", Dân tộc = " + ethnicity + ", Nghề nghiệp = " + occupation + ", Quan hệ = " + relationship);
+                // SQL xử lý: UPDATE residents SET ...
                 showAlert("Sửa thành công", "Thông tin cư dân đã được cập nhật!");
                 // loadResidentData();
             });
@@ -171,7 +215,7 @@ public class ResidentsManagerController {
             Optional<ButtonType> result = confirmAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 System.out.println("Xóa cư dân: " + selectedResident.getId());
-                // SQL: DELETE ...
+                // SQL xử lý: DELETE FROM residents WHERE id = ?
                 showAlert("Xóa thành công", "Cư dân đã được xóa khỏi hệ thống!");
                 // loadResidentData();
             }
@@ -192,28 +236,46 @@ public class ResidentsManagerController {
         grid.setVgap(10);
 
         TextField txtId = new TextField();
+        TextField txtHouseholdId = new TextField();
         TextField txtName = new TextField();
+        TextField txtIdentityCard = new TextField();
         TextField txtDob = new TextField();
-        TextField txtPhone = new TextField();
-        TextField txtAddress = new TextField();
+        TextField txtPlaceOfBirth = new TextField();
+        TextField txtEthnicity = new TextField();
+        TextField txtOccupation = new TextField();
+        TextField txtRelationship = new TextField();
 
-        grid.add(new Label("Mã cư dân:"), 0, 0);
+        // Thêm label và textfield vào dialog
+        grid.add(new Label("Mã Nhân Khẩu:"), 0, 0);
         grid.add(txtId, 1, 0);
-        grid.add(new Label("Họ và Tên:"), 0, 1);
-        grid.add(txtName, 1, 1);
-        grid.add(new Label("Ngày sinh:"), 0, 2);
-        grid.add(txtDob, 1, 2);
-        grid.add(new Label("Số điện thoại:"), 0, 3);
-        grid.add(txtPhone, 1, 3);
-        grid.add(new Label("Địa chỉ:"), 0, 4);
-        grid.add(txtAddress, 1, 4);
+        grid.add(new Label("Mã Hộ Gia Đình:"), 0, 1);
+        grid.add(txtHouseholdId, 1, 1);
+        grid.add(new Label("Họ và Tên:"), 0, 2);
+        grid.add(txtName, 1, 2);
+        grid.add(new Label("CCCD:"), 0, 3);
+        grid.add(txtIdentityCard, 1, 3);
+        grid.add(new Label("Ngày Sinh:"), 0, 4);
+        grid.add(txtDob, 1, 4);
+        grid.add(new Label("Nơi Sinh:"), 0, 5);
+        grid.add(txtPlaceOfBirth, 1, 5);
+        grid.add(new Label("Dân Tộc:"), 0, 6);
+        grid.add(txtEthnicity, 1, 6);
+        grid.add(new Label("Nghề Nghiệp:"), 0, 7);
+        grid.add(txtOccupation, 1, 7);
+        grid.add(new Label("Quan Hệ:"), 0, 8);
+        grid.add(txtRelationship, 1, 8);
 
+        // Nếu là sửa, điền dữ liệu cũ
         if (residentData != null) {
             txtId.setText(residentData.getId());
+            txtHouseholdId.setText(residentData.getHouseholdId());
             txtName.setText(residentData.getName());
+            txtIdentityCard.setText(residentData.getIdentityCard());
             txtDob.setText(residentData.getDateOfBirth());
-            txtPhone.setText(residentData.getPhone());
-            txtAddress.setText(residentData.getAddress());
+            txtPlaceOfBirth.setText(residentData.getPlaceOfBirth());
+            txtEthnicity.setText(residentData.getEthnicity());
+            txtOccupation.setText(residentData.getOccupation());
+            txtRelationship.setText(residentData.getRelationship());
         }
 
         dialog.getDialogPane().setContent(grid);
@@ -221,10 +283,14 @@ public class ResidentsManagerController {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == okButtonType) {
                 return new Pair<>(txtId.getText(), new String[]{
+                        txtHouseholdId.getText(),
                         txtName.getText(),
+                        txtIdentityCard.getText(),
                         txtDob.getText(),
-                        txtPhone.getText(),
-                        txtAddress.getText()
+                        txtPlaceOfBirth.getText(),
+                        txtEthnicity.getText(),
+                        txtOccupation.getText(),
+                        txtRelationship.getText()
                 });
             }
             return null;
@@ -267,7 +333,6 @@ public class ResidentsManagerController {
             switchToSignIn();
         }
     }
-
     @FXML
     private void switchToHome() throws IOException {
         App.setRoot("home");
