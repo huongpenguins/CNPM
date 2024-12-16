@@ -44,8 +44,7 @@ public class FeeController {
         new KhoanThu("KT03", "Tiền nước", "Sinh hoạt", LocalDateTime.of(2024, 12, 5, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 25, 23, 59).toLocalDate(), 30000),
         new KhoanThu("KT04", "Tiền thuê nhà", "Sinh hoạt", LocalDateTime.of(2024, 1, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 1, 31, 23, 59).toLocalDate(), 40000)
         );
-      
-    
+
     @FXML
     VBox sidebar;
     @FXML
@@ -442,7 +441,7 @@ public class FeeController {
     }
     @FXML
     private void switchToGiaDinh() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("FamiliesManager");
     }
     @FXML
     private void switchToDanCu() throws IOException {

@@ -1,4 +1,4 @@
-package com.example.manager;
+package com.example;
 
 
 import javafx.application.Application;
