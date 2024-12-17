@@ -20,7 +20,7 @@ public class ThanhToanController {
     @FXML
     TextField id,sotiennop;
     @FXML
-    Button save;
+    Button save,tralai;
 
     @FXML
     private void xacnhan() throws IOException{
@@ -46,4 +46,5 @@ public class ThanhToanController {
         thisStage.close();
         
     }
+    
 }

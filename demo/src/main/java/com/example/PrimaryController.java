@@ -60,7 +60,7 @@ public class PrimaryController {
     }
     @FXML
     private void switchToTamVang() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("tamvang");
     }
     @FXML 
     private void switchToSignIn(){

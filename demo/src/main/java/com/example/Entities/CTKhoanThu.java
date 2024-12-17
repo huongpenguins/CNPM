@@ -23,9 +23,9 @@ public class CTKhoanThu {
         this.tiennop = new SimpleIntegerProperty(tiennop);
         this.danop = new SimpleIntegerProperty(danop);
         this.ngaynop = new SimpleObjectProperty<>(ngaynop);
-        this.trangthai = new SimpleStringProperty(danop >= tiennop ? "Xong" : "Thiếu");
+        this.trangthai = new SimpleStringProperty(danop > tiennop ? "Duw" : ( danop == tiennop ? "Xong" : "Thiếu"));
         this.danop.addListener((obs, oldVal, newVal) -> {
-            this.trangthai.set(this.getDanop() >= this.getTiennop() ? "Xong" : "Thiếu");
+            this.trangthai.set(this.getDanop() > this.getTiennop() ? "Dư": (this.getDanop() == this.getTiennop() ?  "Xong" : "Thiếu"));
         });
     }
     public String getTrangthai() {
