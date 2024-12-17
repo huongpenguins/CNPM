@@ -2,23 +2,24 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #daeaf1;" styleClass="AnchorPane" stylesheets="@home.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.FamiliesManagerController">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #daeaf1;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.FamiliesManagerController">
     <children>
+        <!-- Header Section -->
         <AnchorPane prefHeight="26.0" prefWidth="1000.0" style="-fx-background-color: #6c7071;" styleClass="AnchorPane1" stylesheets="@home.css">
             <children>
                 <Button fx:id="menu" mnemonicParsing="false" onAction="#menuClick" prefHeight="49.0" prefWidth="51.0" styleClass="button1" stylesheets="@home.css" />
                 <Button fx:id="signout" contentDisplay="CENTER" layoutX="949.0" mnemonicParsing="false" onAction="#signout" prefHeight="49.0" prefWidth="51.0" styleClass="signout" stylesheets="@home.css" />
-                <Label layoutX="385.0" layoutY="-1.0" prefHeight="49.0" prefWidth="264.0" text="Quản lí hộ gia đình" textFill="#0b0b0b">
+                <Label layoutX="385.0" layoutY="-1.0" prefHeight="49.0" prefWidth="264.0" text="Quản lí dân cư" textFill="#0b0b0b">
                     <font>
                         <Font name="Arial" size="25.0" />
                     </font>
@@ -26,6 +27,8 @@
                 <Button fx:id="account" layoutX="890.0" mnemonicParsing="false" onAction="#switchToAccount" prefHeight="49.0" prefWidth="51.0" styleClass="account" stylesheets="@home.css" />
             </children>
         </AnchorPane>
+
+        <!-- Sidebar Section -->
         <VBox id="sidebar" fx:id="sidebar" alignment="CENTER" layoutX="-200.0" layoutY="49.0" prefHeight="553.0" prefWidth="200.0" spacing="35.0" styleClass="sidebar" stylesheets="@home.css" AnchorPane.topAnchor="49.0">
             <children>
                 <ImageView fitHeight="140.0" fitWidth="112.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
@@ -75,23 +78,41 @@
             </children>
         </VBox>
 
-        <!-- Table Section -->
-        <TableView fx:id="tableHouseholds" layoutX="20.0" layoutY="80.0" prefHeight="400.0" prefWidth="750.0">
-            <columns>
-                <TableColumn fx:id="colHouseholdId" prefWidth="200.0" text="Mã hộ khẩu" />
-                <TableColumn fx:id="colHouseholdName" prefWidth="300.0" text="Tên chủ hộ" />
-                <TableColumn fx:id="colAddress" prefWidth="250.0" text="Địa chỉ" />
-            </columns>
-        </TableView>
+        <!-- Search Section -->
+        <TextField fx:id="txtSearch" layoutX="20.0" layoutY="80.0" prefHeight="30.0" prefWidth="400.0" promptText="Tìm kiếm hộ gia đình (Mã Hộ Gia Đình hoặc Tên Chủ Hộ)" />
+        <Button fx:id="btnSearch" layoutX="430.0" layoutY="80.0" onAction="#searchHouseholds" prefHeight="30.0" prefWidth="100.0" text="Tìm kiếm" />
+
+        <!-- Table Section wrapped in ScrollPane -->
+        <ScrollPane layoutX="20.0" layoutY="130.0" prefHeight="400.0" prefWidth="750.0" hbarPolicy="ALWAYS" vbarPolicy="AS_NEEDED">
+            <content>
+                <TableView fx:id="tableHouseholds" prefHeight="400.0" prefWidth="1100.0">
+                    <columns>
+                        <!-- Mã Hộ Gia Đình -->
+                        <TableColumn fx:id="colHouseholdId" prefWidth="150.0" text="Mã Hộ Gia Đình" />
+                        <!-- Mã Căn Hộ -->
+                        <TableColumn fx:id="colApartmentId" prefWidth="150.0" text="Mã Căn Hộ" />
+                        <!-- Mã Nhân Khẩu -->
+                        <TableColumn fx:id="colResidentId" prefWidth="150.0" text="Mã Nhân Khẩu" />
+                        <!-- Mã Xe -->
+                        <TableColumn fx:id="colVehicleId" prefWidth="150.0" text="Mã Xe" />
+                        <!-- Ngày Cấp -->
+                        <TableColumn fx:id="colIssueDate" prefWidth="150.0" text="Ngày Cấp" />
+                        <!-- Tên Chủ Hộ -->
+                        <TableColumn fx:id="colOwnerName" prefWidth="200.0" text="Tên Chủ Hộ" />
+                        <!-- Số Điện Thoại -->
+                        <TableColumn fx:id="colPhoneNumber" prefWidth="150.0" text="Số Điện Thoại" />
+                    </columns>
+                </TableView>
+            </content>
+        </ScrollPane>
 
         <!-- Action Buttons -->
-        <AnchorPane layoutX="780.0" layoutY="80.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5; -fx-border-width: 1.0;">
+        <AnchorPane layoutX="780.0" layoutY="130.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;">
             <children>
-                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Thêm hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css" />
-                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Sửa hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css" />
-                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Xóa hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css" />
-                <Button fx:id="btnViewDetails" layoutX="20.0" layoutY="240.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Xem chi tiết" styleClass="button2" stylesheets="@manager/home2.css" />
-                <Button fx:id="btnSearch" layoutX="20.0" layoutY="310.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Tìm kiếm" styleClass="button2" stylesheets="@manager/home2.css" />
+                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" onAction="#addHousehold" prefHeight="50.0" prefWidth="160.0" text="Thêm hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css" />
+                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" onAction="#editHousehold" prefHeight="50.0" prefWidth="160.0" text="Sửa hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css"/>
+                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" onAction="#deleteHousehold" prefHeight="50.0" prefWidth="160.0" text="Xóa hộ khẩu" styleClass="button2" stylesheets="@manager/home2.css"/>
+                <Button fx:id="btnViewDetails" layoutX="20.0" layoutY="240.0" onAction="#viewHouseholdDetails" prefHeight="50.0" prefWidth="160.0" text="Xem chi tiết" styleClass="button2" stylesheets="@manager/home2.css"/>
             </children>
         </AnchorPane>
 
