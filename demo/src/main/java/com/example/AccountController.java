@@ -4,15 +4,12 @@ import java.io.IOException;
 
 import com.example.login.AccountManager;
 import com.example.login.ChangePassword;
-import com.example.login.LoginPage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class AccountController {
@@ -75,7 +72,7 @@ public class AccountController {
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
-        App.setRoot("khoanthu");
+        App.setRoot("fee");
     }
     @FXML
     private void switchToCanHo() throws IOException {
@@ -87,7 +84,7 @@ public class AccountController {
     }
     @FXML
     private void switchToTamVang() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("tamvang");
     }
     @FXML 
     private void switchToSignIn(){

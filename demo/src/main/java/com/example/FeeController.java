@@ -1,22 +1,16 @@
 package com.example;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Predicate;
-
-import javax.security.auth.callback.Callback;
+import com.example.Entities.KhoanThu;
 import javafx.scene.control.TableCell;
-import Entities.KhoanThu;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,73 +21,80 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Pagination;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 public class FeeController {
-    int pageIndex;
-    final int ROW_PER_PAGE = 10;
+
     ResultSet resultSet;
     // noi luu tru data
     ObservableList<KhoanThu> data = FXCollections.observableArrayList(
-        new KhoanThu("KT01", "Học phí", "Giáo dục", LocalDateTime.of(2024, 1, 1, 8, 0).toLocalDate(), LocalDateTime.of(2024, 2, 28, 23, 59).toLocalDate(), "Học kỳ 1"),
-        new KhoanThu("KT02", "Tiền điện", "Sinh hoạt", LocalDateTime.of(2024, 12, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 31, 23, 59).toLocalDate(), "Tháng 12"),
-        new KhoanThu("KT03", "Tiền nước", "Sinh hoạt", LocalDateTime.of(2024, 12, 5, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 25, 23, 59).toLocalDate(), "Tháng 12"),
-        new KhoanThu("KT04", "Tiền thuê nhà", "Sinh hoạt", LocalDateTime.of(2024, 1, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 1, 31, 23, 59).toLocalDate(), "Tháng 1")
+        new KhoanThu("KT01", "Học phí", "Giáo dục", LocalDateTime.of(2024, 1, 1, 8, 0).toLocalDate(), LocalDateTime.of(2024, 2, 28, 23, 59).toLocalDate(), 10000),
+        new KhoanThu("KT02", "Tiền điện", "Sinh hoạt", LocalDateTime.of(2024, 12, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 31, 23, 59).toLocalDate(), 20000),
+        new KhoanThu("KT03", "Tiền nước", "Sinh hoạt", LocalDateTime.of(2024, 12, 5, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 25, 23, 59).toLocalDate(), 30000),
+        new KhoanThu("KT04", "Tiền thuê nhà", "Sinh hoạt", LocalDateTime.of(2024, 1, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 1, 31, 23, 59).toLocalDate(), 40000)
         );
 
     @FXML
     VBox sidebar;
     @FXML
-    Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu,add;
+    Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu,apply,remove;
     @FXML
-    TextField search;
-    @FXML
-    Pagination pagination;
+    TextField search,text_ten,text_loai,text_ghichu,topage;
     @FXML
     TableView<KhoanThu> table;
     @FXML 
-    TableColumn<KhoanThu,String> id,ten,loai, ghichu;
+    TableColumn<KhoanThu,String> id;
+    @FXML 
+    TableColumn<KhoanThu,String> ten;
+    @FXML 
+    TableColumn<KhoanThu,String> loai;
+    @FXML
+    TableColumn<KhoanThu,Integer> ghichu;
     @FXML 
     TableColumn<KhoanThu,LocalDate> batdau,hannop;
     @FXML
     TableColumn<KhoanThu,Void> chinhsua,chitiet,xoa;
+    @FXML
+    AnchorPane filterbar;
+    @FXML
+    DatePicker tungay,denngay;
+
+    //IntegerProperty pageCount = new SimpleIntegerProperty();
     
     public void initialize(){
         table.setEditable(false);
+        
+       
         // lien ket cot voi thuoc tinh trong KhoanThu
         id.setCellValueFactory(new PropertyValueFactory<KhoanThu,String>("id"));
         ten.setCellValueFactory(new PropertyValueFactory<KhoanThu,String>("ten"));
         loai.setCellValueFactory(new PropertyValueFactory<KhoanThu,String>("loai"));
-        ghichu.setCellValueFactory(new PropertyValueFactory<KhoanThu,String>("ghichu"));
+        ghichu.setCellValueFactory(new PropertyValueFactory<KhoanThu,Integer>("ghichu"));
         batdau.setCellValueFactory(new PropertyValueFactory<KhoanThu,LocalDate>("batdau"));
         hannop.setCellValueFactory(new PropertyValueFactory<KhoanThu,LocalDate>("hannop"));
-       
-        // them Dl vao bang
+
+
         table.setItems(data);
         
-        // them button vao cot
+        // them button chinh sua vao cot
         chinhsua.setCellFactory(col -> new TableCell<KhoanThu, Void>() {
             private final Button btn = new Button("Sửa");
 
             {   
+                
                 btn.setOnAction(event->{
 
-                table.setEditable(true);
-                table.setOnKeyPressed(keyevent -> {
-                    if (keyevent.getCode() == KeyCode.ENTER) {
-                        table.setEditable(false);
-                    }
-
-                });
+               table.setEditable(true);
+                
                 //chinh sua ten
                 ten.setCellFactory(TextFieldTableCell.forTableColumn());
                 ten.setOnEditCommit(
@@ -123,11 +124,29 @@ public class FeeController {
 
                 );
 
-                ghichu.setCellFactory(TextFieldTableCell.forTableColumn());
+                ghichu.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
+                    @Override
+                    public String toString(Integer ghichu){
+                        return ghichu.toString();
+                    }
+                    @Override
+                    public Integer fromString(String string){
+                        Integer intGhichu = null;
+                        try {
+                            intGhichu = Integer.parseInt(string);
+                          
+                        } catch (Exception e) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR, "Nhập sai số tiền");
+                            alert.showAndWait();
+                        } 
+                         return intGhichu;
+                    }
+                       
+                }));
                 ghichu.setOnEditCommit(
-                    new EventHandler<CellEditEvent<KhoanThu, String>>() {
+                    new EventHandler<CellEditEvent<KhoanThu, Integer>>() {
                         @Override
-                        public void handle(CellEditEvent<KhoanThu, String> t) {
+                        public void handle(CellEditEvent<KhoanThu, Integer> t) {
                             ((KhoanThu) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                                 ).setGhichu(t.getNewValue());
@@ -145,7 +164,7 @@ public class FeeController {
                     }
                     @Override
                     public LocalDate fromString(String string){
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd");
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                         LocalDate date = LocalDate.parse(string, formatter);
                         if(date==null){
                         Alert alert = new Alert(Alert.AlertType.ERROR, "Định dạng ngày không hợp lệ! Vui lòng nhập theo định dạng yyyy-MM-dd.");
@@ -174,12 +193,11 @@ public class FeeController {
                     }
                     @Override
                     public LocalDate fromString(String string){
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd");
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                         LocalDate date = LocalDate.parse(string, formatter);
                         if(date==null){
                         Alert alert = new Alert(Alert.AlertType.ERROR, "Định dạng ngày không hợp lệ! Vui lòng nhập theo định dạng yyyy-MM-dd.");
                         alert.showAndWait();
-                        
                         }
                         return date;
                     }
@@ -198,11 +216,16 @@ public class FeeController {
                 );
                 });
                 
+                table.setOnKeyPressed(keyevent -> {
+                    if (keyevent.getCode() == KeyCode.ENTER) {
+                       table.setEditable(false);
+                    }
 
+                });
                
          }
             
-
+         
             @Override
             public void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -212,6 +235,7 @@ public class FeeController {
                     setGraphic(btn);
                 }
             }
+            
         });
         
         //Them button vao xoa
@@ -220,8 +244,9 @@ public class FeeController {
 
             {
               btn1.setOnAction(event->{
-                    int curIndex = getTableRow().getIndex();
-                    table.getItems().remove(curIndex);
+                
+                    KhoanThu curItem = getTableRow().getItem();
+                    data.remove(curItem);
 
                     // Xoa trong csdl
 
@@ -246,7 +271,14 @@ public class FeeController {
             private final Button btn2 = new Button("Chi tiết");
 
             {
-                
+                btn2.setOnAction(event->{
+                    try {
+                        showChiTiet(getTableView().getItems().get(getIndex()));
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             
             }
 
@@ -271,6 +303,7 @@ public class FeeController {
          
 
     }
+    
     FilteredList<KhoanThu> filter = new FilteredList<>(data,p->true);
     @FXML
     private void search(){
@@ -278,16 +311,23 @@ public class FeeController {
         // cap nhat observablelist data de hien thi DL
 
         Predicate<KhoanThu> searchFilter = khoanThu ->{
+            if(khoanThu.getId().toLowerCase().contains(l.toLowerCase()))
+            return true;
             if(khoanThu.getTen().toLowerCase().contains(l.toLowerCase()))
             return true;
             if(khoanThu.getLoai().toLowerCase().contains(l.toLowerCase()))
-            return true;
-            if(khoanThu.getGhichu().toLowerCase().contains(l.toLowerCase()))
             return true;
             if(khoanThu.getBatdau().toString().toLowerCase().contains(l.toLowerCase()))
             return true;
             if(khoanThu.getHannop().toString().toLowerCase().contains(l.toLowerCase()))
             return true;
+            try {
+                if(khoanThu.getGhichu()==Integer.parseInt(l))
+            return true;
+            } catch (Exception e) {
+                return false;
+            }
+            
 
             return false;
         };
@@ -301,11 +341,74 @@ public class FeeController {
     private void add_fee() throws IOException{
         Stage subStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("add_fee.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 200, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 500, 600);
+        AddFeeController addFeeController = fxmlLoader.getController();
         subStage.setResizable(false);
         subStage.setScene(scene);
         subStage.setTitle("Thêm phí thu");
         subStage.show();
+        subStage.setOnHiding(event->{
+            
+            if(addFeeController.newKhoanThu==null) return;
+            else{
+                data.add(addFeeController.newKhoanThu);
+                 // Them vao CSDL
+
+
+            }
+        });
+        
+    }
+    private void showChiTiet(KhoanThu k) throws IOException{
+        Stage subStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("CTkhoanthu.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 600); 
+        CTKhoanThuController ctKThuController = fxmlLoader.getController();
+        ctKThuController.maKT = k.getId();
+        ctKThuController.tungay = k.getBatdau();
+        ctKThuController.denngay = k.getHannop();
+        subStage.setResizable(false);
+        subStage.setScene(scene);
+        subStage.setTitle(k.getTen());
+        subStage.show();
+    }
+    @FXML 
+    private void applyFilter(){
+        Predicate<KhoanThu> pFilter = khoanThu ->{
+            boolean chk_ten = text_ten.getText().isEmpty()||khoanThu.getTen().toLowerCase().contains(text_ten.getText().toLowerCase());
+            boolean chk_loai=text_loai.getText().isEmpty()||khoanThu.getLoai().toLowerCase().contains(text_loai.getText().toLowerCase());
+            boolean chk_ghichu = text_ghichu.getText().isEmpty()||khoanThu.getGhichu()==Integer.parseInt(text_ghichu.getText());
+            boolean chk_tungay = tungay.getValue()==null||(tungay.getValue()!=null&&tungay.getValue().isBefore(batdau.getCellData(khoanThu)));
+            boolean chk_dennhay = denngay.getValue()==null||(denngay.getValue()!=null&&denngay.getValue().isAfter(hannop.getCellData(khoanThu)));
+            
+            return chk_ten&&chk_loai&&chk_ghichu&&chk_dennhay&&chk_tungay;
+        };
+
+        filter.setPredicate(pFilter);
+        table.setItems(filter);
+        filterbar.setLayoutY(-131);
+    }
+    @FXML
+    private void Remove(){
+        text_ten.clear();
+        text_ghichu.clear();
+        text_loai.clear();
+        tungay.setValue(null);
+        denngay.setValue(null);
+        Predicate<KhoanThu> remove = khoanThu ->true;
+        filter.setPredicate(remove);
+        table.setItems(filter);
+        filterbar.setLayoutY(-131);
+    }
+
+    @FXML 
+    private void showFilterBar(){
+        if(filterbar.getLayoutY()<0){
+            filterbar.setLayoutY(160);
+        }
+        else if(filterbar.getLayoutY()>=0){
+            filterbar.setLayoutY(-131);
+        }
     }
     @FXML
     private void menuClick(){
@@ -337,7 +440,7 @@ public class FeeController {
     }
     @FXML
     private void switchToDanCu() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("ResidentsManager");
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
@@ -353,7 +456,7 @@ public class FeeController {
     }
     @FXML
     private void switchToTamVang() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("tamvang");
     }
     @FXML 
     private void switchToSignIn(){
