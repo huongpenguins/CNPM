@@ -11,6 +11,11 @@ public class Admin {
     private static Connection connection_admin;
     protected connect_mysql c_mysql;
 
+    // phương thức lấy kết nối
+    public Connection getConnectionAdmin(){
+        return connection_admin;
+    }
+
     public Admin() {
         c_mysql = new connect_mysql(); // Kết nối MySQL
         connection_admin = c_mysql.getConnection();
@@ -100,10 +105,10 @@ public class Admin {
      * Vùng 2: Chức năng sửa dữ liệu
      *
      * @param tableName       Tên bảng cần sửa dữ liệu
-     * @param columnName      Tên cột cần sửa
+     * @param columnName      Tên cột cần sua
      * @param newValue        Giá trị mới nhập từ bàn phím
      * @param conditionColumn Ten cot thay the
-     * @param conditionValue  dieu kieen where
+     * @param conditionValue  dieu kien where
      * @return true nếu sửa thành công, false nếu thất bại
      */
     // Kiểm tra quyền admin
