@@ -19,7 +19,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 public class LoginPage extends Application {
-    public static String Ma_nv = null;
+    public static String MaNV = null;//xác minh ta khoanrn dang dang nhap
     public static String sdt_or_email = null;
     @Override
     public void start(Stage loginStage) {
@@ -92,7 +92,7 @@ public class LoginPage extends Application {
                 pause.setOnFinished(e -> {
                     App app = new App();
                     try {
-                        Ma_nv = AccountManager.getMaNvByPhoneOrEmail(username);
+                        MaNV = AccountManager.getMaNvByPhoneOrEmail(username);
                         loginStage.close(); // Đóng trang đăng nhập
                         app.start(new Stage()); // Mở ứng dụng chính
                     } catch (IOException ex) {

@@ -76,12 +76,12 @@ public class ChangePassword extends Application {
                 // Giả lập kiểm tra mật khẩu cũ
                 boolean isOldPasswordCorrect = false; // Thay thế bằng logic thực tế
                 try {
-                    isOldPasswordCorrect = PasswordHasher.checkPassword(oldPassword, AccountManager.getPasswordByMaNv(LoginPage.Ma_nv));
+                    isOldPasswordCorrect = PasswordHasher.checkPassword(oldPassword, AccountManager.getPasswordByMaNv(LoginPage.MaNV));
                 } catch (NoSuchAlgorithmException ex) {
                     throw new RuntimeException(ex);
                 }
                 if (isOldPasswordCorrect) {
-                    AccountManager.updatePasswordByMa_nv(newPassword, LoginPage.Ma_nv);
+                    AccountManager.updatePasswordByMa_nv(newPassword, LoginPage.MaNV);
                     messageLabel.setText("Đổi mật khẩu thành công!");
                     messageLabel.setTextFill(Color.GREEN); // Success message in green
                 } else {

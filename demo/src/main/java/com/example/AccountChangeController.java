@@ -1,6 +1,8 @@
 package com.example;
 
 import java.io.IOException;
+
+import com.example.login.AccountManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -43,7 +45,7 @@ public class AccountChangeController {
         // kiem tra hoten sau khi nhap xong
         hoten.focusedProperty().addListener((ob,oldValue,newValue)->{
          
-            if(oldValue==true&&newValue==false){
+            if(oldValue == true && newValue == false){
                 
                 String l = hoten.getText();
                 System.out.println(l);
@@ -180,6 +182,8 @@ public class AccountChangeController {
         }
         else sidebar.setLayoutX(-sidebar.getWidth());
     }
+
+
 
         // đăng xuất
     @FXML 
