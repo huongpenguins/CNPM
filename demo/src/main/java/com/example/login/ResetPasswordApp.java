@@ -13,8 +13,8 @@ import java.util.Random;
 public class ResetPasswordApp extends Application {
 
     private String verificationCode;
-    private String userEmail = AccountManager.getEmail();
-    private String userPhoneNumber = AccountManager.getPhonenumber();
+    private String current_user_phone_number = null;
+    private String current_user_email = null;
 
     @Override
     public void start(Stage primaryStage) {
@@ -36,11 +36,18 @@ public class ResetPasswordApp extends Application {
             if (input.isEmpty()) {
                 lblStatus.setText("Vui lòng nhập email hoặc số điện thoại.");
                 lblStatus.setStyle("-fx-text-fill: red;");
-            } else if (input.equals(userEmail) || input.equals(userPhoneNumber)) {
+            } else if (AccountManager.isEmailExist(input)) {
                 sendVerificationCode(input);
                 lblStatus.setText("Mã xác thực đã được gửi!");
                 lblStatus.setStyle("-fx-text-fill: green;");
                 openVerificationWindow(primaryStage);
+                current_user_email = input;
+            } else if ( AccountManager.isPhoneNumberExist(input)) {
+                sendVerificationCode(input);
+                lblStatus.setText("Mã xác thực đã được gửi!");
+                lblStatus.setStyle("-fx-text-fill: green;");
+                openVerificationWindow(primaryStage);
+                current_user_phone_number = input;
             } else {
                 lblStatus.setText("Email hoặc số điện thoại không đúng.");
                 lblStatus.setStyle("-fx-text-fill: red;");
@@ -145,7 +152,8 @@ public class ResetPasswordApp extends Application {
                 lblStatus.setStyle("-fx-text-fill: red;");
             } else {
                 lblStatus.setText("Đặt lại mật khẩu thành công!");
-                AccountManager.setPassword(newPassword);
+                if(current_user_phone_number == null ) AccountManager.updatePasswordByEmail(newPassword, current_user_email);
+                else AccountManager.updatePasswordByPhone(newPassword, current_user_phone_number);
                 lblStatus.setStyle("-fx-text-fill: green;");
                 resetPasswordStage.close();
             }
