@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="AnchorPane" stylesheets="@home.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.FeeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="AnchorPane" stylesheets="@home.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.TamVangController">
    <children>
       <AnchorPane prefHeight="38.0" prefWidth="1001.0" style="-fx-background-color: #6c7071;" styleClass="AnchorPane1" stylesheets="@home.css">
          <children>
@@ -48,7 +48,7 @@
             <TableColumn fx:id="lydo" prefWidth="195.3333740234375" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Lý do" />
             <TableColumn fx:id="ngayvang" prefWidth="142.0" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Ngày vắng" />
             <TableColumn prefWidth="56.0" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" fx:id="xoa" />
-            <TableColumn fx:id="sua" prefWidth="66.6666259765625" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
+            <TableColumn fx:id="chinhsua" prefWidth="66.6666259765625" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
         </columns>
       </TableView>
       <Button fx:id="filter" layoutX="148.0" layoutY="109.0" mnemonicParsing="false" onAction="#showFilterBar" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">
@@ -61,7 +61,7 @@
             <Image url="@picture/Filter.png" />
          </image>
       </ImageView>
-      <Button fx:id="add" layoutX="39.0" layoutY="108.0" mnemonicParsing="false" onAction="#add_fee" prefHeight="38.0" prefWidth="91.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="     Add">
+      <Button fx:id="add" layoutX="39.0" layoutY="108.0" mnemonicParsing="false" onAction="#add_tamvang" prefHeight="38.0" prefWidth="91.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="     Add">
          <font>
             <Font name="Arial Bold" size="15.0" />
          </font>

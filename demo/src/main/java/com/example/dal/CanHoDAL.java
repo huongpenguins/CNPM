@@ -4,10 +4,10 @@ import com.example.Admin;
 
 import java.sql.SQLException;
 
-public class CanHoDal extends Admin {
+public class CanHoDAL extends Admin {
 
     // Constructor should not have a return type and should match the class name
-    public CanHoDal() {
+    public CanHoDAL() {
         super(); // Call the constructor of the parent class (Admin)
     }
 

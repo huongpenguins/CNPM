@@ -70,7 +70,7 @@ public class TamVangController {
         phong.setCellValueFactory(new PropertyValueFactory<TamVang,String>("phong"));
         ten.setCellValueFactory(new PropertyValueFactory<TamVang,String>("ten"));
         lydo.setCellValueFactory(new PropertyValueFactory<TamVang,String>("lydo"));
-        phong.setCellValueFactory(new PropertyValueFactory<TamVang,String>("phong"));
+        cccd.setCellValueFactory(new PropertyValueFactory<TamVang,String>("cccd"));
         ngayvang.setCellValueFactory(new PropertyValueFactory<TamVang,LocalDate>("ngayvang"));
 
 
