@@ -29,54 +29,6 @@
                 <Button fx:id="account" layoutX="890.0" mnemonicParsing="false" onAction="#switchToAccount" prefHeight="49.0" prefWidth="51.0" styleClass="account" stylesheets="@home.css" />
             </children>
         </AnchorPane>
-        <VBox id="sidebar" fx:id="sidebar" alignment="CENTER" layoutX="-200.0" layoutY="49.0" prefHeight="553.0" prefWidth="200.0" spacing="35.0" styleClass="sidebar" stylesheets="@home.css" AnchorPane.topAnchor="49.0">
-            <children>
-                <ImageView fitHeight="140.0" fitWidth="112.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@picture/bluemoon.png" />
-                    </image>
-                </ImageView>
-                <VBox alignment="TOP_CENTER" prefHeight="397.0" prefWidth="200.0" spacing="10.0">
-                    <children>
-                        <Button fx:id="trangchu" mnemonicParsing="false" onAction="#switchToHome" prefHeight="52.0" prefWidth="180.0" style="-fx-background-color: #c5c2c2;" styleClass="sidebutton" stylesheets="@home.css" text="Trang chủ" textFill="WHITE">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="giadinh" mnemonicParsing="false" onAction="#switchToGiaDinh" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý hộ gia đình" textFill="WHITE">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="dancu" mnemonicParsing="false" onAction="#switchToDanCu" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý dân cư" textFill="WHITE">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="khoanthu" mnemonicParsing="false" onAction="#switchToKhoanThu" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý khoản thu" textFill="WHITE">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="canho" mnemonicParsing="false" onAction="#switchToCanHo" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý căn hộ" textFill="WHITE">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="tamtru" mnemonicParsing="false" onAction="#switchToTamTru" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý tạm trú" textFill="WHITE">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="tamvang" mnemonicParsing="false" onAction="#switchToTamVang" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý tạm vắng" textFill="WHITE">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Button>
-                    </children>
-                </VBox>
-            </children>
-        </VBox>
 
         <!-- Search Section -->
         <TextField fx:id="txtSearch" layoutX="20.0" layoutY="80.0" prefHeight="30.0" prefWidth="400.0" promptText="Tìm kiếm cư dân (Mã Nhân Khẩu hoặc Họ và Tên)" />
@@ -137,5 +89,54 @@
                 <Label layoutX="20.0" layoutY="15.0" text="© Chung cư BlueMoon - 2024" textFill="#6c7071" />
             </children>
         </AnchorPane>
+        <!-- Menu ben trai -->
+        <VBox id="sidebar" fx:id="sidebar" alignment="CENTER" layoutX="-200.0" layoutY="49.0" prefHeight="553.0" prefWidth="200.0" spacing="35.0" styleClass="sidebar" stylesheets="@home.css" AnchorPane.topAnchor="49.0">
+            <children>
+                <ImageView fitHeight="140.0" fitWidth="112.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@picture/bluemoon.png" />
+                    </image>
+                </ImageView>
+                <VBox alignment="TOP_CENTER" prefHeight="397.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="trangchu" mnemonicParsing="false" onAction="#switchToHome" prefHeight="52.0" prefWidth="180.0" style="-fx-background-color: #c5c2c2;" styleClass="sidebutton" stylesheets="@home.css" text="Trang chủ" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="giadinh" mnemonicParsing="false" onAction="#switchToGiaDinh" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý hộ gia đình" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="dancu" mnemonicParsing="false" onAction="#switchToDanCu" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý dân cư" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="khoanthu" mnemonicParsing="false" onAction="#switchToKhoanThu" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý khoản thu" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="canho" mnemonicParsing="false" onAction="#switchToCanHo" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý căn hộ" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="tamtru" mnemonicParsing="false" onAction="#switchToTamTru" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý tạm trú" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="tamvang" mnemonicParsing="false" onAction="#switchToTamVang" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý tạm vắng" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
     </children>
 </AnchorPane>
