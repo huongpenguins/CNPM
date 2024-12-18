@@ -24,13 +24,13 @@ public class LoginPage extends Application {
     @Override
     public void start(Stage loginStage) {
         // Nhãn tên đăng nhập
-        Label lblUsername = new Label("Tên cccd/sdt/email:");
+        Label lblUsername = new Label("Nhập sdt/email:");
         lblUsername.setTextFill(Color.DARKSLATEBLUE);
         lblUsername.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
         // Ô nhập tên đăng nhập
         TextField txtUsername = new TextField();
-        txtUsername.setPromptText("Nhập cccd/sdt/email");
+        txtUsername.setPromptText("Nhập sdt/email");
         txtUsername.setStyle("-fx-font-size: 14px; -fx-border-color: lightgray;");
 
         // Nhãn mật khẩu
@@ -101,7 +101,7 @@ public class LoginPage extends Application {
                 });
                 pause.play();
             } else {
-                lblMessage.setText("Tên đăng nhập hoặc mật khẩu không đúng.");
+                lblMessage.setText("Tên sdt/email hoặc mật khẩu không đúng.");
                 lblMessage.setTextFill(Color.RED);
             }
         });

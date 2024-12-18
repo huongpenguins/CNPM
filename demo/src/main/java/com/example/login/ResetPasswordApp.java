@@ -1,13 +1,19 @@
 package com.example.login;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javafx.concurrent.Task;
+import javafx.stage.Window;
 
+import java.util.Properties;
 import java.util.Random;
 
 public class ResetPasswordApp extends Application {
@@ -37,17 +43,11 @@ public class ResetPasswordApp extends Application {
                 lblStatus.setText("Vui lòng nhập email hoặc số điện thoại.");
                 lblStatus.setStyle("-fx-text-fill: red;");
             } else if (AccountManager.isEmailExist(input)) {
-                sendVerificationCode(input);
-                lblStatus.setText("Mã xác thực đã được gửi!");
-                lblStatus.setStyle("-fx-text-fill: green;");
-                openVerificationWindow(primaryStage);
                 current_user_email = input;
-            } else if ( AccountManager.isPhoneNumberExist(input)) {
-                sendVerificationCode(input);
-                lblStatus.setText("Mã xác thực đã được gửi!");
-                lblStatus.setStyle("-fx-text-fill: green;");
-                openVerificationWindow(primaryStage);
+                sendVerificationCode(lblStatus);
+            } else if (AccountManager.isPhoneNumberExist(input)) {
                 current_user_phone_number = input;
+                sendVerificationCode(lblStatus);
             } else {
                 lblStatus.setText("Email hoặc số điện thoại không đúng.");
                 lblStatus.setStyle("-fx-text-fill: red;");
@@ -64,13 +64,73 @@ public class ResetPasswordApp extends Application {
         primaryStage.show();
     }
 
-    private void sendVerificationCode(String input) {
+    private void sendVerificationCode(Label lblStatus) {
         Random random = new Random();
         verificationCode = String.format("%06d", random.nextInt(999999));
-        System.out.println("Mã xác thực gửi đến: " + input + " -> " + verificationCode);
+
+        // Cài đặt thông tin SMTP
+        String host = "smtp.gmail.com";
+        final String username = "phandang30122003@gmail.com";  // Địa chỉ email người gửi
+        final String password = "Dang&Phan@@@";  // Mật khẩu email người gửi
+
+        // Cài đặt thuộc tính cho session gửi mail
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+
+        // Tạo session với SMTP server
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        Task<Void> sendTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    // Tạo tin nhắn gửi đi
+                    Message message = new MimeMessage(session);
+                    message.setFrom(new InternetAddress(username));  // Email người gửi
+                    String recipient = null;
+                    if(current_user_email == null) {
+                        String Manv = AccountManager.getMaNvByPhoneOrEmail(current_user_phone_number);
+                        recipient = AccountManager.getEmailByMaNv(Manv);
+                    } else recipient = current_user_email;
+                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));  // Email người nhận
+                    message.setSubject("Mã xác thực");
+
+                    // Nội dung email
+                    String emailContent = "Mã xác thực của bạn là: " + verificationCode;
+                    message.setText(emailContent);
+
+                    // Gửi email
+                    Transport.send(message);
+
+                    // Cập nhật giao diện khi gửi thành công
+                    Platform.runLater(() -> {
+                        lblStatus.setText("Mã xác thực đã được gửi!");
+                        lblStatus.setStyle("-fx-text-fill: green;");
+                        openVerificationWindow(lblStatus.getScene().getWindow());
+                    });
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                    Platform.runLater(() -> {
+                        lblStatus.setText("Không thể gửi mã xác thực. Vui lòng thử lại.");
+                        lblStatus.setStyle("-fx-text-fill: red;");
+                    });
+                }
+                return null;
+            }
+        };
+
+        new Thread(sendTask).start();
     }
 
-    private void openVerificationWindow(Stage parentStage) {
+    private void openVerificationWindow(Window parentStage) {
         Stage verificationStage = new Stage();
         verificationStage.setTitle("Xác thực mã");
         verificationStage.initModality(Modality.APPLICATION_MODAL);
@@ -114,7 +174,7 @@ public class ResetPasswordApp extends Application {
         verificationStage.show();
     }
 
-    private void openResetPasswordWindow(Stage parentStage) {
+    private void openResetPasswordWindow(Window parentStage) {
         Stage resetPasswordStage = new Stage();
         resetPasswordStage.setTitle("Đặt lại mật khẩu");
         resetPasswordStage.initModality(Modality.APPLICATION_MODAL);
@@ -152,8 +212,11 @@ public class ResetPasswordApp extends Application {
                 lblStatus.setStyle("-fx-text-fill: red;");
             } else {
                 lblStatus.setText("Đặt lại mật khẩu thành công!");
-                if(current_user_phone_number == null ) AccountManager.updatePasswordByEmail(newPassword, current_user_email);
-                else AccountManager.updatePasswordByPhone(newPassword, current_user_phone_number);
+                if (current_user_email != null) {
+                    AccountManager.updatePasswordByEmail(newPassword, current_user_email);
+                } else {
+                    AccountManager.updatePasswordByPhone(newPassword, current_user_phone_number);
+                }
                 lblStatus.setStyle("-fx-text-fill: green;");
                 resetPasswordStage.close();
             }
