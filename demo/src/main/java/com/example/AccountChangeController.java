@@ -160,7 +160,7 @@ public class AccountChangeController {
                 checkcccd.getText().isEmpty() && checksdt.getText().isEmpty())
                 // luu vao csdl
                     gender = male.isSelected() ? "Nam" : female.isSelected() ? "Nữ" : null;
-                    AccountManager.updateAllInfo(hoten.getText(), cccd.getText(), sdt.getText(), email.getText(), diachi.getText(), gender, chucvu.getValue().toString(), ngsinh.getValue().toString());
+                    AccountManager.updateAllInfo(LoginPage.MaNV ,hoten.getText(), cccd.getText(), sdt.getText(), email.getText(), diachi.getText(), gender, chucvu.getValue().toString(), ngsinh.getValue().toString());
                 switchToAccount();
             }
     }

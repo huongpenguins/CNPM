@@ -271,7 +271,7 @@ public class AccountManager {
     }
 
     // Phương thức cập nhật thông tin của nhân viên dựa trên mã nhân viên
-    public static void updateAllInfo(String Ma_nv, String newFullName, String newCCCD, String newPhoneNumber,
+    public static void updateAllInfo(String MaNV, String newFullName, String newCCCD, String newPhoneNumber,
                                      String newEmail, String newAddress, String newGender,
                                      String newPosition, String newBirthDate) {
         try (Connection conn = new connect_mysql().getConnection()) {
@@ -288,14 +288,14 @@ public class AccountManager {
                     stmt.setString(6, newGender);
                     stmt.setString(7, newPosition);
                     stmt.setDate(8, Date.valueOf(newBirthDate)); // Định dạng "yyyy-MM-dd"
-                    stmt.setString(9, Ma_nv);  // Sử dụng mã nhân viên làm điều kiện WHERE
+                    stmt.setString(9, MaNV);  // Sử dụng mã nhân viên làm điều kiện WHERE
 
                     int rowsUpdated = stmt.executeUpdate();
                     if (rowsUpdated > 0) {
                         // In thông báo thành công
-                        System.out.println("Thông tin của nhân viên với mã " + Ma_nv + " đã được cập nhật thành công.");
+                        System.out.println("Thông tin của nhân viên với mã " + MaNV + " đã được cập nhật thành công.");
                     } else {
-                        System.out.println("Không tìm thấy nhân viên với mã nhân viên " + Ma_nv);
+                        System.out.println("Không tìm thấy nhân viên với mã nhân viên " + MaNV);
                     }
                 }
             }
