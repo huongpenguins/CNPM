@@ -3,6 +3,7 @@ package com.example;
 import java.io.IOException;
 
 import com.example.login.AccountManager;
+import com.example.login.LoginPage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -17,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 public class AccountChangeController {
-   
+
     @FXML
     VBox sidebar;
     @FXML
@@ -27,16 +28,19 @@ public class AccountChangeController {
     @FXML
     CheckBox male,female;
     @FXML
-    ImageView khunganh; 
+    ImageView khunganh;
     @FXML
     ComboBox<String> chucvu;
-    @FXML 
+    @FXML
     Label checkhoten,checkemail,checkcccd,checksdt;
     @FXML
     DatePicker ngsinh;
-    
+    @FXML
+    TextField manv;
+
     // khoi tao thanh phanh trong giao dien
     public void initialize(){
+        manv.setText(LoginPage.MaNV);
          // them lua chon vao chuc vu
         chucvu.getItems().add("Kế toán");
         chucvu.getItems().add("Quản lý");
@@ -44,9 +48,9 @@ public class AccountChangeController {
 
         // kiem tra hoten sau khi nhap xong
         hoten.focusedProperty().addListener((ob,oldValue,newValue)->{
-         
+
             if(oldValue == true && newValue == false){
-                
+
                 String l = hoten.getText();
                 System.out.println(l);
                 if(l.length()==0) checkhoten.setText("Chưa nhập");
@@ -58,21 +62,21 @@ public class AccountChangeController {
                             return;
                             }
                         }
-                        
+
                     }
                     checkhoten.setText("");
                 }
             }
 
         });
-        
+
         // kiem tra cccd
         cccd.focusedProperty().addListener((ob,oldValue,newValue)->{
-         
+
             if(oldValue==true&&newValue==false){
-                
+
                 String l = cccd.getText();
-                
+
                 if(l.length()==0) checkcccd.setText("Chưa nhập");
                 else{
                     if(l.length()!=12) {
@@ -88,7 +92,7 @@ public class AccountChangeController {
                             checkcccd.setText("Nhập sai");
                             return;
                         }
-                        
+
                     }
                     checkcccd.setText("");
                 }
@@ -98,11 +102,11 @@ public class AccountChangeController {
 
         // kiem tra sdt
         sdt.focusedProperty().addListener((ob,oldValue,newValue)->{
-         
+
             if(oldValue==true&&newValue==false){
-                
+
                 String l = sdt.getText();
-                
+
                 if(l.length()==0) checksdt.setText("Chưa nhập");
                 else{
                     if(l.length()!=10) {
@@ -118,7 +122,7 @@ public class AccountChangeController {
                             checksdt.setText("Nhập sai");
                             return;
                         }
-                        
+
                     }
                     checksdt.setText("");
                 }
@@ -128,11 +132,11 @@ public class AccountChangeController {
 
             // kiem tra email
         email.focusedProperty().addListener((ob,oldValue,newValue)->{
-         
+
             if(oldValue==true&&newValue==false){
-                
+
                 String l = email.getText();
-                
+
                 if(l.length()==0) checkemail.setText("Chưa nhập");
                 else{
                     if(!l.contains("@gmail.com")){
@@ -144,23 +148,23 @@ public class AccountChangeController {
             }
 
         });
-
-        
-        
     }
+    private String gender;
 
-   // kiem tra khi an xac nhan va chuyen ve man hinh thong tin account
+    // kiem tra khi an xac nhan va chuyen ve man hinh thong tin account
     @FXML
     private void xacNhan() throws IOException{
-        if (!hoten.getText().isEmpty() && !sdt.getText().isEmpty() && !cccd.getText().isEmpty() && 
+        if (!hoten.getText().isEmpty() && !sdt.getText().isEmpty() && !cccd.getText().isEmpty() &&
         !diachi.getText().isEmpty() && chucvu.getValue() != null && ngsinh.getValue() != null){
-                if(checkhoten.getText().isEmpty() && checkemail.getText().isEmpty() && 
+                if(checkhoten.getText().isEmpty() && checkemail.getText().isEmpty() &&
                 checkcccd.getText().isEmpty() && checksdt.getText().isEmpty())
-                
+                // luu vao csdl
+                    gender = male.isSelected() ? "Nam" : female.isSelected() ? "Nữ" : null;
+                    AccountManager.updateAllInfo(hoten.getText(), cccd.getText(), sdt.getText(), email.getText(), diachi.getText(), gender, chucvu.getValue().toString(), ngsinh.getValue().toString());
                 switchToAccount();
             }
-        
     }
+
 
     // bỏ chọn ô nữ khi ấn chọn nam
     @FXML
@@ -169,7 +173,7 @@ public class AccountChangeController {
     }
 
     // bỏ chọn ô nam khi ấn chọn nữ
-    @FXML 
+    @FXML
     private void checkFemale(){
         if(male.isSelected()) male.setSelected(false);
     }
@@ -186,7 +190,7 @@ public class AccountChangeController {
 
 
         // đăng xuất
-    @FXML 
+    @FXML
     private void signout(){
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Đăng xuất");
@@ -229,10 +233,10 @@ public class AccountChangeController {
     private void switchToTamVang() throws IOException {
         App.setRoot("secondary");
     }
-    @FXML 
+    @FXML
     private void switchToSignIn(){
-        
+
     }
 
-    
+
 }

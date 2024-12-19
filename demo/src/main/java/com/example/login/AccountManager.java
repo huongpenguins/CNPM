@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class AccountManager {
 
-    private static String Ma_nv = "admin";  // Mã nhân viên (
+    private static String Ma_nv = LoginPage.MaNV;  // Mã nhân viên (
     private static String password = "password";
     private static String email = "phanlehaidanghsht@gmail.com";
     private static String phonenumber = "123456789";
@@ -286,7 +286,7 @@ public class AccountManager {
     public static void updateAllInfo(String newFullName, String newCCCD, String newPhoneNumber, String newEmail, String newAddress, String newGender, String newPosition, String newBirthDate) {
         try (Connection conn = new connect_mysql().getConnection()) {
             if (conn != null) {
-                String query = "UPDATE admin_account SET HoTen = ?, cccd = ?, sdt = ?, email = ?, DiaChi = ?, GioiTinh = ?, ChucVu = ?, NgaySinh = ?, Password = ? WHERE Ma_nv = ?";
+                String query = "UPDATE admin_account SET HoTen = ?, cccd = ?, sdt = ?, email = ?, DiaChi = ?, GioiTinh = ?, ChucVu = ?, NgaySinh = ? WHERE Ma_nv = ?";
                 try (PreparedStatement stmt = conn.prepareStatement(query)) {
                     // Thiết lập giá trị cho các tham số trong câu lệnh SQL
                     stmt.setString(1, newFullName);
@@ -296,8 +296,8 @@ public class AccountManager {
                     stmt.setString(5, newAddress);
                     stmt.setString(6, newGender);
                     stmt.setString(7, newPosition);
-                    stmt.setString(8, newBirthDate);
-                    stmt.setString(10, Ma_nv);  // Sử dụng MaNV (mã nhân viên) làm điều kiện WHERE
+                    stmt.setDate(8, Date.valueOf(newBirthDate));
+                    stmt.setString(9, Ma_nv);  // Sử dụng MaNV (mã nhân viên) làm điều kiện WHERE
 
                     int rowsUpdated = stmt.executeUpdate();
                     if (rowsUpdated > 0) {
