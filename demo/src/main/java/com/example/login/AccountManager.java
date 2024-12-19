@@ -10,18 +10,6 @@ import java.sql.SQLException;
 
 public class AccountManager {
 
-    private static String Ma_nv = LoginPage.MaNV;  // Mã nhân viên (
-    private static String password = "password";
-    private static String email = "phanlehaidanghsht@gmail.com";
-    private static String phonenumber = "123456789";
-    private static String fullName = "Phan Dang";
-    private static String cccd = "1234567890123";
-    private static String address = "123 Street";
-    private static String gender = "Male";
-    private static String position = "Manager";
-    private static String birthDate = "1990-01-01";  // Ngày sinh định dạng yyyy-mm-dd
-
-
     // Phương thức kiểm tra sự tồn tại của nhân viên theo số điện thoại
     public static boolean isPhoneNumberExist(String phoneNumber) {
         try (Connection conn = new connect_mysql().getConnection()) {
@@ -282,11 +270,14 @@ public class AccountManager {
         return null;  // Trả về null nếu không tìm thấy
     }
 
-    // Phương thức cập nhật tất cả thông tin của nhân viên
-    public static void updateAllInfo(String newFullName, String newCCCD, String newPhoneNumber, String newEmail, String newAddress, String newGender, String newPosition, String newBirthDate) {
+    // Phương thức cập nhật thông tin của nhân viên dựa trên mã nhân viên
+    public static void updateAllInfo(String Ma_nv, String newFullName, String newCCCD, String newPhoneNumber,
+                                     String newEmail, String newAddress, String newGender,
+                                     String newPosition, String newBirthDate) {
         try (Connection conn = new connect_mysql().getConnection()) {
             if (conn != null) {
-                String query = "UPDATE admin_account SET HoTen = ?, cccd = ?, sdt = ?, email = ?, DiaChi = ?, GioiTinh = ?, ChucVu = ?, NgaySinh = ? WHERE Ma_nv = ?";
+                String query = "UPDATE admin_account SET HoTen = ?, cccd = ?, sdt = ?, email = ?, " +
+                        "DiaChi = ?, GioiTinh = ?, ChucVu = ?, NgaySinh = ? WHERE Ma_nv = ?";
                 try (PreparedStatement stmt = conn.prepareStatement(query)) {
                     // Thiết lập giá trị cho các tham số trong câu lệnh SQL
                     stmt.setString(1, newFullName);
@@ -296,22 +287,13 @@ public class AccountManager {
                     stmt.setString(5, newAddress);
                     stmt.setString(6, newGender);
                     stmt.setString(7, newPosition);
-                    stmt.setDate(8, Date.valueOf(newBirthDate));
-                    stmt.setString(9, Ma_nv);  // Sử dụng MaNV (mã nhân viên) làm điều kiện WHERE
+                    stmt.setDate(8, Date.valueOf(newBirthDate)); // Định dạng "yyyy-MM-dd"
+                    stmt.setString(9, Ma_nv);  // Sử dụng mã nhân viên làm điều kiện WHERE
 
                     int rowsUpdated = stmt.executeUpdate();
                     if (rowsUpdated > 0) {
-                        // Cập nhật lại các thuộc tính của AccountManager sau khi thay đổi
-                        fullName = newFullName;
-                        cccd = newCCCD;
-                        phonenumber = newPhoneNumber;
-                        email = newEmail;
-                        address = newAddress;
-                        gender = newGender;
-                        position = newPosition;
-                        birthDate = newBirthDate;
-
-                        System.out.println("Thông tin của nhân viên đã được cập nhật thành công.");
+                        // In thông báo thành công
+                        System.out.println("Thông tin của nhân viên với mã " + Ma_nv + " đã được cập nhật thành công.");
                     } else {
                         System.out.println("Không tìm thấy nhân viên với mã nhân viên " + Ma_nv);
                     }
@@ -321,6 +303,7 @@ public class AccountManager {
             System.err.println("Lỗi khi cập nhật thông tin: " + e.getMessage());
         }
     }
+
 
     // Phương thức cập nhật tên nhân viên
     public static void updateFullName(String newFullName, String MaNV) {
@@ -490,18 +473,18 @@ public class AccountManager {
         }
     }
     // Phương thức cập nhật mật khẩu của nhân viên theo Ma_nv
-    public static void updatePasswordByMa_nv( String newPassword, String Manv) {
+    public static void updatePasswordByMa_nv( String newPassword, String MaNV) {
         try (Connection conn = new connect_mysql().getConnection()) {
             if (conn != null) {
                 String query = "UPDATE admin_account SET Password = ? WHERE Ma_nv = ?";
                 try (PreparedStatement stmt = conn.prepareStatement(query)) {
                     stmt.setString(1, PasswordHasher.hashPassword(newPassword));
-                    stmt.setString(2, Manv);
+                    stmt.setString(2, MaNV);
                     int rowsUpdated = stmt.executeUpdate();
                     if (rowsUpdated > 0) {
                         System.out.println("Mật khẩu của nhân viên đã được cập nhật thành công.");
                     } else {
-                        System.out.println("Không tìm thấy nhân viên với email " + Ma_nv);
+                        System.out.println("Không tìm thấy nhân viên với email " + MaNV);
                     }
                 } catch (NoSuchAlgorithmException e) {
                     throw new RuntimeException(e);
