@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class connect {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/quanlychungcu"; // Thay đổi nếu cần
+        String url = "jdbc:mysql://localhost:3306/quanlychungcu?allowPublicKeyRetrieval=true&useSSL=false"; // Thay đổi nếu cần
         String username = "phandang";  // Tên người dùng
         String password = "haidang";  // Mật khẩu người dùng
 
