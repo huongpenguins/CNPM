@@ -6,22 +6,14 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Pair;
-import javafx.beans.property.SimpleStringProperty;
 import com.example.Entities.CanHo;
+import javafx.scene.layout.VBox;
 
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
 import java.util.Optional;
-// import java.sql.Connection;
-// import java.sql.DriverManager;
-// import java.sql.PreparedStatement;
-// import java.sql.ResultSet;
 
-public class ApartmentController  {
+public class ApartmentController {
 
     @FXML
     private VBox sidebar;
@@ -50,12 +42,11 @@ public class ApartmentController  {
     private ObservableList<CanHo> masterData = FXCollections.observableArrayList();
     private FilteredList<CanHo> filteredData;
 
-    public void initialize() {
-        // Đặt sidebar ra ngoài màn hình khi khởi tạo
-        if (sidebar != null) {
-            sidebar.setLayoutX(-sidebar.getPrefWidth());
-        }
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/quanlychungcu";// Đổi lại cho phù hợp
+    private static final String USER = "root";
+    private static final String PASSWORD = "2003";
 
+    public void initialize() {
         // Thiết lập cellValueFactory
         macanho.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMaCanHo()));
         mahokhau.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMaHoKhau()));
@@ -82,46 +73,37 @@ public class ApartmentController  {
             filterCanHo(newValue);
         });
 
-        // Gắn sự kiện cho các nút (nếu chưa có trong FXML)
+        // Gắn sự kiện cho các nút
         btnSearch.setOnAction(event -> searchCanHo());
         btnAdd.setOnAction(event -> addCanHo());
-        btnEdit.setOnAction(event -> editCanHo());
+        btnEdit.setOnAction(event -> updateCanHo());
         btnDelete.setOnAction(event -> deleteCanHo());
         btnViewDetails.setOnAction(event -> viewCanHoDetails());
     }
 
     private void loadCanHoData() {
         masterData.clear();
-        try {
-            // SQL xử lý:
-            // Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbname", "user", "pass");
-            // PreparedStatement pstmt = conn.prepareStatement("SELECT household_id, apartment_id, resident_id, vehicle_id, issue_date, owner_name, phone_number FROM households");
-            // ResultSet rs = pstmt.executeQuery();
-            // while(rs.next()){
-            //     masterData.add(new Household(
-            //         rs.getString("household_id"),
-            //         rs.getString("apartment_id"),
-            //         rs.getString("resident_id"),
-            //         rs.getString("vehicle_id"),
-            //         rs.getString("issue_date"),
-            //         rs.getString("owner_name"),
-            //         rs.getString("phone_number")
-            //     ));
-            // }
-            // conn.close();
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
+            String sql = "SELECT * FROM CanHo";  // Câu lệnh SQL để lấy tất cả căn hộ
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
 
-            // Dữ liệu giả lập
-            masterData.addAll(
-                    new CanHo("HK001", "CH001", "NK001", 3, 30, "Mô tả căn hộ"),
-                    new CanHo("HK002", "CH002", "NK002", 4, 40, "Mô tả căn hộ"),
-                    new CanHo("HK003", "CH003", "NK003", 2, 25, "Mô tả căn hộ")
-            );
+            while (rs.next()) {
+                masterData.add(new CanHo(
+                        rs.getString("macanho"),
+                        rs.getString("mahokhau"),
+                        rs.getString("tencanho"),
+                        rs.getInt("tang"),
+                        rs.getInt("dientich"),
+                        rs.getString("mota")
+                ));
+            }
 
             filteredData = new FilteredList<>(masterData, p -> true);
             quanlycanho.setItems(filteredData);
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             showAlert("Lỗi", "Không thể tải dữ liệu từ cơ sở dữ liệu.");
+            e.printStackTrace();
         }
     }
 
@@ -155,16 +137,28 @@ public class ApartmentController  {
             String dientich = details[3];
             String mota = details[4];
 
-            System.out.println("Thêm căn hộ: " + macanho + ", " + mahokhau + ", " + tencanho + ", " + tang + ", " + dientich + ", " + mota );
-            // SQL xử lý: INSERT INTO CanHo VALUES(...)
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
+                String sql = "INSERT INTO CanHo (macanho, mahokhau, tencanho, tang, dientich, mota) VALUES (?, ?, ?, ?, ?, ?)";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, macanho);
+                pstmt.setString(2, mahokhau);
+                pstmt.setString(3, tencanho);
+                pstmt.setInt(4, Integer.parseInt(tang));
+                pstmt.setInt(5, Integer.parseInt(dientich));
+                pstmt.setString(6, mota);
+                pstmt.executeUpdate();
 
-            showAlert("Thành công", "Căn Hộ mới đã được thêm!");
-            // loadCanHoData();
+                showAlert("Thành công", "Căn Hộ mới đã được thêm!");
+                loadCanHoData();  // Tải lại dữ liệu
+            } catch (SQLException e) {
+                showAlert("Lỗi", "Không thể thêm căn hộ.");
+                e.printStackTrace();
+            }
         });
     }
 
     @FXML
-    private void editCanHo() {
+    private void updateCanHo() {
         CanHo selected = quanlycanho.getSelectionModel().getSelectedItem();
         if (selected != null) {
             Dialog<Pair<String, String[]>> dialog = createCanHoDialog("Sửa căn hộ", selected);
@@ -178,10 +172,23 @@ public class ApartmentController  {
                 String dientich = details[3];
                 String mota = details[4];
 
-                System.out.println("Cập nhật căn hộ: " + macanho + ", " + mahokhau + ", " + tencanho + ", " + tang + ", " + dientich + ", " + mota);
-                // SQL xử lý: UPDATE CanHo SET ... WHERE macanho = ?
-                showAlert("Sửa thành công", "Thông tin căn hộ đã được cập nhật!");
-                // loadCanHoData();
+                try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
+                    String sql = "UPDATE CanHo SET mahokhau = ?, tencanho = ?, tang = ?, dientich = ?, mota = ? WHERE macanho = ?";
+                    PreparedStatement pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, mahokhau);
+                    pstmt.setString(2, tenhokhau);
+                    pstmt.setInt(3, Integer.parseInt(tang));
+                    pstmt.setInt(4, Integer.parseInt(dientich));
+                    pstmt.setString(5, mota);
+                    pstmt.setString(6, macanho);
+                    pstmt.executeUpdate();
+
+                    showAlert("Sửa thành công", "Thông tin căn hộ đã được cập nhật!");
+                    loadCanHoData();  // Tải lại dữ liệu
+                } catch (SQLException e) {
+                    showAlert("Lỗi", "Không thể cập nhật căn hộ.");
+                    e.printStackTrace();
+                }
             });
         } else {
             showAlert("Lỗi", "Vui lòng chọn căn hộ cần sửa!");
@@ -199,17 +206,24 @@ public class ApartmentController  {
 
             Optional<ButtonType> result = confirmAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                System.out.println("Xóa căn hộ: " + selected.getMaCanHo());
-                // SQL xử lý: DELETE FROM CanHo WHERE macanho = ?
-                showAlert("Xóa thành công", "Căn Hộ đã được xóa khỏi hệ thống!");
-                // loadCanHoData();
+                try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
+                    String sql = "DELETE FROM CanHo WHERE macanho = ?";
+                    PreparedStatement pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, selected.getMaCanHo());
+                    pstmt.executeUpdate();
+
+                    showAlert("Xóa thành công", "Căn Hộ đã được xóa khỏi hệ thống!");
+                    loadCanHoData();  // Tải lại dữ liệu
+                } catch (SQLException e) {
+                    showAlert("Lỗi", "Không thể xóa căn hộ.");
+                    e.printStackTrace();
+                }
             }
         } else {
             showAlert("Lỗi", "Vui lòng chọn căn hộ cần xóa!");
         }
     }
 
-    // Xem chi tiết
     @FXML
     public void viewCanHoDetails() {
         // Lấy căn hộ được chọn từ TableView
@@ -302,81 +316,5 @@ public class ApartmentController  {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    @FXML
-    private void menuClick() {
-        if (sidebar != null) {
-            double currentPosition = sidebar.getLayoutX();
-            double sidebarWidth = sidebar.getPrefWidth();
-            if (currentPosition < 0) {
-                sidebar.setLayoutX(0);
-            } else {
-                sidebar.setLayoutX(-sidebarWidth);
-            }
-        } else {
-            System.out.println("Sidebar chưa được khởi tạo!");
-        }
-    }
-
-    @FXML
-    private void signout(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Đăng xuất");
-        alert.setContentText("Bạn muốn đăng xuất?");
-        alert.showAndWait();
-        if(alert.getResult()== ButtonType.OK){
-            switchToSignIn();
-        }
-    }
-
-    @FXML
-    private void switchToHome() throws IOException {
-        App.setRoot("home");
-    }
-
-    @FXML
-    private void switchToGiaDinh() throws IOException {
-        App.setRoot("FamiliesManager");
-    }
-
-    @FXML
-    private void switchToDanCu() throws IOException {
-        App.setRoot("ResidentsManager");
-    }
-
-    @FXML
-    private void switchToKhoanThu() throws IOException {
-        App.setRoot("fee");
-    }
-
-    @FXML
-    private void switchToCanHo() throws IOException {
-        App.setRoot("secondary");
-    }
-
-    @FXML
-    private void switchToTamTru() throws IOException {
-        App.setRoot("secondary");
-    }
-
-    @FXML
-    private void switchToTamVang() throws IOException {
-        App.setRoot("secondary");
-    }
-
-    @FXML
-    private void switchToSignIn(){
-        // Chuyển sang màn hình đăng nhập
-    }
-
-    @FXML
-    private void switchToAccount() {
-        try {
-            App.setRoot("account");
-        } catch (IOException e) {
-            System.out.println("Lỗi: Không thể chuyển sang màn hình tài khoản.");
-            e.printStackTrace();
-        }
     }
 }
