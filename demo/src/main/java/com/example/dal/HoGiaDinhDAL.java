@@ -10,7 +10,7 @@ import java.sql.Connection;
 
 public class HoGiaDinhDAL extends Admin{
 
-// kiem tra khoa ngoai chung
+// Kiểm tra khóa ngoại chung
     public boolean checkForeignKey(String tableName, String columnName, String value) {
         String query = "SELECT 1 FROM " + tableName+ " WHERE " + columnName + " = ?";
         try(Connection conn = getConnectionAdmin();
@@ -25,7 +25,7 @@ public class HoGiaDinhDAL extends Admin{
         }
     }
 
-// kiem tra khoa ngoai cho tung cot
+// Kiểm tra khóa ngoại cho từng cột
     private boolean validateForeignKeys(String columnName, String value) {
         if ("MaXe".equalsIgnoreCase(columnName)) {
             return checkForeignKey("Xe", "MaXe", value);
@@ -35,7 +35,7 @@ public class HoGiaDinhDAL extends Admin{
         return true; // Nếu không phải khóa ngoại cần kiểm tra
     }
 
-// insert du lieu
+// Insert dữ liệu
 
     public boolean insertHoGiaDinh( String tableName, String[] columns, String[] values) {
 
@@ -48,7 +48,7 @@ public class HoGiaDinhDAL extends Admin{
         return super.insert("HoGiaDinh", columns, values);
     }
 
-//update du lieu
+// Update dữ liệu
     public boolean updateHoGiaDinh(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) {
         // Kiểm tra khóa ngoại cho MaCanHo và MaXe
 
@@ -66,7 +66,7 @@ public class HoGiaDinhDAL extends Admin{
         return super.update("NhanKhau", columnName, newValue, conditionColumn, conditionValue);
     }
 
-// delete du lieu
+// Delete dữ liệu
 
     // kiem tra tham chieu trong bang NhanKhau va ChiTietKhoaThu
      private boolean isReferencedInOtherTables(String columnName, String conditionColumn, String conditionValue) {
@@ -94,7 +94,7 @@ public class HoGiaDinhDAL extends Admin{
          return super.delete("HoGiaDinh", conditionColumn, conditionValue);
      }
 
-     //search du lieu
+     //Search  dữ liệu
      public ArrayList<Object[]> searchHoGiaDinh(String tableName, String columnName, String searchValue) {
          return super.search(tableName, columnName, searchValue);
      }
