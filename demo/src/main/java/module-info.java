@@ -10,6 +10,10 @@ module com.example {
     requires java.naming;
     requires org.controlsfx.controls;
     requires java.mail;
+    requires org.apache.httpcomponents.httpcore;
+    requires org.apache.httpcomponents.httpclient;
+    requires java.xml.bind;
+    requires jakarta.mail;
 
 
     opens com.example.Entities to javafx.base;
