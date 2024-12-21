@@ -1,18 +1,21 @@
 package com.example.Entities;
 
 public class CanHo {
-    private int MaCanHo;
+    private String MaCanHo;
     private String MaHoKhau;
     private String TenCanHo;
     private int Tang;
     private float DienTich;
     private String MoTa;
 
+    public CanHo(String hk001, String ch001, String nk001, int i, int i1, String môTảCănHộ) {
+    }
+
     public void setMaHoKhau(String maHoKhau) {
         this.MaHoKhau = maHoKhau;
     }
 
-    public void setMaCanHo(int maCanHo) {
+    public void setMaCanHo(String maCanHo) {
         this.MaCanHo = maCanHo;
     }
 
@@ -40,7 +43,7 @@ public class CanHo {
         return DienTich;
     }
 
-    public int getMaCanHo() {
+    public String getMaCanHo() {
         return MaCanHo;
     }
 

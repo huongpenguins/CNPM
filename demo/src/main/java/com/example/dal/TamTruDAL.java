@@ -27,7 +27,7 @@ public class TamTruDAL extends Admin {
     static String tableName = "tamtrutbl";
 
 // insert du lieu
-    public boolean insertTamTru(String[] tableName, String[] columns, String[] types) {
+    public boolean insertTamTru(String[] tableName, String[] columns, String[] values) {
         int MaNhanKhauIndex = -1;
 
         //tim chi so cot MaNhanKhau
@@ -42,12 +42,12 @@ public class TamTruDAL extends Admin {
              return false;
         }
         // kiểm tra khóa ngoại
-        String MaNhanKhau = columns[MaNhanKhauIndex];
+        String MaNhanKhau = values[MaNhanKhauIndex];
         if (!checkForeignKey("NhanKhau", "MaNhanKhau", MaNhanKhau)) {
             System.err.println("Error: MaNhanKhau không tồn tại trong bảng NhanKhau");
             return false;
         }
-        return super.insert("TamTru", columns, types);
+        return super.insert("TamTru", columns, values);
     }
 
     // Update dữ liệu
@@ -71,6 +71,6 @@ public class TamTruDAL extends Admin {
 
 // search du lieu
      public ArrayList<Object[]> searchTamTru(String tableName, String columnName, String searchValue) {
-         return search(tableName, columnName, searchValue);
+         return super.search(tableName, columnName, searchValue);
      }
 }
