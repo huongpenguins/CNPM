@@ -1,5 +1,5 @@
 package com.example;
-import com.example.dal.CanHoDal;
+import com.example.dal.CanHoDAL;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class Main {
 //        } else {
 //            System.out.println("Thêm căn hộ thất bại!");
 //        }
-        CanHoDal canHoDAL = new CanHoDal();
+        CanHoDAL canHoDAL = new CanHoDAL();
         Admin admin = new Admin(); // Tạo đối tượng Admin
 //        Scanner scanner = new Scanner(System.in);
 //

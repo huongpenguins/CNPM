@@ -1,13 +1,14 @@
 package com.example;
 
 import java.io.IOException;
-import java.lang.ModuleLayer.Controller;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Predicate;
+
 import com.example.Entities.KhoanThu;
+
 import javafx.scene.control.TableCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +24,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
@@ -51,11 +51,14 @@ public class FeeController {
     Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu,apply,remove;
     @FXML
     TextField search,text_ten,text_loai,text_ghichu,topage;
-    
     @FXML
     TableView<KhoanThu> table;
     @FXML 
-    TableColumn<KhoanThu,String> id,ten,loai;
+    TableColumn<KhoanThu,String> id;
+    @FXML 
+    TableColumn<KhoanThu,String> ten;
+    @FXML 
+    TableColumn<KhoanThu,String> loai;
     @FXML
     TableColumn<KhoanThu,Integer> ghichu;
     @FXML 
@@ -81,12 +84,6 @@ public class FeeController {
         batdau.setCellValueFactory(new PropertyValueFactory<KhoanThu,LocalDate>("batdau"));
         hannop.setCellValueFactory(new PropertyValueFactory<KhoanThu,LocalDate>("hannop"));
 
-        // pagination.setPageFactory(new Callback<Integer, Void>() {
-        //     @Override
-        //     public Void call(Integer pageIndex) {
-        //         createPage(pageIndex);
-        //     }
-        // });
 
         table.setItems(data);
         
@@ -445,7 +442,7 @@ public class FeeController {
     }
     @FXML
     private void switchToDanCu() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("ResidentsManager");
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
@@ -461,7 +458,7 @@ public class FeeController {
     }
     @FXML
     private void switchToTamVang() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("tamvang");
     }
     @FXML 
     private void switchToSignIn(){

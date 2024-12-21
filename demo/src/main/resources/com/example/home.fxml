@@ -38,12 +38,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="giadinh" mnemonicParsing="false" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý&#10;hộ gia đình" textAlignment="CENTER">
+            <Button fx:id="giadinh" mnemonicParsing="false" onAction="#switchToGiaDinh" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý&#10;hộ gia đình" textAlignment="CENTER">
                <font>
                   <Font name="Arial" size="24.0" />
                </font>
             </Button>
-            <Button fx:id="dancu" mnemonicParsing="false" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý&#10;dân cư" textAlignment="CENTER" GridPane.columnIndex="1">
+            <Button fx:id="dancu" mnemonicParsing="false" onAction="#switchToDanCu" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý&#10;dân cư" textAlignment="CENTER" GridPane.columnIndex="1">
                <font>
                   <Font name="Arial" size="24.0" />
                </font>
@@ -53,17 +53,17 @@
                   <Font name="Arial" size="24.0" />
                </font>
             </Button>
-            <Button fx:id="canho" mnemonicParsing="false" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý &#10;căn hộ" textAlignment="CENTER" GridPane.rowIndex="1">
+            <Button fx:id="canho" mnemonicParsing="false" onAction="#switchToCanHo" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý &#10;căn hộ" textAlignment="CENTER" GridPane.rowIndex="1">
                <font>
                   <Font name="Arial" size="24.0" />
                </font>
             </Button>
-            <Button fx:id="tamtru" mnemonicParsing="false" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý&#10;tạm trú" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Button fx:id="tamtru" mnemonicParsing="false" onAction="#switchToTamTru" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý&#10;tạm trú" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font name="Arial" size="24.0" />
                </font>
             </Button>
-            <Button fx:id="tamvang" mnemonicParsing="false" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý&#10;tạm vắng" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Button fx:id="tamvang" mnemonicParsing="false" onAction="#switchToTamVang" prefHeight="90.0" prefWidth="200.0" styleClass="button2" stylesheets="@home.css" text="Quản lý&#10;tạm vắng" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <font>
                   <Font name="Arial" size="24.0" />
                </font>

@@ -29,8 +29,8 @@ public class KhoanThu {
         return this.id.get();
     }
 
-    public void setId(SimpleStringProperty id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id.set(id);
     }
 
     public String getTen() {

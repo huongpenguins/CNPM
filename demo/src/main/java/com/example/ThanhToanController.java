@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import com.example.Entities.HoaDon;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -20,7 +21,7 @@ public class ThanhToanController {
     @FXML
     TextField id,sotiennop;
     @FXML
-    Button save;
+    Button save,tralai;
 
     @FXML
     private void xacnhan() throws IOException{
@@ -46,4 +47,5 @@ public class ThanhToanController {
         thisStage.close();
         
     }
+    
 }
