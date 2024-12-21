@@ -8,14 +8,8 @@ import java.util.ArrayList;
 
 public class CanHoDAL extends Admin {
 
-<<<<<<< HEAD
-    // Constructor should not have a return type and should match the class name
-    public CanHoDAL() {
-        super(); // Call the constructor of the parent class (Admin)
-=======
     public CanHoDAL() {
         super(); // Kế thừa từ Admin
->>>>>>> 389343494a2d2a8f5b662f68b6b065a04d8ef3f3
     }
 
     /**
