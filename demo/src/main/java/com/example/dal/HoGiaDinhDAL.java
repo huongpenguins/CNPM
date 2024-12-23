@@ -10,7 +10,9 @@ import java.sql.Connection;
 
 public class HoGiaDinhDAL extends Admin{
 
-// Kiểm tra khóa ngoại chung
+    static String tableName = "hogiadinhtbl";
+
+    // Kiểm tra khóa ngoại chung
     public boolean checkForeignKey(String tableName, String columnName, String value) {
         String query = "SELECT 1 FROM " + tableName+ " WHERE " + columnName + " = ?";
         try(Connection conn = getConnectionAdmin();
@@ -28,9 +30,9 @@ public class HoGiaDinhDAL extends Admin{
 // Kiểm tra khóa ngoại cho từng cột
     private boolean validateForeignKeys(String columnName, String value) {
         if ("MaXe".equalsIgnoreCase(columnName)) {
-            return checkForeignKey("Xe", "MaXe", value);
+            return checkForeignKey("xetbl", "MaXe", value);
         } else if ("MaCanHo".equalsIgnoreCase(columnName)) {
-            return checkForeignKey("CanHo", "MaCanHo", value);
+            return checkForeignKey("canhotbl", "MaCanHo", value);
         }
         return true; // Nếu không phải khóa ngoại cần kiểm tra
     }
@@ -45,7 +47,7 @@ public class HoGiaDinhDAL extends Admin{
                 return false;
             }
         }
-        return super.insert("HoGiaDinh", columns, values);
+        return super.insert("hogiadinhtbl", columns, values);
     }
 
 // Update dữ liệu
@@ -53,17 +55,17 @@ public class HoGiaDinhDAL extends Admin{
         // Kiểm tra khóa ngoại cho MaCanHo và MaXe
 
         if ("MaCanHo".equalsIgnoreCase(columnName)) {
-            if (!checkForeignKey("CanHo", "MaCanHo", newValue)) {
-                System.err.println("Error: MaCanHo không tồn tại trong bảng CanHo!");
+            if (!checkForeignKey("canhotbl", "MaCanHo", newValue)) {
+                System.err.println("Error: MaCanHo không tồn tại trong bảng canhotbl!");
                 return false;
             }
         }else if("MaXe".equalsIgnoreCase(columnName)) {
-            if (!checkForeignKey("Xe", "MaXe", newValue)) {
-                System.err.println("Error: MaXe không tồn tại trong bảng Xe!");
+            if (!checkForeignKey("xetbl", "MaXe", newValue)) {
+                System.err.println("Error: MaXe không tồn tại trong bảng xetbl!");
                 return false;
             }
         }
-        return super.update("NhanKhau", columnName, newValue, conditionColumn, conditionValue);
+        return super.update("nhankhautbl", columnName, newValue, conditionColumn, conditionValue);
     }
 
 // Delete dữ liệu
@@ -71,11 +73,11 @@ public class HoGiaDinhDAL extends Admin{
     // kiem tra tham chieu trong bang NhanKhau va ChiTietKhoaThu
      private boolean isReferencedInOtherTables(String columnName, String conditionColumn, String conditionValue) {
           // Kiểm tra tham chiếu trong bảng 'NhanKhau'
-          if (checkForeignKey("NhanKhau", "MaHoGiaDinh", conditionValue)) {
+          if (checkForeignKey("nhankhautbl", "MaHoGiaDinh", conditionValue)) {
               return true; // Bảng NhanKhau tham chiếu đến MaHoGiaDinh
           }
           // Kiểm tra tham chiếu trong bảng 'ChiTietKhoanThu'
-          if (checkForeignKey("ChiTietKhoanThu", "MaHoGiaDinh", conditionValue)) {
+          if (checkForeignKey("chitietkhoanthutbl", "MaHoGiaDinh", conditionValue)) {
               return true; // Bảng ChiTietKhoanThu tham chiếu đến MaHoGiaDinh
           }
           return false; // Không bị tham chiếu ở bảng nào khác
@@ -85,13 +87,13 @@ public class HoGiaDinhDAL extends Admin{
 
          // Kiểm tra xem MaHoGiaDinh có đang bị tham chiếu ở các bảng NhanKhau và chiTietKhoanThu không
          if ("MaHoGiaDinh".equalsIgnoreCase(conditionColumn)) {
-             if (isReferencedInOtherTables("NhanKhau", conditionColumn, conditionValue) ||
-                     isReferencedInOtherTables("ChiTietKhoanThu", conditionColumn, conditionValue)) {
-                 System.err.println("Error: Không thể xóa vì MaHoGiaDinh đang được tham chiếu trong bảng NhanKhau hoặc ChiTietKhoanThu!");
+             if (isReferencedInOtherTables("nhankhautbl", conditionColumn, conditionValue) ||
+                     isReferencedInOtherTables("chitietkhoanthutbl", conditionColumn, conditionValue)) {
+                 System.err.println("Error: Không thể xóa vì MaHoGiaDinh đang được tham chiếu trong bảng nhanhkhautbl hoặc chitietkhoanthutbl!");
                  return false; // Không xóa nếu có tham chiếu
              }
          }
-         return super.delete("HoGiaDinh", conditionColumn, conditionValue);
+         return super.delete("hogiadinhtbl", conditionColumn, conditionValue);
      }
 
      //Search  dữ liệu
