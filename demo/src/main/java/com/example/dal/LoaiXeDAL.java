@@ -42,8 +42,8 @@ public class LoaiXeDAL extends Admin {
 
     public boolean deleteLoaiXe(String tableName, String columnName, String columnValue){
         // Kiểm tra xem MaLoaiXe có đang bị tham chiếu trong bảng Xe không
-        if (checkForeignKey("Xe", "MaLoaiXe", columnValue)) {
-            System.err.println("Error: Không thể xóa vì MaLoaiXe đang được tham chiếu trong bảng Xe!");
+        if (checkForeignKey("xetbl", "MaLoaiXe", columnValue)) {
+            System.err.println("Error: Không thể xóa vì MaLoaiXe đang được tham chiếu trong bảng xetbl!");
             return false; // Nếu đang bị tham chiếu, không cho phép xóa
         }
 

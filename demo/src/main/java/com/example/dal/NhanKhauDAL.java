@@ -10,6 +10,7 @@ import java.sql.Connection;
 
 public class NhanKhauDAL extends Admin {
 
+
     //kiểm tra khóa ngoại chung
        public boolean checkForeignKey(String tableName, String columnName, String value) {
            String query = "SELECT 1 FROM " + tableName + " WHERE " + columnName + " = ?";
@@ -42,34 +43,34 @@ public class NhanKhauDAL extends Admin {
            }
            // kiểm tra khóa ngoại
           String MaHoGiaDinh = columns[MaHoIndex];
-          if (!checkForeignKey("HoGiaDinh", "MaHoGiaDinh", MaHoGiaDinh)) {
-              System.err.println("Error: MaHoGiaDinh không tồn tại trong bảng HoGiaDinh");
+          if (!checkForeignKey("hogiadinhtbl", "MaHoGiaDinh", MaHoGiaDinh)) {
+              System.err.println("Error: MaHoGiaDinh không tồn tại trong bảng hogiadinhtbl");
                return false;
           }
-                       return super.insert("NhanKhau", columns, types);
+                       return super.insert("nhankhautbl", columns, types);
        }
 
 // Update dữ liệu
     public boolean updateNhanKhau(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) throws SQLException{
            //kiem tra khoa ngoai neu cap nhat cot MaHoGiaDinh
             if ("MaHoGiaDinh".equalsIgnoreCase(columnName)) {
-                if (!checkForeignKey("HoGiaDinh", "MaHoGiaDinh", newValue)) {
-                    System.err.println("Error: MaHoGiaDinh mới không tồn tại trong bảng HoGiaDinh!");
+                if (!checkForeignKey("hogiadinhtbl", "MaHoGiaDinh", newValue)) {
+                    System.err.println("Error: MaHoGiaDinh mới không tồn tại trong bảng hogiadinhtbl!");
                     return false;
                 }
             }
            //gọi phuơng thức update từ lớp cha Admin
-           return super.update("NhanKhau", columnName, newValue, conditionColumn, conditionValue);
+           return super.update("nhakhautbl", columnName, newValue, conditionColumn, conditionValue);
     }
 
 // delete dữ liệu
 
     // Kiểm tra khóa chính MaNhanKhau có bị tham chiếu trong các bảng khac không
     private boolean isReferencedInOtherTables(String tableName, String columnName, String value){
-           if(checkForeignKey("TamTru", columnName, value)){
+           if(checkForeignKey("tamvangtbl", columnName, value)){
                return true;
            }
-           if(checkForeignKey("TamVang", columnName, value)){
+           if(checkForeignKey("tamvangtbl", columnName, value)){
                return true;
            }
            return false;
@@ -78,14 +79,14 @@ public class NhanKhauDAL extends Admin {
     public boolean deleteNhanKhau(String conditionColumn, String conditionValue) {
         // Kiểm tra xem MaNhanKhau có đang bị tham chiếu ở các bảng TamTru và TamVang không
         if ("MaNhanKhau".equalsIgnoreCase(conditionColumn)) {
-            if (isReferencedInOtherTables("TamTru", conditionColumn, conditionValue) ||
-                    isReferencedInOtherTables("TamVang", conditionColumn, conditionValue)) {
-                System.err.println("Error: Không thể xóa vì MaNhanKhau đang được tham chiếu trong bảng TamTru hoặc TamVang!");
+            if (isReferencedInOtherTables("tamtrutbl", conditionColumn, conditionValue) ||
+                    isReferencedInOtherTables("tamvangtbl", conditionColumn, conditionValue)) {
+                System.err.println("Error: Không thể xóa vì MaNhanKhau đang được tham chiếu trong bảng tamtrutbl hoặc tamvangtbl!");
                 return false; // Không xóa nếu có tham chiếu
             }
         }
         // Thực hiện delete nếu không có tham chiếu
-        return super.delete("NhanKhau", conditionColumn, conditionValue);
+        return super.delete("nhankhautbl", conditionColumn, conditionValue);
     }
 
 
@@ -99,7 +100,7 @@ public class NhanKhauDAL extends Admin {
         }
        */
         //khong kiem tra khoa ngoai vi tim kiem chi dua ra danh sach khong anh huong den du lieu
-        return super.search("NhanKhau", columnName, searchValue);
+        return super.search("nhankhautbl", columnName, searchValue);
     }
 
 }

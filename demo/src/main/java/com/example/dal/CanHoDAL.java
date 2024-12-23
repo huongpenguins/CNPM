@@ -22,7 +22,7 @@ public class CanHoDAL extends Admin {
     static String tableName = "canhotbl";
     public boolean insertCanHo() {
         String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
-        String[] types = {"int","String","String","int","float","String"};
+        String[] types = {"String","String","String","int","float","String"};
 
         return insert(tableName, columns, types); // Gọi hàm insert từ Admin
     }
@@ -47,8 +47,8 @@ public class CanHoDAL extends Admin {
     }
 
     public boolean deleteCanHo(String tableName,String columnName,String columnValue){
-        if (checkForeignKey("HoGiaDinh", "MaCanHo", columnValue)) {
-            System.err.println("Error: Không thể xóa vì MaCanHo đang được tham chiếu trong bảng HoGiaDinh!");
+        if (checkForeignKey("hogiadinhtbl", "MaCanHo", columnValue)) {
+            System.err.println("Error: Không thể xóa vì MaCanHo đang được tham chiếu trong bảng hogiadinhtbl!");
             return false; // Nếu đang bị tham chiếu, không cho phép xóa
         }
         return delete(tableName,columnName,columnValue);

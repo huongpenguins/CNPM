@@ -39,8 +39,8 @@ public class KhoanThuDAL extends Admin {
     }
 
     public boolean deleteKhoanThu(String tableName, String columnName, String columnValue) {
-        if (checkForeignKey("ChiTietKhoanThu", "MaKhoanThu", columnValue)) {
-            System.err.println("Error: Không thể xóa vì MaKhoanThu đang được tham chiếu trong bảng ChiTietKhoanThu!");
+        if (checkForeignKey("chitietkhoanthutbl", "MaKhoanThu", columnValue)) {
+            System.err.println("Error: Không thể xóa vì MaKhoanThu đang được tham chiếu trong bảng chitietkhoanthutbl!");
             return false; // Nếu đang bị tham chiếu, không cho phép xóa
         }
         return delete(tableName, columnName, columnValue);

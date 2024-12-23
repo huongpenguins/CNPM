@@ -44,30 +44,30 @@ public class TamVangDAL extends Admin {
         }
         // kiểm tra khóa ngoại
         String MaNhanKhau = columns[MaNhanKhauIndex];
-        if (!checkForeignKey("NhanKhau", "MaNhanKhau", MaNhanKhau)) {
-            System.err.println("Error: MaNhanKhau không tồn tại trong bảng NhanKhau");
+        if (!checkForeignKey("nhankhautbl", "MaNhanKhau", MaNhanKhau)) {
+            System.err.println("Error: MaNhanKhau không tồn tại trong bảng nhankhautbl");
             return false;
         }
-        return super.insert("TamVang", columns, types);
+        return super.insert("tamvangtbl", columns, types);
     }
 
     // Update dữ liệu
     public boolean updateTamVang(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) throws SQLException{
         //kiem tra khoa ngoai neu cap nhat cot MaNhanKhau
         if ("MaNhanKhau".equalsIgnoreCase(columnName)) {
-            if (!checkForeignKey("NhanKhau", "NhanKhau", newValue)) {
-                System.err.println("Error: MaNhanKhau mới không tồn tại trong bảng NhanKhau!");
+            if (!checkForeignKey("nhankhautbl", "NhanKhau", newValue)) {
+                System.err.println("Error: MaNhanKhau mới không tồn tại trong bảng nhankhautbl!");
                 return false;
             }
         }
         //gọi phuơng thức update từ lớp cha Admin
-        return super.update("TamVang", columnName, newValue, conditionColumn, conditionValue);
+        return super.update("tamvangtbl", columnName, newValue, conditionColumn, conditionValue);
     }
 
     //delete du lieu
     public boolean deleteTamVang(String tableName, String conditionColumn, String columnValue) {
         // Không cần kiểm tra khóa ngoại
-        return super.delete("TamVang", conditionColumn, columnValue);
+        return super.delete("tamvangtbl", conditionColumn, columnValue);
     }
 
     // search du lieu

@@ -41,32 +41,32 @@ public class XeDAL extends Admin {
         }
         // kiểm tra khóa ngoại
         String MaLoaiXe = columns[MaLoaiXeIndex];
-        if(!checkForeignKey("LoaiXe", "MaLoaiXe", MaLoaiXe)){
-            System.err.println("Error: MaLoaiXe không tồn tại trong bảng LoaiXe");
+        if(!checkForeignKey("loaixetbl", "MaLoaiXe", MaLoaiXe)){
+            System.err.println("Error: MaLoaiXe không tồn tại trong bảng loaixetbl");
             return false;
         }
-        return super.insert("Xe", columns, types);
+        return super.insert("xetbl", columns, types);
     }
 
     //update du lieu
     public boolean updateXe(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) throws SQLException{
         //kiem tra khoa ngoai neu cap nhat cot MaLoaiXe
         if ("MaLoaiXe".equalsIgnoreCase(columnName)) {
-            if (!checkForeignKey("LoaiXe", "MaLoaiXe", newValue)) {
-                System.err.println("Error: MaLoaiXe mới không tồn tại trong bảng LoaiXe!");
+            if (!checkForeignKey("loaixetbl", "MaLoaiXe", newValue)) {
+                System.err.println("Error: MaLoaiXe mới không tồn tại trong bảng loaixetbl!");
                 return false;
             }
         }
         //gọi phuơng thức update từ lớp cha Admin
-        return super.update("Xe", columnName, newValue, conditionColumn, conditionValue);
+        return super.update("xetbl", columnName, newValue, conditionColumn, conditionValue);
     }
 
     //delete du lieu
 
     public boolean deleteXe(String tableName, String columnName, String columnValue){
         // Kiểm tra xem MaXe có đang bị tham chiếu trong bảng HoGiaDinh không
-        if (checkForeignKey("HoGiaDinh", "MaXe", columnValue)) {
-            System.err.println("Error: Không thể xóa vì MaXe đang được tham chiếu trong bảng HoGiaDinh!");
+        if (checkForeignKey("hogiadinhtbl", "MaXe", columnValue)) {
+            System.err.println("Error: Không thể xóa vì MaXe đang được tham chiếu trong bảng hogiadinhtbl!");
             return false; // Nếu đang bị tham chiếu, không cho phép xóa
         }
 

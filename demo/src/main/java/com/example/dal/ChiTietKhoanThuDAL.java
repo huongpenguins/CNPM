@@ -63,6 +63,7 @@ public class ChiTietKhoanThuDAL extends Admin {
         return super.update("ChiT", columnName, newValue, conditionColumn, conditionValue);
     } ChiTietKhoanThu chi co tinh nang TimKiem
     */
+    static String tableName = "chitietkhoanthutbl";
 
     //search du lieu
     public ArrayList<Object[]> searchChiTietKhoanThu(String tableName, String columnName, String searchValue) {
