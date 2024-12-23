@@ -9,7 +9,7 @@ public class connect_mysql {
     private static final String USER = "root";
     private static final String PASSWORD = "2003";
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {

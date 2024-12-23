@@ -2,10 +2,8 @@ package com.example.dal;
 import com.example.Admin;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
-import java.sql.Connection;
 
 public class LoaiXeDAL extends Admin {
     public LoaiXeDAL(){

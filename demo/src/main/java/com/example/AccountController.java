@@ -1,14 +1,15 @@
 package com.example;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 
 import com.example.login.AccountManager;
 import com.example.login.ChangePassword;
+import com.example.login.LoginPage;
+import javafx.beans.Observable;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -17,8 +18,21 @@ public class AccountController {
     VBox sidebar;
     @FXML
     Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu,doimk,suaTTin;
+    @FXML
+    TextField hoten, diachi, email, sdt, cccd, chucvu, ngaysinh, gioitinh, manv;
 
     //hien menu chuyen man hinh
+    public void initialize(){
+        hoten.setText(AccountManager.getNameByMaNv(LoginPage.MaNV));
+        diachi.setText(AccountManager.getDiaChiByMaNv(LoginPage.MaNV));
+        email.setText(AccountManager.getEmailByMaNv(LoginPage.MaNV));
+        sdt.setText(AccountManager.getSdtByMaNv(LoginPage.MaNV));
+        cccd.setText(AccountManager.getCCCDByMaNv(LoginPage.MaNV));
+        chucvu.setText(AccountManager.getChucVuByMaNv(LoginPage.MaNV));
+        ngaysinh.setText(AccountManager.getNgaySinhByMaNv(LoginPage.MaNV).toString());
+        gioitinh.setText(AccountManager.getGioiTinhByMaNv(LoginPage.MaNV));
+        manv.setText(LoginPage.MaNV);
+    }
     @FXML
     private void menuClick(){
         if(sidebar.getLayoutX()<0){

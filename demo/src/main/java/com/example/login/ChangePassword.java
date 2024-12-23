@@ -8,6 +8,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 
+import java.security.NoSuchAlgorithmException;
+
 public class ChangePassword extends Application {
 
     @Override
@@ -72,9 +74,14 @@ public class ChangePassword extends Application {
                 messageLabel.setText("Mật khẩu mới không khớp.");
             } else {
                 // Giả lập kiểm tra mật khẩu cũ
-                boolean isOldPasswordCorrect = oldPassword.equals(AccountManager.getPassword()); // Thay thế bằng logic thực tế
+                boolean isOldPasswordCorrect = false; // Thay thế bằng logic thực tế
+                try {
+                    isOldPasswordCorrect = PasswordHasher.checkPassword(oldPassword, AccountManager.getPasswordByMaNv(LoginPage.MaNV));
+                } catch (NoSuchAlgorithmException ex) {
+                    throw new RuntimeException(ex);
+                }
                 if (isOldPasswordCorrect) {
-                    AccountManager.setPassword(newPassword);
+                    AccountManager.updatePasswordByMa_nv(newPassword, LoginPage.MaNV);
                     messageLabel.setText("Đổi mật khẩu thành công!");
                     messageLabel.setTextFill(Color.GREEN); // Success message in green
                 } else {

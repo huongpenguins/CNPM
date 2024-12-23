@@ -1,5 +1,6 @@
 package com.example.login;
 
+import com.example.connect.connect_mysql;
 import com.example.App;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -14,19 +15,22 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.*;
 
 public class LoginPage extends Application {
-
+    public static String MaNV = null;//xác minh ta khoanrn dang dang nhap
+    public static String sdt_or_email = null;
     @Override
     public void start(Stage loginStage) {
         // Nhãn tên đăng nhập
-        Label lblUsername = new Label("Tên đăng nhập/sdt/email:");
+        Label lblUsername = new Label("Nhập sdt/email:");
         lblUsername.setTextFill(Color.DARKSLATEBLUE);
         lblUsername.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
         // Ô nhập tên đăng nhập
         TextField txtUsername = new TextField();
-        txtUsername.setPromptText("Nhập tên đăng nhập/sdt/email");
+        txtUsername.setPromptText("Nhập sdt/email");
         txtUsername.setStyle("-fx-font-size: 14px; -fx-border-color: lightgray;");
 
         // Nhãn mật khẩu
@@ -51,35 +55,58 @@ public class LoginPage extends Application {
         Label lblMessage = new Label();
         lblMessage.setStyle("-fx-font-size: 14px; -fx-padding: 10;");
 
-        // Xử lý sự kiện đăng nhập
         btnLogin.setOnAction(event -> {
             String username = txtUsername.getText();
             String password = txtPassword.getText();
 
-            if ((AccountManager.getUsername().equals(username) ||
-                    AccountManager.getEmail().equals(username) ||
-                    AccountManager.getPhonenumber().equals(username)) &&
-                    AccountManager.getPassword().equals(password)) {
+            // Xác thực đăng nhập với cơ sở dữ liệu
+            boolean isValid = false;
+
+            try (Connection conn = connect_mysql.getConnection()) {
+                String query = "SELECT * FROM admin_account WHERE email = ? OR sdt = ?";  // Thay đổi bảng và cột tùy theo cấu trúc của bạn
+                try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setString(1, username);
+                    stmt.setString(2, username);  // Email hoặc số điện thoại
+
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        if (rs.next()) {
+                            String storedPassword = rs.getString("password");  // Thay "password" bằng tên cột mật khẩu trong cơ sở dữ liệu của bạn
+                            if (PasswordHasher.checkPassword(password, storedPassword)) {
+                                isValid = true;
+                            }
+                        }
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            if (isValid) {
                 lblMessage.setText("Đăng nhập thành công, vui lòng chờ!");
                 lblMessage.setTextFill(Color.GREEN);
 
                 // Hiệu ứng chờ 2 giây trước khi chuyển giao diện
-                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                PauseTransition pause = new PauseTransition(Duration.seconds(1));
                 pause.setOnFinished(e -> {
                     App app = new App();
                     try {
-                        loginStage.close();// closmh login
-                        app.start(new Stage());//motran chu
+                        MaNV = AccountManager.getMaNvByPhoneOrEmail(username);
+                        loginStage.close(); // Đóng trang đăng nhập
+                        app.start(new Stage()); // Mở ứng dụng chính
                     } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                        ex.printStackTrace();
                     }
                 });
                 pause.play();
             } else {
-                lblMessage.setText("Tên đăng nhập hoặc mật khẩu không đúng.");
+                lblMessage.setText("Tên sdt/email hoặc mật khẩu không đúng.");
                 lblMessage.setTextFill(Color.RED);
             }
         });
+
+
 
         // Xử lý sự kiện quên mật khẩu
         btnForgotPassword.setOnAction(event -> {

@@ -1,7 +1,5 @@
 package com.example.dal;
 import com.example.Admin;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 

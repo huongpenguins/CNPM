@@ -5,7 +5,9 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Predicate;
+
 import com.example.Entities.TamVang;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -92,9 +94,7 @@ public class TamVangController {
                     new EventHandler<CellEditEvent<TamVang, String>>() {
                         @Override
                         public void handle(CellEditEvent<TamVang, String> t) {
-                            ((TamVang) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                                ).setTen(t.getNewValue());
+                            ((TamVang) t.getTableView().getItems().get(t.getTablePosition().getRow())).setTen(t.getNewValue());
                         }
                     }
                     // them vao csdl

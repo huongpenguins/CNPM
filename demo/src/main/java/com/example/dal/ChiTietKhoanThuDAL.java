@@ -2,7 +2,6 @@ package com.example.dal;
 import com.example.Admin;
 
 import java.util.ArrayList;
-import java.sql.SQLException;
 
 
 public class ChiTietKhoanThuDAL extends Admin {

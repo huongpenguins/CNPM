@@ -80,7 +80,7 @@ public class FamiliesManagerController {
 
     private void loadHouseholdData() {
         masterData.clear();
-        ArrayList<Object[]> results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinh", null, null);
+        ArrayList<Object[]> results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinhtbl", null, null);
         if (results != null) {
             for (Object[] row : results) {
                 // Giả định thứ tự cột trong CSDL: MaHoGiaDinh, MaCanHo, MaNhanKhau, MaXe, NgayCap, OwnerName, PhoneNumber
@@ -103,12 +103,12 @@ public class FamiliesManagerController {
         String keyword = txtSearch.getText().trim();
         ArrayList<Object[]> results;
         if (keyword.isEmpty()) {
-            results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinh", null, null);
+            results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinhtbl", null, null);
         } else {
             // Tìm theo MaHoGiaDinh hoặc OwnerName
-            results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinh", "MaHoGiaDinh", keyword);
+            results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinhtbl", "MaHoGiaDinh", keyword);
             if (results == null || results.isEmpty()) {
-                results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinh", "OwnerName", keyword);
+                results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinhtbl", "OwnerName", keyword);
             }
         }
 
@@ -145,7 +145,7 @@ public class FamiliesManagerController {
             String[] columns = {"MaHoGiaDinh","MaCanHo","MaNhanKhau","MaXe","NgayCap","OwnerName","PhoneNumber"};
             String[] values = {householdId, apartmentId, residentId, vehicleId, issueDate, ownerName, phoneNumber};
 
-            boolean success = hoGiaDinhDal.insertHoGiaDinh("HoGiaDinh", columns, values);
+            boolean success = hoGiaDinhDal.insertHoGiaDinh("HoGiaDinhtbl", columns, values);
             if (success) {
                 showAlert("Thành công", "Hộ khẩu mới đã được thêm!");
                 loadHouseholdData();
@@ -176,12 +176,12 @@ public class FamiliesManagerController {
                 // Tương tự như bên ResidentsManager, update từng cột, nếu updateHoGiaDinh ném SQLException thì cũng cần try-catch.
                 // Tuy nhiên HoGiaDinhDAL updateHoGiaDinh không khai throws SQLException ở code Hà viết, nên có lẽ không cần try-catch.
                 // Nếu cần, có thể thêm try-catch.
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinh", "MaCanHo", apartmentId, "MaHoGiaDinh", householdId);
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinh", "MaNhanKhau", residentId, "MaHoGiaDinh", householdId);
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinh", "MaXe", vehicleId, "MaHoGiaDinh", householdId);
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinh", "NgayCap", issueDate, "MaHoGiaDinh", householdId);
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinh", "OwnerName", ownerName, "MaHoGiaDinh", householdId);
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinh", "PhoneNumber", phoneNumber, "MaHoGiaDinh", householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "MaCanHo", apartmentId, "MaHoGiaDinh", householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "MaNhanKhau", residentId, "MaHoGiaDinh", householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "MaXe", vehicleId, "MaHoGiaDinh", householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "NgayCap", issueDate, "MaHoGiaDinh", householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "OwnerName", ownerName, "MaHoGiaDinh", householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "PhoneNumber", phoneNumber, "MaHoGiaDinh", householdId);
 
                 if (allSuccess) {
                     showAlert("Sửa thành công", "Thông tin hộ khẩu đã được cập nhật!");
@@ -205,7 +205,7 @@ public class FamiliesManagerController {
             confirmAlert.setContentText("Hành động này không thể hoàn tác.");
             Optional<ButtonType> result = confirmAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                boolean success = hoGiaDinhDal.deleteHoGiaDinh("HoGiaDinh", "MaHoGiaDinh", selected.getHouseholdId());
+                boolean success = hoGiaDinhDal.deleteHoGiaDinh("HoGiaDinhtbl", "MaHoGiaDinh", selected.getHouseholdId());
                 if (success) {
                     showAlert("Xóa thành công", "Hộ khẩu đã được xóa khỏi hệ thống!");
                     loadHouseholdData();
@@ -225,7 +225,7 @@ public class FamiliesManagerController {
             String householdId = selected.getHouseholdId();
 
             // Lấy danh sách cư dân với MaHoGiaDinh = householdId
-            ArrayList<Object[]> results = nhanKhauDal.searchNhanKhau("NhanKhau", "MaHoGiaDinh", householdId);
+            ArrayList<Object[]> results = nhanKhauDal.searchNhanKhau("NhanKhautbl", "MaHoGiaDinh", householdId);
             if (results == null || results.isEmpty()) {
                 showAlert("Thông báo", "Không có thành viên nào trong hộ gia đình này!");
                 return;
@@ -410,4 +410,5 @@ public class FamiliesManagerController {
             e.printStackTrace();
         }
     }
+
 }

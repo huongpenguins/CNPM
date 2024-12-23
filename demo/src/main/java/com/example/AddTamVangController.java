@@ -3,6 +3,7 @@ package com.example;
 import java.io.IOException;
 
 import com.example.Entities.TamVang;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -23,7 +24,7 @@ public class AddTamVangController {
     
     public void initialize(){
 
-    
+
     }
     @FXML
     private void xacnhan() throws IOException{
