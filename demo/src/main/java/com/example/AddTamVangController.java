@@ -24,7 +24,7 @@ public class AddTamVangController {
     
     public void initialize(){
 
-    
+
     }
     @FXML
     private void xacnhan() throws IOException{

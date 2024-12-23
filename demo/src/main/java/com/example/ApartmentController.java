@@ -84,7 +84,7 @@ public class ApartmentController {
     private void loadCanHoData() {
         masterData.clear();
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-            String sql = "SELECT * FROM CanHo";  // Câu lệnh SQL để lấy tất cả căn hộ
+            String sql = "SELECT * FROM CanHotbl";  // Câu lệnh SQL để lấy tất cả căn hộ
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -138,7 +138,7 @@ public class ApartmentController {
             String mota = details[4];
 
             try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-                String sql = "INSERT INTO CanHo (macanho, mahokhau, tencanho, tang, dientich, mota) VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO CanHotbl (macanho, mahokhau, tencanho, tang, dientich, mota) VALUES (?, ?, ?, ?, ?, ?)";
                 PreparedStatement pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, macanho);
                 pstmt.setString(2, mahokhau);
@@ -173,7 +173,7 @@ public class ApartmentController {
                 String mota = details[4];
 
                 try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-                    String sql = "UPDATE CanHo SET mahokhau = ?, tencanho = ?, tang = ?, dientich = ?, mota = ? WHERE macanho = ?";
+                    String sql = "UPDATE CanHotbl SET mahokhau = ?, tencanho = ?, tang = ?, dientich = ?, mota = ? WHERE macanho = ?";
                     PreparedStatement pstmt = conn.prepareStatement(sql);
                     pstmt.setString(1, mahokhau);
                     pstmt.setString(2, tenhokhau);
@@ -207,7 +207,7 @@ public class ApartmentController {
             Optional<ButtonType> result = confirmAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-                    String sql = "DELETE FROM CanHo WHERE macanho = ?";
+                    String sql = "DELETE FROM CanHotbl WHERE macanho = ?";
                     PreparedStatement pstmt = conn.prepareStatement(sql);
                     pstmt.setString(1, selected.getMaCanHo());
                     pstmt.executeUpdate();

@@ -30,7 +30,7 @@ public class HoGiaDinhDAL extends Admin{
         if ("MaXe".equalsIgnoreCase(columnName)) {
             return checkForeignKey("Xe", "MaXe", value);
         } else if ("MaCanHo".equalsIgnoreCase(columnName)) {
-            return checkForeignKey("CanHo", "MaCanHo", value);
+            return checkForeignKey("CanHotbl", "MaCanHo", value);
         }
         return true; // Nếu không phải khóa ngoại cần kiểm tra
     }
