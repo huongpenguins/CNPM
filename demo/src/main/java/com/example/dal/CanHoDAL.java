@@ -22,9 +22,9 @@ public class CanHoDAL extends Admin {
     static String tableName = "canhotbl";
     public boolean insertCanHo() {
         String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
-        String[] types = {"String","String","String","int","float","String"};
+        String[] values = {"macanho, mahokhau, tencanho, tang, dientich, mota"};
 
-        return insert(tableName, columns, types); // Gọi hàm insert từ Admin
+        return insert(tableName, columns, values); // Gọi hàm insert từ Admin
     }
     public static boolean updateCanHo(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) throws SQLException {
         return update(tableName, columnName, newValue, conditionColumn,conditionValue);

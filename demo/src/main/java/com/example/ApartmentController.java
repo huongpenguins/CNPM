@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.dal.CanHoDAL;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -10,7 +11,9 @@ import javafx.util.Pair;
 import com.example.Entities.CanHo;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class ApartmentController {
@@ -40,7 +43,7 @@ public class ApartmentController {
     private TableColumn<CanHo, String> mota;
 
     private ObservableList<CanHo> masterData = FXCollections.observableArrayList();
-    private FilteredList<CanHo> filteredData;
+    private CanHoDAL canhoDal = new CanHoDAL(); // DAL cho CanHo
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/quanlychungcu";// Đổi lại cho phù hợp
     private static final String USER = "root";
@@ -70,7 +73,7 @@ public class ApartmentController {
         });
 
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterCanHo(newValue);
+            searchCanHo();
         });
 
         // Gắn sự kiện cho các nút
@@ -83,46 +86,52 @@ public class ApartmentController {
 
     private void loadCanHoData() {
         masterData.clear();
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-            String sql = "SELECT * FROM CanHotbl";  // Câu lệnh SQL để lấy tất cả căn hộ
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+        ArrayList<Object[]> results = canhoDal.searchCanHo("canhotbl", null, null);
+        if (results != null) {
+            for (Object[] row : results) {
+                // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa
+                String MaCanHo = (String) row[0];
+                String MaHoKhau = (String) row[1];
+                String TenCanHo = (String) row[2];
+                int Tang = (int) row[3];
+                float DienTich = (float) row[4];
+                String MoTa = (String) row[5];
 
-            while (rs.next()) {
-                masterData.add(new CanHo(
-                        rs.getString("macanho"),
-                        rs.getString("mahokhau"),
-                        rs.getString("tencanho"),
-                        rs.getInt("tang"),
-                        rs.getInt("dientich"),
-                        rs.getString("mota")
-                ));
+                masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
             }
-
-            filteredData = new FilteredList<>(masterData, p -> true);
-            quanlycanho.setItems(filteredData);
-        } catch (SQLException e) {
-            showAlert("Lỗi", "Không thể tải dữ liệu từ cơ sở dữ liệu.");
-            e.printStackTrace();
         }
+        quanlycanho.setItems(masterData);
     }
 
     @FXML
     private void searchCanHo() {
-        filterCanHo(txtSearch.getText());
-    }
-
-    private void filterCanHo(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            filteredData.setPredicate(p -> true);
-        } else {
-            String lowerCaseKeyword = keyword.toLowerCase();
-            filteredData.setPredicate(hh ->
-                    hh.getMaCanHo().toLowerCase().contains(lowerCaseKeyword) ||
-                            hh.getTenCanHo().toLowerCase().contains(lowerCaseKeyword)
-            );
+        String keyword = txtSearch.getText().trim();
+        ArrayList<Object[]> results;
+        if (keyword.isEmpty()) {
+             results = canhoDal.searchCanHo("canhotbl", null, null);
+    } else {
+        // Tìm theo MaCanHo hoặc TenCanHo
+        results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
+        if (results == null || results.isEmpty()) {
+            results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
         }
     }
+
+        masterData.clear();
+        if (results != null) {
+        for (Object[] row : results) {
+            String MaCanHo = (String) row[0];
+            String MaHoKhau = (String) row[1];
+            String TenCanHo = (String) row[2];
+            int Tang = (int) row[3];
+            float DienTich = (float) row[4];
+            String MoTa = (String) row[5];
+            masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
+        }
+    }
+        quanlycanho.setItems(masterData);
+}
+
 
     @FXML
     private void addCanHo() {
@@ -137,22 +146,16 @@ public class ApartmentController {
             String dientich = details[3];
             String mota = details[4];
 
-            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-                String sql = "INSERT INTO CanHotbl (macanho, mahokhau, tencanho, tang, dientich, mota) VALUES (?, ?, ?, ?, ?, ?)";
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, macanho);
-                pstmt.setString(2, mahokhau);
-                pstmt.setString(3, tencanho);
-                pstmt.setInt(4, Integer.parseInt(tang));
-                pstmt.setInt(5, Integer.parseInt(dientich));
-                pstmt.setString(6, mota);
-                pstmt.executeUpdate();
 
-                showAlert("Thành công", "Căn Hộ mới đã được thêm!");
-                loadCanHoData();  // Tải lại dữ liệu
-            } catch (SQLException e) {
-                showAlert("Lỗi", "Không thể thêm căn hộ.");
-                e.printStackTrace();
+            String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
+            String[] values = {macanho, mahokhau, tencanho, tang, dientich, mota};
+
+            boolean success = canhoDal.insertCanHo();
+            if (success) {
+                showAlert("Thêm thành công", "Căn hộ mới đã được thêm!");
+                loadCanHoData();
+            } else {
+                showAlert("Lỗi", "Không thể thêm căn hộ mới!");
             }
         });
     }
@@ -167,27 +170,30 @@ public class ApartmentController {
                 String macanho = data.getKey();
                 String[] details = data.getValue();
                 String mahokhau = details[0];
-                String tenhokhau = details[1];
+                String tencanho = details[1];
                 String tang = details[2];
                 String dientich = details[3];
                 String mota = details[4];
 
-                try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-                    String sql = "UPDATE CanHotbl SET mahokhau = ?, tencanho = ?, tang = ?, dientich = ?, mota = ? WHERE macanho = ?";
-                    PreparedStatement pstmt = conn.prepareStatement(sql);
-                    pstmt.setString(1, mahokhau);
-                    pstmt.setString(2, tenhokhau);
-                    pstmt.setInt(3, Integer.parseInt(tang));
-                    pstmt.setInt(4, Integer.parseInt(dientich));
-                    pstmt.setString(5, mota);
-                    pstmt.setString(6, macanho);
-                    pstmt.executeUpdate();
+                boolean allSuccess = true;
 
-                    showAlert("Sửa thành công", "Thông tin căn hộ đã được cập nhật!");
-                    loadCanHoData();  // Tải lại dữ liệu
+                // Sử dụng try-catch cho các câu lệnh update vì updateCanHo ném ra SQLException
+                try {
+                    allSuccess &= canhoDal.updateCanHo("CanHo", "MaHoKhau", mahokhau, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("CanHo", "TenCanHo", tencanho, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("CanHo", "Tang", tang, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("CanHo", "DienTich", dientich, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("CanHo", "Mota", mota, "MaCanHo", macanho);
                 } catch (SQLException e) {
-                    showAlert("Lỗi", "Không thể cập nhật căn hộ.");
                     e.printStackTrace();
+                    allSuccess = false;
+                }
+
+                if (allSuccess) {
+                    showAlert("Sửa thành công", "Thông tin căn hộ đã được cập nhật!");
+                    loadCanHoData();
+                } else {
+                    showAlert("Lỗi", "Không thể cập nhật thông tin căn hộ!");
                 }
             });
         } else {
@@ -317,4 +323,73 @@ public class ApartmentController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    @FXML
+    private void menuClick() {
+        if (sidebar != null) {
+            double currentPosition = sidebar.getLayoutX();
+            double sidebarWidth = sidebar.getPrefWidth();
+            if (currentPosition < 0) {
+                sidebar.setLayoutX(0);
+            } else {
+                sidebar.setLayoutX(-sidebarWidth);
+            }
+        } else {
+            System.out.println("Sidebar chưa được khởi tạo!");
+        }
+    }
+
+    @FXML
+    private void signout(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Đăng xuất");
+        alert.setContentText("Bạn muốn đăng xuất?");
+        alert.showAndWait();
+        if(alert.getResult()== ButtonType.OK){
+            switchToSignIn();
+        }
+    }
+
+    @FXML
+    private void switchToHome() throws IOException {
+        App.setRoot("home");
+    }
+    @FXML
+    private void switchToGiaDinh() throws IOException {
+        App.setRoot("FamiliesManager");
+    }
+    @FXML
+    private void switchToDanCu() throws IOException {
+        App.setRoot("ResidentsManager");
+    }
+    @FXML
+    private void switchToKhoanThu() throws IOException {
+        App.setRoot("fee");
+    }
+    @FXML
+    private void switchToCanHo() throws IOException {
+        App.setRoot("Apartment");
+    }
+    @FXML
+    private void switchToTamTru() throws IOException {
+        App.setRoot("tamtru");
+    }
+    @FXML
+    private void switchToTamVang() throws IOException {
+        App.setRoot("tamvang");
+    }
+    @FXML
+    private void switchToSignIn(){
+        // Chuyển sang màn hình đăng nhập
+    }
+    @FXML
+    private void switchToAccount() {
+        try {
+            App.setRoot("account");
+        } catch (IOException e) {
+            System.out.println("Lỗi: Không thể chuyển sang màn hình tài khoản.");
+            e.printStackTrace();
+        }
+    }
+
 }
