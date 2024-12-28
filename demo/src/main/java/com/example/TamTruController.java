@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Predicate;
 import com.example.Entities.TamTru;
+import com.example.Entities.TamVang;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -15,6 +16,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
@@ -37,19 +40,21 @@ public class TamTruController {
     @FXML
     private Button menu, account, giadinh, dancu, tamtru, canho, tamvang, trangchu, apply, remove;
     @FXML
-    private TextField search, text_ten, text_dcthuongtru, text_cccd, text_dctamtru;
+    private TextField search, text_ten, text_dcthuongtru, text_cccd, text_dctamtru, text_manhankhau;
     @FXML
     private TableView<TamTru> table;
     @FXML
-    private TableColumn<TamTru, String> ten, dcthuongtru, dctamtru, cccd;
+    private TableColumn<TamTru, String> ten, dcthuongtru, dctamtru, cccd, manhankhau;
     @FXML
     private TableColumn<TamTru, LocalDate> ngaybdtamtru;
     @FXML
-    private TableColumn<TamTru, Void> chinhsua, chitiet, xoa;
+    private TableColumn<TamTru, Void> chinhsua, xoa;
     @FXML
     private AnchorPane filterbar;
     @FXML
     private DatePicker ngaybdtamtru_date;
+
+
 
     public void initialize() {
         table.setEditable(false);
@@ -204,12 +209,12 @@ public class TamTruController {
         }
     }
 
-    private void deleteFromDatabase(TamTru tamTru) {
+    private void deleteFromDatabase(TamTru tamtru) {
         String query = "DELETE FROM TamTru WHERE CCCD = ?";
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, tamTru.getCCCD());
+            preparedStatement.setString(1, tamtru.getCCCD());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -217,19 +222,58 @@ public class TamTruController {
         }
     }
 
+
     @FXML
     private void search() {
         String searchText = search.getText().toLowerCase();
 
-        Predicate<TamTru> searchFilter = tamTru ->
-                tamTru.getCCCD().toLowerCase().contains(searchText) ||
-                        tamTru.getTen().toLowerCase().contains(searchText) ||
-                        tamTru.getDcThuongTru().toLowerCase().contains(searchText) ||
-                        tamTru.getDcTamTru().toLowerCase().contains(searchText) ||
-                        tamTru.getNgaybdtamtru().toString().contains(searchText);
+        Predicate<TamTru> searchFilter = tamtru ->
+                tamtru.getCCCD().toLowerCase().contains(searchText) ||
+                        tamtru.getTen().toLowerCase().contains(searchText) ||
+                        tamtru.getDcThuongTru().toLowerCase().contains(searchText) ||
+                        tamtru.getDcTamTru().toLowerCase().contains(searchText) ||
+                        tamtru.getNgaybdtamtru().toString().contains(searchText);
 
         filter.setPredicate(searchFilter);
         table.setItems(filter);
+    }
+    @FXML
+    private void add_tamtru() throws IOException{
+        Stage subStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("add_tamtru.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 500, 450);
+        AddTamTruController addTamTruController = fxmlLoader.getController();
+        subStage.setResizable(false);
+        subStage.setScene(scene);
+        subStage.setTitle("Thêm tạm trú");
+        subStage.show();
+        subStage.setOnHiding(event->{
+
+            if(addTamTruController.newTamTru==null) return;
+            else{
+                data.add(addTamTruController.newTamTru);
+
+
+
+            }
+        });
+    }
+
+    @FXML
+    private void applyFilter(){
+        Predicate<TamTru> pFilter = TamTru ->{
+            boolean chk_ten = text_ten.getText().isEmpty()||TamTru.getTen().toLowerCase().contains(text_ten.getText().toLowerCase());
+            boolean chk_cccd=text_cccd.getText().isEmpty()||TamTru.getCCCD().toLowerCase().contains(text_cccd.getText().toLowerCase());
+            boolean chk_dcthuongtru=text_dcthuongtru.getText().isEmpty()||TamTru.getDcThuongTru().toLowerCase().contains(text_dcthuongtru.getText().toLowerCase());
+            boolean chk_dctamtru=text_dctamtru.getText().isEmpty()||TamTru.getDcTamTru().toLowerCase().contains(text_dctamtru.getText().toLowerCase());
+            boolean chk_ngaybdtamtru = ngaybdtamtru_date.getValue()==null||(ngaybdtamtru_date.getValue()!=null&&ngaybdtamtru_date.getValue().isEqual(TamTru.getNgaybdtamtru()));
+
+            return chk_ten&&chk_cccd&&chk_dcthuongtru&&chk_dctamtru&&chk_ngaybdtamtru;
+        };
+
+        filter.setPredicate(pFilter);
+        table.setItems(filter);
+        filterbar.setLayoutY(-131);
     }
 
     private void showError(String title, String content) {
@@ -239,6 +283,18 @@ public class TamTruController {
         alert.showAndWait();
     }
 
+    @FXML
+    private void Remove(){
+        text_ten.clear();
+        text_cccd.clear();
+        text_dcthuongtru.clear();
+        text_dctamtru.clear();
+        ngaybdtamtru_date.setValue(null);
+        Predicate<TamTru> remove = TamTru ->true;
+        filter.setPredicate(remove);
+        table.setItems(filter);
+        filterbar.setLayoutY(-131);
+    }
 
     @FXML
     private void showFilterBar(){

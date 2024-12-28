@@ -12,163 +12,163 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="AnchorPane" stylesheets="@home.css" type="AnchorPane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.TamTruController">
-   <children>
-      <AnchorPane prefHeight="38.0" prefWidth="1001.0" style="-fx-background-color: #6c7071;" styleClass="AnchorPane1" stylesheets="@home.css">
-         <children>
-            <Button fx:id="menu" mnemonicParsing="false" onAction="#menuClick" prefHeight="49.0" prefWidth="51.0" styleClass="button1" stylesheets="@home.css" />
-            <Button fx:id="signout" contentDisplay="CENTER" layoutX="949.0" mnemonicParsing="false" onAction="#signout" prefHeight="49.0" prefWidth="51.0" styleClass="signout" stylesheets="@home.css" />
-            <Button fx:id="account" layoutX="890.0" mnemonicParsing="false" onAction="#switchToAccount" prefHeight="49.0" prefWidth="51.0" styleClass="account" stylesheets="@home.css" />
-         </children>
-      </AnchorPane>
-      <Label layoutX="39.0" layoutY="63.0" prefHeight="38.0" prefWidth="180.0" text="Danh sách tạm trú ">
-         <font>
-            <Font name="Arial Bold" size="17.0" />
-         </font>
-      </Label>
-      <TextField fx:id="search" layoutX="698.0" layoutY="72.0" prefHeight="28.0" prefWidth="264.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" />
-      <Button layoutX="926.0" layoutY="71.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: transparent;">
-         <graphic>
-            <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@picture/search.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
-      <TableView fx:id="table" layoutX="26.0" layoutY="154.0" prefHeight="381.0" prefWidth="948.0">
-        <columns>
-          <TableColumn fx:id="matamtru" prefWidth="94.39998245239258" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="MaTamTru" />
-          <TableColumn fx:id="hoten" minWidth="0.0" prefWidth="126.933349609375" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Họ Tên" />
-            <TableColumn fx:id="manhankhau" minWidth="6.000030517578125" prefWidth="108.26669311523438" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Mã Nhân Khẩu" />
-            <TableColumn fx:id="diachithuongtru" prefWidth="142.4000244140625" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Địa chỉ thường trú" />
-            <TableColumn fx:id="diachitamtru" prefWidth="142.93341064453125" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Địa chỉ tạm trú" />
-            <TableColumn fx:id="cccd" prefWidth="122.9332275390625" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" text="CCCD" />
-            <TableColumn fx:id="ngaybdtamtru" prefWidth="117.0667724609375" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" text="Ngày BĐ tạm trú" />
-            <TableColumn prefWidth="50.39996337890625" />
-            <TableColumn minWidth="2.66668701171875" prefWidth="40.79998779296875" />
-        </columns>
-      </TableView>
-      <Button fx:id="filter" layoutX="148.0" layoutY="109.0" mnemonicParsing="false" onAction="#showFilterBar" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">
-         <font>
-            <Font name="Arial Bold" size="15.0" />
-         </font>
-      </Button>
-      <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="167.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@picture/Filter.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="add" layoutX="39.0" layoutY="108.0" mnemonicParsing="false" onAction="#add_fee" prefHeight="38.0" prefWidth="91.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="     Add">
-         <font>
-            <Font name="Arial Bold" size="15.0" />
-         </font>
-      </Button>
-      <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="50.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@picture/add_icon.png" />
-         </image>
-      </ImageView>
-      <Label layoutX="34.0" layoutY="550.0" prefHeight="17.0" prefWidth="227.0" text="Ngày tháng dạng yyyy/mm/dd" textFill="#ae2323">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font>
-      </Label>
-      <VBox id="sidebar" fx:id="sidebar" alignment="CENTER" layoutX="-200.0" layoutY="49.0" prefHeight="553.0" prefWidth="200.0" spacing="35.0" styleClass="sidebar" stylesheets="@home.css" AnchorPane.topAnchor="49.0">
-         <children>
-            <ImageView fitHeight="140.0" fitWidth="112.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@picture/bluemoon.png" />
-               </image>
-            </ImageView>
-            <VBox alignment="TOP_CENTER" prefHeight="397.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <Button fx:id="trangchu" mnemonicParsing="false" onAction="#switchToHome" prefHeight="52.0" prefWidth="180.0" style="-fx-background-color: #c5c2c2;" styleClass="sidebutton" stylesheets="@home.css" text="Trang chủ" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="giadinh" mnemonicParsing="false" onAction="#switchToGiaDinh" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý hộ gia đình" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="dancu" mnemonicParsing="false" onAction="#switchToDanCu" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý dân cư" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="khoanthu" mnemonicParsing="false" onAction="#switchToKhoanThu" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý khoản thu" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="canho" mnemonicParsing="false" onAction="#switchToCanHo" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý căn hộ" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="tamtru" mnemonicParsing="false" onAction="#switchToTamTru" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý tạm trú" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="tamvang" mnemonicParsing="false" onAction="#switchToTamVang" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý tạm vắng" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="16.0" />
-                     </font>
-                  </Button>
-               </children>
-            </VBox>
-         </children>
-      </VBox>
-      <AnchorPane fx:id="filterbar" layoutY="-128.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="600.0" style="-fx-background-color: #3f3e3e;">
-         <children>
-            <Label layoutX="25.0" layoutY="63.0" prefHeight="23.0" prefWidth="42.0" text="Lý do" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="221.0" layoutY="63.0" prefHeight="23.0" prefWidth="64.0" text="Ngày vắng" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="25.0" layoutY="25.0" prefHeight="23.0" prefWidth="55.0" text="Tên" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Label>
-            <TextField fx:id="text_ten" layoutX="61.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
-            <Label layoutX="199.0" layoutY="25.0" prefHeight="23.0" prefWidth="48.0" text="CCCD" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Label>
-            <TextField fx:id="text_cccd" layoutX="247.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
-            <Label layoutX="402.0" layoutY="25.0" prefHeight="23.0" prefWidth="48.0" text="Phòng" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Label>
-            <TextField fx:id="text_maphong" layoutX="450.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
-            <DatePicker fx:id="ngayvang_date" layoutX="285.0" layoutY="62.0" prefHeight="25.0" prefWidth="123.0" />
-            <Button fx:id="remove" layoutX="512.0" layoutY="59.0" mnemonicParsing="false" onAction="#Remove" prefHeight="31.0" prefWidth="70.0" text="Remove">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Button>
-            <Button fx:id="apply" layoutX="440.0" layoutY="59.0" mnemonicParsing="false" onAction="#applyFilter" prefHeight="31.0" prefWidth="64.0" text="Apply">
-               <font>
-                  <Font name="Arial" size="13.0" />
-               </font>
-            </Button>
-            <TextField fx:id="text_lydo" layoutX="66.0" layoutY="62.0" prefHeight="25.0" prefWidth="143.0" />
-         </children>
-      </AnchorPane>
-      <Label layoutX="-42.0" layoutY="-30.0" prefHeight="49.0" prefWidth="264.0" text="Chung cư BlueMoon" textFill="#0b0b0b">
-         <font>
-            <Font name="Arial" size="25.0" />
-         </font>
-      </Label>
-   </children>
-</fx:root>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="AnchorPane" stylesheets="@home.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.TamTruController">
+    <children>
+        <AnchorPane prefHeight="38.0" prefWidth="1001.0" style="-fx-background-color: #6c7071;" styleClass="AnchorPane1" stylesheets="@home.css">
+            <children>
+                <Button fx:id="menu" mnemonicParsing="false" onAction="#menuClick" prefHeight="49.0" prefWidth="51.0" styleClass="button1" stylesheets="@home.css" />
+                <Button fx:id="signout" contentDisplay="CENTER" layoutX="949.0" mnemonicParsing="false" onAction="#signout" prefHeight="49.0" prefWidth="51.0" styleClass="signout" stylesheets="@home.css" />
+                <Label layoutX="385.0" layoutY="-1.0" prefHeight="49.0" prefWidth="264.0" text="Chung cư BlueMoon" textFill="#0b0b0b">
+                    <font>
+                        <Font name="Arial" size="25.0" />
+                    </font>
+                </Label>
+                <Button fx:id="account" layoutX="890.0" mnemonicParsing="false" onAction="#switchToAccount" prefHeight="49.0" prefWidth="51.0" styleClass="account" stylesheets="@home.css" />
+            </children>
+        </AnchorPane>
+        <Label layoutX="39.0" layoutY="63.0" prefHeight="38.0" prefWidth="180.0" text="Danh sách tạm trú">
+            <font>
+                <Font name="Arial Bold" size="17.0" />
+            </font>
+        </Label>
+        <TextField fx:id="search" layoutX="698.0" layoutY="72.0" onAction="#search" prefHeight="28.0" prefWidth="264.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" />
+        <Button layoutX="926.0" layoutY="71.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: transparent;">
+            <graphic>
+                <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@picture/search.png" />
+                    </image>
+                </ImageView>
+            </graphic></Button>
+        <TableView fx:id="table" layoutX="26.0" layoutY="154.0" prefHeight="382.0" prefWidth="958.0">
+            <columns>
+                <TableColumn fx:id="matamtru" prefWidth="90.39999008178711" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Mã Tạm Trú" />
+                <TableColumn fx:id="ten" minWidth="0.0" prefWidth="122.93336486816406" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Họ tên" />
+                <TableColumn fx:id="manhankhau" minWidth="6.000030517578125" prefWidth="117.60005187988281" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Mã Nhân Khẩu" />
+                <TableColumn fx:id="cccd" prefWidth="114.39999389648438" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="CCCD" />
+                <TableColumn fx:id="dcthuongtru" prefWidth="131.20010375976562" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Đc Thường Trú" />
+                <TableColumn fx:id="dctamtru" prefWidth="131.19989013671875" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" text="Đc Tạm Trú" />
+                <TableColumn fx:id="ngaybdtamtru" prefWidth="118.13323974609375" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" text="Ngày bđ tạm trú" />
+            <TableColumn fx:id="chinhsua" prefWidth="66.66668701171875" />
+            <TableColumn prefWidth="62.39993896484373" fx:id="xoa" />
+            </columns>
+        </TableView>
+        <Button fx:id="filter" layoutX="148.0" layoutY="109.0" mnemonicParsing="false" onAction="#showFilterBar" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">
+            <font>
+                <Font name="Arial Bold" size="15.0" />
+            </font>
+        </Button>
+        <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="167.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@picture/Filter.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="add" layoutX="39.0" layoutY="108.0" mnemonicParsing="false" onAction="#add_tamtru" prefHeight="38.0" prefWidth="91.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="     Add">
+            <font>
+                <Font name="Arial Bold" size="15.0" />
+            </font>
+        </Button>
+        <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="50.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@picture/add_icon.png" />
+            </image>
+        </ImageView>
+        <Label layoutX="34.0" layoutY="550.0" prefHeight="17.0" prefWidth="227.0" text="Ngày tháng dạng yyyy/mm/dd" textFill="#ae2323">
+            <font>
+                <Font name="Arial" size="14.0" />
+            </font>
+        </Label>
+        <VBox id="sidebar" fx:id="sidebar" alignment="CENTER" layoutX="-200.0" layoutY="49.0" prefHeight="553.0" prefWidth="200.0" spacing="35.0" styleClass="sidebar" stylesheets="@home.css" AnchorPane.topAnchor="49.0">
+            <children>
+                <ImageView fitHeight="140.0" fitWidth="112.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@picture/bluemoon.png" />
+                    </image>
+                </ImageView>
+                <VBox alignment="TOP_CENTER" prefHeight="397.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="trangchu" mnemonicParsing="false" onAction="#switchToHome" prefHeight="52.0" prefWidth="180.0" style="-fx-background-color: #c5c2c2;" styleClass="sidebutton" stylesheets="@home.css" text="Trang chủ" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="giadinh" mnemonicParsing="false" onAction="#switchToGiaDinh" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý hộ gia đình" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="dancu" mnemonicParsing="false" onAction="#switchToDanCu" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý dân cư" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="khoanthu" mnemonicParsing="false" onAction="#switchToKhoanThu" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý khoản thu" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="canho" mnemonicParsing="false" onAction="#switchToCanHo" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý căn hộ" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="tamtru" mnemonicParsing="false" onAction="#switchToTamTru" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý tạm trú" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="tamvang" mnemonicParsing="false" onAction="#switchToTamVang" prefHeight="52.0" prefWidth="180.0" styleClass="sidebutton" stylesheets="@home.css" text="Quản lý tạm vắng" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="16.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+        <AnchorPane fx:id="filterbar" layoutX="134.0" layoutY="-155.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="711.0" style="-fx-background-color: #3f3e3e;">
+            <children>
+                <Label layoutX="25.0" layoutY="63.0" prefHeight="23.0" prefWidth="84.0" text="Đc Tạm Trú" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="13.0" />
+                    </font>
+                </Label>
+                <Label layoutX="266.0" layoutY="64.0" prefHeight="23.0" prefWidth="101.0" text="Ngày bđ tạm trú" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="13.0" />
+                    </font>
+                </Label>
+                <Label layoutX="25.0" layoutY="25.0" prefHeight="23.0" prefWidth="55.0" text="Họ Tên" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="13.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="text_ten" layoutX="81.0" layoutY="22.0" prefHeight="25.0" prefWidth="123.0" />
+                <Label layoutX="236.0" layoutY="24.0" prefHeight="23.0" prefWidth="48.0" text="CCCD" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="13.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="text_cccd" layoutX="300.0" layoutY="23.0" prefHeight="25.0" prefWidth="123.0" />
+                <Label layoutX="449.0" layoutY="21.0" prefHeight="23.0" prefWidth="101.0" text="Đc Thường Trú" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="13.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="text_dcthuongtru" layoutX="566.0" layoutY="20.0" prefHeight="26.0" prefWidth="109.0" />
+                <DatePicker fx:id="ngaybdtamtru_date" layoutX="378.0" layoutY="61.0" prefHeight="25.0" prefWidth="123.0" />
+                <Button fx:id="remove" layoutX="609.0" layoutY="68.0" mnemonicParsing="false" onAction="#Remove" prefHeight="31.0" prefWidth="70.0" text="Remove">
+                    <font>
+                        <Font name="Arial" size="13.0" />
+                    </font>
+                </Button>
+                <Button fx:id="apply" layoutX="529.0" layoutY="68.0" mnemonicParsing="false" onAction="#applyFilter" prefHeight="31.0" prefWidth="64.0" text="Apply">
+                    <font>
+                        <Font name="Arial" size="13.0" />
+                    </font>
+                </Button>
+                <TextField fx:id="text_tamtru" layoutX="103.0" layoutY="62.0" prefHeight="26.0" prefWidth="135.0" />
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
