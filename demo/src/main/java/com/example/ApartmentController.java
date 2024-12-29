@@ -1,19 +1,20 @@
 package com.example;
 
 import com.example.dal.CanHoDAL;
+import com.example.Entities.CanHo;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.util.Pair;
-import com.example.Entities.CanHo;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.io.IOException;
-import java.sql.*;
 import java.util.ArrayList;
+import java.sql.*;
+import java.util.List;
 import java.util.Optional;
 
 public class ApartmentController {
@@ -42,24 +43,16 @@ public class ApartmentController {
     @FXML
     private TableColumn<CanHo, String> mota;
 
+
     private ObservableList<CanHo> masterData = FXCollections.observableArrayList();
     private CanHoDAL canhoDal = new CanHoDAL(); // DAL cho CanHo
-/*
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/quanlychungcu";// Đổi lại cho phù hợp
-    private static final String USER = "root";
-    private static final String PASSWORD = "2003";
-
- */
-
-    private Admin admin;  // Tạo đối tượng Admin
-
-    public ApartmentController() {
-        admin = new Admin();  // Khởi tạo Admin
-    }
 
 
     public void initialize() {
-        // Thiết lập cellValueFactory
+        if (sidebar != null) {
+            sidebar.setLayoutX(-sidebar.getPrefWidth());
+        }
+
         macanho.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMaCanHo()));
         mahokhau.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMaHoKhau()));
         tencanho.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getTenCanHo()));
@@ -67,12 +60,14 @@ public class ApartmentController {
         dientich.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getDienTich())));
         mota.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMoTa()));
 
-        loadCanHoData();
 
-        // Vô hiệu hóa Sửa, Xóa, Xem chi tiết khi chưa chọn
+        loadCanHoData();
+/*
         btnEdit.setDisable(true);
         btnDelete.setDisable(true);
         btnViewDetails.setDisable(true);
+
+ */
 
         quanlycanho.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             boolean isSelected = newSelection != null;
@@ -84,74 +79,62 @@ public class ApartmentController {
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             searchCanHo();
         });
-
-        // Gắn sự kiện cho các nút
-        btnSearch.setOnAction(event -> searchCanHo());
-        btnAdd.setOnAction(event -> addCanHo());
-        btnEdit.setOnAction(event -> updateCanHo());
-        btnDelete.setOnAction(event -> deleteCanHo());
-        btnViewDetails.setOnAction(event -> viewCanHoDetails());
     }
 
     private void loadCanHoData() {
-        masterData.clear();
-        Connection connection = admin.getConnectionAdmin();
-        if (connection != null) {
-            ArrayList<Object[]> results = canhoDal.searchCanHo("canhotbl", null, null);
-            if (results != null) {
-                for (Object[] row : results) {
-                    // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa
-                    String MaCanHo = (String) row[0];
-                    String MaHoKhau = (String) row[1];
-                    String TenCanHo = (String) row[2];
-                    int Tang = (int) row[3];
-                    float DienTich = (float) row[4];
-                    String MoTa = (String) row[5];
-
-                    masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
-                }
-            }
-            quanlycanho.setItems(masterData);
-        }else {
-            showAlert("Lỗi", "Không thể kết nối đến cơ sở dữ liệu.");
+        Admin admin = new Admin(); // Tạo đối tượng Admin
+        if (admin.getConnectionAdmin() == null) {
+            System.err.println("Kết nối cơ sở dữ liệu chưa được khởi tạo.");
+            return;  // Trả về danh sách rỗng nếu không có kết nối
         }
+        masterData.clear();
+        ArrayList<Object[]> results = canhoDal.searchCanHo("canhotbl", null, null);
+        if (results != null && !results.isEmpty()) {
+
+            for (Object[] row : results) {
+                // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, Mota
+                String MaCanHo = (String) row[0];
+                String MaHoKhau = (String) row[1];
+                String TenCanHo = (String) row[2];
+                int Tang = (int) row[3];
+                float DienTich = (float) row[4];
+                String MoTa = (String) row[5];
+
+
+                masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
+            }
+        }
+        quanlycanho.setItems(masterData);
     }
 
     @FXML
     private void searchCanHo() {
         String keyword = txtSearch.getText().trim();
         ArrayList<Object[]> results;
-        Connection connection = admin.getConnectionAdmin();
-
-        if (connection != null) {
-            if (keyword.isEmpty()) {
-                results = canhoDal.searchCanHo("canhotbl", null, null);
-            } else {
-                // Tìm theo MaCanHo hoặc TenCanHo
-                results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
-                if (results == null || results.isEmpty()) {
-                    results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
-                }
+        if (keyword.isEmpty()) {
+            results = canhoDal.searchCanHo("canhotbl", null, null);
+        } else {
+            // Tìm theo MaCanHo hoặc TenCanHo
+            results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
+            if (results == null || results.isEmpty()) {
+                results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
             }
-
-            masterData.clear();
-            if (results != null) {
-                for (Object[] row : results) {
-                    String MaCanHo = (String) row[0];
-                    String MaHoKhau = (String) row[1];
-                    String TenCanHo = (String) row[2];
-                    int Tang = (int) row[3];
-                    float DienTich = (float) row[4];
-                    String MoTa = (String) row[5];
-                    masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
-                }
-            }
-            quanlycanho.setItems(masterData);
-        }else {
-            showAlert("Lỗi", "Không thể kết nối đến cơ sở dữ liệu.");
         }
-}
 
+        masterData.clear();
+        if (results != null) {
+            for (Object[] row : results) {
+                String MaCanHo = (String) row[0];
+                String MaHoKhau = (String) row[1];
+                String TenCanHo = (String) row[2];
+                int Tang = (int) row[3];
+                float DienTich = (float) row[4];
+                String MoTa = (String) row[5];
+                masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
+            }
+        }
+        quanlycanho.setItems(masterData);
+    }
 
     @FXML
     private void addCanHo() {
@@ -166,16 +149,15 @@ public class ApartmentController {
             String dientich = details[3];
             String mota = details[4];
 
-
             String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
             String[] values = {macanho, mahokhau, tencanho, tang, dientich, mota};
 
             boolean success = canhoDal.insertCanHo();
             if (success) {
-                showAlert("Thêm thành công", "Căn hộ mới đã được thêm!");
+                showAlert("Thành công", "Hộ khẩu mới đã được thêm!");
                 loadCanHoData();
             } else {
-                showAlert("Lỗi", "Không thể thêm căn hộ mới!");
+                showAlert("Lỗi", "Không thể thêm hộ khẩu!");
             }
         });
     }
@@ -196,9 +178,7 @@ public class ApartmentController {
                 String mota = details[4];
 
                 boolean allSuccess = true;
-                Connection connection = admin.getConnectionAdmin();
 
-                // Sử dụng try-catch cho các câu lệnh update vì updateCanHo ném ra SQLException
                 try {
                     allSuccess &= canhoDal.updateCanHo("CanHo", "MaHoKhau", mahokhau, "MaCanHo", macanho);
                     allSuccess &= canhoDal.updateCanHo("CanHo", "TenCanHo", tencanho, "MaCanHo", macanho);
@@ -214,11 +194,11 @@ public class ApartmentController {
                     showAlert("Sửa thành công", "Thông tin căn hộ đã được cập nhật!");
                     loadCanHoData();
                 } else {
-                    showAlert("Lỗi", "Không thể cập nhật thông tin căn hộ!");
+                    showAlert("Lỗi", "Không thể cập nhật hộ khẩu!");
                 }
             });
         } else {
-            showAlert("Lỗi", "Vui lòng chọn căn hộ cần sửa!");
+            showAlert("Lỗi", "Vui lòng chọn hộ khẩu cần sửa!");
         }
     }
 
@@ -230,30 +210,15 @@ public class ApartmentController {
             confirmAlert.setTitle("Xóa căn hộ");
             confirmAlert.setHeaderText("Bạn có chắc chắn muốn xóa căn hộ này?");
             confirmAlert.setContentText("Hành động này không thể hoàn tác.");
-
             Optional<ButtonType> result = confirmAlert.showAndWait();
-            /*if (result.isPresent() && result.get() == ButtonType.OK) {
-                try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-                    String sql = "DELETE FROM CanHotbl WHERE macanho = ?";
-                    PreparedStatement pstmt = conn.prepareStatement(sql);
-                    pstmt.setString(1, selected.getMaCanHo());
-                    pstmt.executeUpdate();
-
-                    showAlert("Xóa thành công", "Căn Hộ đã được xóa khỏi hệ thống!");
-                    loadCanHoData();  // Tải lại dữ liệu
-                } catch (SQLException e) {
-                    showAlert("Lỗi", "Không thể xóa căn hộ.");
-                    e.printStackTrace();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                boolean success = canhoDal.deleteCanHo("canhotbl", "MaCanHo", selected.getMaCanHo());
+                if (success) {
+                    showAlert("Xóa thành công", "Căn hộ đã được xóa khỏi hệ thống!");
+                    loadCanHoData();
+                } else {
+                    showAlert("Lỗi", "Không thể xóa căn hộ!");
                 }
-            }
-
-             */
-            boolean success = canhoDal.deleteCanHo("CanHo", "MaCanHo", selected.getMaCanHo());
-            if (success) {
-                showAlert("Xóa thành công", "Căn hộ đã được xóa.");
-                loadCanHoData();
-            } else {
-                showAlert("Lỗi", "Không thể xóa căn hộ.");
             }
         } else {
             showAlert("Lỗi", "Vui lòng chọn căn hộ cần xóa!");
@@ -261,30 +226,20 @@ public class ApartmentController {
     }
 
     @FXML
-    public void viewCanHoDetails() {
-        // Lấy căn hộ được chọn từ TableView
-        CanHo selectedCanHo = quanlycanho.getSelectionModel().getSelectedItem();
-        if (selectedCanHo != null) {
-            // Hiển thị thông tin chi tiết của căn hộ (dùng Alert làm ví dụ)
-            String details = "Mã căn hộ: " + selectedCanHo.getMaCanHo() + "\n"
-                    + "Mã hộ khẩu: " + selectedCanHo.getMaHoKhau() + "\n"
-                    + "Tên căn hộ: " + selectedCanHo.getTenCanHo() + "\n"
-                    + "Tầng: " + selectedCanHo.getTang() + "\n"
-                    + "Diện tích: " + selectedCanHo.getDienTich() + "\n"
-                    + "Mô tả: " + selectedCanHo.getMoTa();
+    private void viewCanHoDetails() {
+        CanHo selected = quanlycanho.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            String macanho = selected.getMaCanHo();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Chi tiết căn hộ");
-            alert.setHeaderText("Thông tin chi tiết căn hộ");
-            alert.setContentText(details);
-            alert.showAndWait();
+            // Hiển thị dialog chi tiết
+            Dialog<Void> detailDialog = new Dialog<>();
+            detailDialog.setTitle("Chi tiết căn hộ - Mã: " + macanho);
+
+            ButtonType closeButtonType = new ButtonType("Đóng", ButtonBar.ButtonData.CANCEL_CLOSE);
+            detailDialog.getDialogPane().getButtonTypes().addAll(closeButtonType);
+
         } else {
-            // Thông báo nếu không có căn hộ nào được chọn
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText("Không có căn hộ nào được chọn");
-            alert.setContentText("Vui lòng chọn một căn hộ từ bảng để xem chi tiết.");
-            alert.showAndWait();
+            showAlert("Lỗi", "Vui lòng chọn căn hộ để xem chi tiết!");
         }
     }
 
@@ -306,6 +261,7 @@ public class ApartmentController {
         TextField txtdientich = new TextField();
         TextField txtmota = new TextField();
 
+
         grid.add(new Label("Mã Căn Hộ:"), 0, 0);
         grid.add(txtmacanho, 1, 0);
         grid.add(new Label("Mã Hộ Khẩu:"), 0, 1);
@@ -319,6 +275,7 @@ public class ApartmentController {
         grid.add(new Label("Mô tả:"), 0, 5);
         grid.add(txtmota, 1, 5);
 
+
         if (canhoData != null) {
             txtmacanho.setText(canhoData.getMaCanHo());
             txtmahokhau.setText(canhoData.getMaHoKhau());
@@ -327,6 +284,8 @@ public class ApartmentController {
             txtdientich.setText(String.valueOf(canhoData.getDienTich()));
             txtmota.setText(canhoData.getMoTa());
         }
+
+
 
         dialog.getDialogPane().setContent(grid);
 
@@ -338,6 +297,7 @@ public class ApartmentController {
                         txttencanho.getText(),
                         txttang.getText(),
                         txtdientich.getText(),
+
                 });
             }
             return null;
