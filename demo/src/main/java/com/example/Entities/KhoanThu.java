@@ -12,14 +12,10 @@ public class KhoanThu {
     SimpleStringProperty loai;
     SimpleObjectProperty<LocalDate> batdau;
     SimpleObjectProperty<LocalDate> hannop;
-<<<<<<< HEAD
-    SimpleIntegerProperty ghichu; // don gia
+    public SimpleIntegerProperty ghichu;//don gia
     SimpleStringProperty donvi;
     boolean completed;
-=======
-    SimpleIntegerProperty ghichu;
     public  SimpleIntegerProperty I_Tong_tien;
->>>>>>> 6582920a1d1b604171c4c4b155fabc24d2ff01df
 
     public KhoanThu(String id, String ten,String loai, 
     LocalDate batdau, LocalDate hannop,int ghichu,String donvi) {

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Predicate;
 
+import com.example.Entities.KhoanThu;
 import com.example.Entities.TamVang;
 import com.example.dal.TamVangDAL;
 
@@ -82,108 +83,19 @@ public class TamVangController {
         // them button chinh sua vao cot
         chinhsua.setCellFactory(col -> new TableCell<TamVang, Void>() {
             private final Button btn = new Button("Sửa");
-
             {   
                 
                btn.setOnAction(event->{
-
-               table.setEditable(true);
-                
-                //chinh sua ten
-                ten.setCellFactory(TextFieldTableCell.forTableColumn());
-                ten.setOnEditCommit(
-                    new EventHandler<CellEditEvent<TamVang, String>>() {
-                        @Override
-                        public void handle(CellEditEvent<TamVang, String> t) {
-                            ((TamVang) t.getTableView().getItems().get(t.getTablePosition().getRow())).setTen(t.getNewValue());
-                        }
-                    }
-                    // them vao csdl
-
-                );
-
-                cccd.setCellFactory(TextFieldTableCell.forTableColumn());
-                cccd.setOnEditCommit(
-                    new EventHandler<CellEditEvent<TamVang, String>>() {
-                        @Override
-                        public void handle(CellEditEvent<TamVang, String> t) {
-                            ((TamVang) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                                ).setCccd(t.getNewValue());
-                        }
-                    }
-                    // them vao csdl
-
-                );
-
-                phong.setCellFactory(TextFieldTableCell.forTableColumn());
-                phong.setOnEditCommit(
-                    new EventHandler<CellEditEvent<TamVang, String>>() {
-                        @Override
-                        public void handle(CellEditEvent<TamVang, String> t) {
-                            ((TamVang) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                                ).setPhong(t.getNewValue());
-                        }
-                    }
-                    // them vao csdl
-
-                );
-                
-                lydo.setCellFactory(TextFieldTableCell.forTableColumn());
-                lydo.setOnEditCommit(
-                    new EventHandler<CellEditEvent<TamVang, String>>() {
-                        @Override
-                        public void handle(CellEditEvent<TamVang, String> t) {
-                            ((TamVang) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                                ).setLydo(t.getNewValue());
-                        }
-                    }
-                    // them vao csdl
-
-                );
-                    // chinh sua ngayvang
-                ngayvang.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<LocalDate>() {
-                    @Override
-                    public String toString(LocalDate date){
-                        return date.toString();
-                    }
-                    @Override
-                    public LocalDate fromString(String string){
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                        LocalDate date = LocalDate.parse(string, formatter);
-                        if(date==null){
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "Định dạng ngày không hợp lệ! Vui lòng nhập theo định dạng yyyy-MM-dd.");
-                        alert.showAndWait();
-                        
-                        }
-                        return date;
-                    }
-                }));
-                ngayvang.setOnEditCommit(
-                    new EventHandler<CellEditEvent<TamVang, LocalDate>>() {
-                        @Override
-                        public void handle(CellEditEvent<TamVang, LocalDate> t) {
-                            ((TamVang) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                                ).setNgayvang(t.getNewValue());
-                        }
-                    }
-                );
-
-                
+                TamVang k = getTableView().getItems().get(getIndex());
+                try {
+                    edit_tamvang(k);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                
                 });
-                
-                table.setOnKeyPressed(keyevent -> {
-                    if (keyevent.getCode() == KeyCode.ENTER) {
-                       table.setEditable(false);
-                    }
 
-                });
-               
-               
          }
             
          
@@ -290,6 +202,24 @@ public class TamVangController {
             }
         });
         
+    }
+    
+    private void edit_tamvang(TamVang k) throws IOException{
+        Stage subStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("edit_tamvang.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 500, 600);
+        EditTamVangController edit = fxmlLoader.getController();
+        subStage.setResizable(false);
+        subStage.setScene(scene);
+        subStage.setTitle("Sửa phí thu");
+        edit.id_text.setText(k.getMaNhanKhau());
+        edit.lydo_text.setText(k.getLydo());
+        edit.ngayvang.setValue(k.getNgayvang());
+        
+        subStage.show();
+        subStage.setOnHiding(event->{
+            
+        });
     }
 
     @FXML 

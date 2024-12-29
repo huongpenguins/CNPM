@@ -1,13 +1,19 @@
 package com.example;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import com.example.Entities.KhoanThu;
+import com.example.Entities.TamTru;
+import com.example.dal.KhoanThuDAL;
 
 import javafx.scene.control.TableCell;
 import javafx.collections.FXCollections;
@@ -70,7 +76,9 @@ public class FeeController {
     @FXML
     DatePicker tungay,denngay;
 
+    KhoanThuDAL khoanThuDAL;
     //IntegerProperty pageCount = new SimpleIntegerProperty();
+    String[] column = new String[]{"TenKhoanThu","LoaiKhoanThu","ThoiGianBatDau","ThoiGianKetThuc","DonGia","DonVi"};
     
     public void initialize(){
         table.setEditable(false);
@@ -95,137 +103,15 @@ public class FeeController {
             {   
                 
                 btn.setOnAction(event->{
-
-               table.setEditable(true);
-                
-                //chinh sua ten
-                ten.setCellFactory(TextFieldTableCell.forTableColumn());
-                ten.setOnEditCommit(
-                    new EventHandler<CellEditEvent<KhoanThu, String>>() {
-                        @Override
-                        public void handle(CellEditEvent<KhoanThu, String> t) {
-                            ((KhoanThu) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                                ).setTen(t.getNewValue());
-                        }
-                    }
-                    // them vao csdl
-
-                );
-
-                loai.setCellFactory(TextFieldTableCell.forTableColumn());
-                loai.setOnEditCommit(
-                    new EventHandler<CellEditEvent<KhoanThu, String>>() {
-                        @Override
-                        public void handle(CellEditEvent<KhoanThu, String> t) {
-                            ((KhoanThu) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                                ).setLoai(t.getNewValue());
-                        }
-                    }
-                    // them vao csdl
-
-                );
-
-                ghichu.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer ghichu){
-                        return ghichu.toString();
-                    }
-                    @Override
-                    public Integer fromString(String string){
-                        Integer intGhichu = null;
+                    KhoanThu k = getTableView().getItems().get(getIndex());
                         try {
-                            intGhichu = Integer.parseInt(string);
-                          
-                        } catch (Exception e) {
-                            Alert alert = new Alert(Alert.AlertType.ERROR, "Nhập sai số tiền");
-                            alert.showAndWait();
-                        } 
-                         return intGhichu;
-                    }
-                       
-                }));
-                ghichu.setOnEditCommit(
-                    new EventHandler<CellEditEvent<KhoanThu, Integer>>() {
-                        @Override
-                        public void handle(CellEditEvent<KhoanThu, Integer> t) {
-                            ((KhoanThu) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                                ).setGhichu(t.getNewValue());
+                            edit_fee(k);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
                         }
-                    }
-                    // luu vao csdl
-
-                );
-                
-                    // chinh sua batdau
-                batdau.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<LocalDate>() {
-                    @Override
-                    public String toString(LocalDate date){
-                        return date.toString();
-                    }
-                    @Override
-                    public LocalDate fromString(String string){
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                        LocalDate date = LocalDate.parse(string, formatter);
-                        if(date==null){
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "Định dạng ngày không hợp lệ! Vui lòng nhập theo định dạng yyyy-MM-dd.");
-                        alert.showAndWait();
-                        
-                        }
-                        return date;
-                    }
-                }));
-                batdau.setOnEditCommit(
-                    new EventHandler<CellEditEvent<KhoanThu, LocalDate>>() {
-                        @Override
-                        public void handle(CellEditEvent<KhoanThu, LocalDate> t) {
-                            ((KhoanThu) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                                ).setBatdau(t.getNewValue());
-                        }
-                    }
-                );
-
-                // chinh sua hannop
-                hannop.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<LocalDate>() {
-                    @Override
-                    public String toString(LocalDate date){
-                        return date.toString();
-                    }
-                    @Override
-                    public LocalDate fromString(String string){
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                        LocalDate date = LocalDate.parse(string, formatter);
-                        if(date==null){
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "Định dạng ngày không hợp lệ! Vui lòng nhập theo định dạng yyyy-MM-dd.");
-                        alert.showAndWait();
-                        }
-                        return date;
-                    }
-                }));
-                hannop.setOnEditCommit(
-                    new EventHandler<CellEditEvent<KhoanThu, LocalDate>>() {
-                        @Override
-                        public void handle(CellEditEvent<KhoanThu, LocalDate> t) {
-                            ((KhoanThu) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                                ).setHannop(t.getNewValue());
-                        }
-                    }
-                    // luu vao csdl o day
-
-                );
-                });
-                
-                table.setOnKeyPressed(keyevent -> {
-                    if (keyevent.getCode() == KeyCode.ENTER) {
-                       table.setEditable(false);
-                    }
-
-                });
                
+                });
          }
             
          
@@ -308,6 +194,9 @@ public class FeeController {
 
     }
     
+    
+
+
     FilteredList<KhoanThu> filter = new FilteredList<>(data,p->true);
     @FXML
     private void search(){
@@ -354,15 +243,38 @@ public class FeeController {
         subStage.show();
         subStage.setOnHiding(event->{
             
-            if(addFeeController.newKhoanThu==null) return;
-            else{
-                data.add(addFeeController.newKhoanThu);
-                 // Them vao CSDL
+            // if(addFeeController.newKhoanThu==null) return;
+            // else{
+            //     data.add(addFeeController.newKhoanThu);
+            //      // Them vao CSDL
 
 
-            }
+            //}
         });
         
+    }
+        
+    private void edit_fee(KhoanThu k) throws IOException{
+        Stage subStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("edit_fee.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 500, 600);
+        EditFeeController edit = fxmlLoader.getController();
+        subStage.setResizable(false);
+        subStage.setScene(scene);
+        subStage.setTitle("Sửa phí thu");
+        edit.batdau.setValue(k.getBatdau());
+        edit.donvi.setValue(k.getDonvi());
+        edit.ghichu.setText(k.ghichu.toString());
+        edit.hannop.setValue(k.getHannop());
+        edit.id_text.setText(k.getId());
+        edit.ten_text.setText(k.getTen());
+        edit.loai.setValue(k.getLoai());
+
+        
+        subStage.show();
+        subStage.setOnHiding(event->{
+            
+        });
     }
     private void showChiTiet(KhoanThu k) throws IOException{
         if(k.getLoai()!="Quyên góp"){
@@ -372,7 +284,7 @@ public class FeeController {
             CTKhoanThuController ctKThuController = fxmlLoader.getController();
             ctKThuController.maKT = k.getId();
             ctKThuController.tenKhoanThu = k.getTen();
-           ctKThuController.tungay = k.getBatdau();
+            ctKThuController.tungay = k.getBatdau();
             ctKThuController.denngay = k.getHannop();
             subStage.setResizable(false);
             subStage.setScene(scene);

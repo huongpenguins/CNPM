@@ -12,9 +12,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class AddTamVangController {
-
-    TamVang newTamVang;
+public class EditTamVangController {
+     TamVang newTamVang;
 
     @FXML 
     TextField id_text,lydo_text;
@@ -38,7 +37,6 @@ public class AddTamVangController {
         } catch (Exception e) {
             return ;
         }
-        
         newTamVang = new TamVang(id_text.getText(),lydo_text.getText(),ngayvang.getValue());
         ArrayList<Object[]> newTV = new ArrayList<>();
         TamVangDAL tamVangDAL = new TamVangDAL();
@@ -66,7 +64,5 @@ public class AddTamVangController {
     public void setNewTamVang(TamVang newTamVang) {
         this.newTamVang = newTamVang;
     }
-
-
 
 }

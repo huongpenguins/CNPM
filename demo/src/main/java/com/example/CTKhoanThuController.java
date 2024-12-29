@@ -60,13 +60,9 @@ public class CTKhoanThuController {
     //      new CTKhoanThu("Phí vệ sinh", "KT04", "Phí vệ sinh chung cư", LocalDate.of(2024, 3, 10), 100000, 100000),
     //     new CTKhoanThu("Internet", "KT05", "Cước Internet tháng 1", LocalDate.of(2024, 1, 25), 250000, 200000)
         
-<<<<<<< HEAD
     //    );
     ObservableList<CTKhoanThu> data=FXCollections.observableArrayList();
     
-=======
-       );
->>>>>>> 6582920a1d1b604171c4c4b155fabc24d2ff01df
     public void initialize(){
         
         tiennop_filter.setHighValue(tiennop_filter.getMax());

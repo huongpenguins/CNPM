@@ -1,9 +1,11 @@
 package com.example;
 import com.example.connect.*;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,7 +27,40 @@ public class Admin {
 //        return "admin".equals(username) && "admin123".equals(password);
 //    }
 
+public static boolean update1(String tableName, String[] columns, String[] newValue,String condition) {
+    if (columns.length != newValue.length) {
+        throw new IllegalArgumentException("Số lượng cột và kiểu dữ liệu không khớp!");
+    }
 
+    StringBuilder query = new StringBuilder("UPDATE ");
+    query.append(tableName).append(" SET ");
+
+    // Tạo câu lệnh SQL cho các cột
+    for (int i = 0; i < columns.length; i++) {
+        query.append(columns[i]).append(" = ").append(newValue[i]);
+        if (i < columns.length - 1) {
+            query.append(", ");
+        }
+    }
+    query.append(" WHERE ").append(condition);
+
+             try (Statement statement = connection_admin.createStatement()) {
+                int rowsUpdated = statement.executeUpdate(query.toString());
+
+                if (rowsUpdated > 0) {
+                    System.out.println("Cập nhật thành công!");
+                    return true;
+                } else {
+                    System.out.println("Không có bản ghi nào được cập nhật.");
+                    return false;
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return false;
+        
+}
     /**
      * Hàm insert chung, nhập dữ liệu trực tiếp từ bàn phím
      *
