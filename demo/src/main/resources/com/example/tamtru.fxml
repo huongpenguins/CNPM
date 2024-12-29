@@ -12,13 +12,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="AnchorPane" stylesheets="@home.css" type="AnchorPane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.TamTruController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="AnchorPane" stylesheets="@home.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.TamTruController">
    <children>
       <AnchorPane prefHeight="38.0" prefWidth="1001.0" style="-fx-background-color: #6c7071;" styleClass="AnchorPane1" stylesheets="@home.css">
          <children>
             <Button fx:id="menu" mnemonicParsing="false" onAction="#menuClick" prefHeight="49.0" prefWidth="51.0" styleClass="button1" stylesheets="@home.css" />
             <Button fx:id="signout" contentDisplay="CENTER" layoutX="949.0" mnemonicParsing="false" onAction="#signout" prefHeight="49.0" prefWidth="51.0" styleClass="signout" stylesheets="@home.css" />
             <Button fx:id="account" layoutX="890.0" mnemonicParsing="false" onAction="#switchToAccount" prefHeight="49.0" prefWidth="51.0" styleClass="account" stylesheets="@home.css" />
+            <Label layoutX="369.0" layoutY="2.0" prefHeight="49.0" prefWidth="264.0" text="Chung cư BlueMoon" textFill="#0b0b0b">
+               <font>
+                  <Font name="Arial" size="25.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <Label layoutX="39.0" layoutY="63.0" prefHeight="38.0" prefWidth="180.0" text="Danh sách tạm trú ">
@@ -165,10 +170,5 @@
             <TextField fx:id="text_lydo" layoutX="66.0" layoutY="62.0" prefHeight="25.0" prefWidth="143.0" />
          </children>
       </AnchorPane>
-      <Label layoutX="-42.0" layoutY="-30.0" prefHeight="49.0" prefWidth="264.0" text="Chung cư BlueMoon" textFill="#0b0b0b">
-         <font>
-            <Font name="Arial" size="25.0" />
-         </font>
-      </Label>
    </children>
-</fx:root>
+</AnchorPane>

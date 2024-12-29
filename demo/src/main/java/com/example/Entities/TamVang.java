@@ -10,7 +10,7 @@ public class TamVang {
     SimpleStringProperty ten;
     SimpleStringProperty lydo;
     SimpleObjectProperty<LocalDate> ngayvang;
-
+    boolean completed ;
 
     public TamVang(String ten, String cccd,String phong,
      String lydo,LocalDate ngayvang) {
@@ -19,6 +19,7 @@ public class TamVang {
         this.phong = new SimpleStringProperty(phong);
         this.ngayvang = new SimpleObjectProperty<>(ngayvang);
         this.lydo = new SimpleStringProperty(lydo);
+        completed=false;
         
     }
     public TamVang(String maNhanKhau,
@@ -28,6 +29,20 @@ public class TamVang {
         this.lydo.set(lydo);
         
     }
+
+    
+    public boolean isCompleted() {
+        return this.completed;
+    }
+
+    public boolean getCompleted() {
+        return this.completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
     public String getMaNhanKhau() {
         return this.maNhanKhau.get();
     }

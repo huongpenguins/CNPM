@@ -6,39 +6,25 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class CTKhoanThu {
-    //String maKT;
-    SimpleStringProperty maKT,trangthai;
+public class CTQuyenGop {
+     //String maKT;
+    SimpleStringProperty maKT;
     SimpleStringProperty tenKT;
     SimpleStringProperty id;    // ma ho
     SimpleStringProperty ten; // ten 
     SimpleObjectProperty<LocalDate> ngaynop;
-    SimpleIntegerProperty tiennop,danop,conthieu;
+    SimpleIntegerProperty danop;
 
 
-    public CTKhoanThu(String tenKT, String id,String ten, 
-    LocalDate ngaynop, int tiennop,int danop) {
+    public CTQuyenGop(String tenKT, String id,String ten, 
+    LocalDate ngaynop, int danop) {
         this.id = new SimpleStringProperty(id);
         this.ten = new SimpleStringProperty(ten);
         this.tenKT= new SimpleStringProperty(tenKT);
-        this.tiennop = new SimpleIntegerProperty(tiennop);
         this.danop = new SimpleIntegerProperty(danop);
         this.ngaynop = new SimpleObjectProperty<>(ngaynop);
-        this.conthieu = new SimpleIntegerProperty(); 
-        this.conthieu.bind(this.tiennop.subtract(this.danop.getValue()));
-        this.trangthai = new SimpleStringProperty(danop > tiennop ? "Dư" : ( danop == tiennop ? "Xong" : "Thiếu"));
-        this.danop.addListener((obs, oldVal, newVal) -> {
-            this.trangthai.set(this.getDanop() > this.getTiennop() ? "Dư": (this.getDanop() == this.getTiennop() ?  "Xong" : "Thiếu"));
-        });
-    }
-    public String getTrangthai() {
-        return this.trangthai.getValue();
     }
 
-    public void setTrangthai(String trangthai) {
-        
-        this.trangthai.set(trangthai);
-    }
     public String getMaKT() {
         return this.maKT.getValue();
     }
@@ -78,14 +64,6 @@ public class CTKhoanThu {
         this.ngaynop.set(ngaynop);
     }
 
-    public int getTiennop() {
-        return this.tiennop.get();
-    }
-
-    public void setTiennop(int tiennop) {
-        this.tiennop.set(tiennop);
-    }
-
     public int getDanop() {
         return this.danop.get();
     }
@@ -93,12 +71,6 @@ public class CTKhoanThu {
     public void setDanop(int danop) {
         this.danop.set(danop);
     }
-    public int getConthieu() {
-        return this.conthieu.get();
-    }
 
-    public void setConthieu(int conthieu) {
-        this.tiennop.set(conthieu);
-    }
 
 }

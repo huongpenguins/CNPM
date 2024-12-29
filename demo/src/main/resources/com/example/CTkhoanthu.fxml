@@ -14,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="AnchorPane" stylesheets="@home.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.CTKhoanThuController">
    <children>
-      <Label layoutX="34.0" layoutY="23.0" prefHeight="38.0" prefWidth="180.0" text="Danh sách khoản thu">
+      <Label layoutX="34.0" layoutY="23.0" prefHeight="38.0" prefWidth="180.0" text="Chi tiết khoản thu">
          <font>
             <Font name="Arial Bold" size="17.0" />
          </font>
@@ -35,8 +35,9 @@
           <TableColumn fx:id="ten" prefWidth="157.77786254882812" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Tên chủ hộ" />
           <TableColumn fx:id="ngaynop" minWidth="0.0" prefWidth="110.0" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Ngày nộp" />
             <TableColumn fx:id="tiennop" minWidth="6.000030517578125" prefWidth="134.66671752929688" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Số tiền nộp" />
-            <TableColumn fx:id="danop" prefWidth="131.33331298828125" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Số tiền đã nộp" />
-            <TableColumn fx:id="trangthai" prefWidth="100.66668701171875" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Trạng thái" />
+            <TableColumn fx:id="danop" prefWidth="122.6666259765625" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Số tiền đã nộp" />
+            <TableColumn fx:id="conthieu" prefWidth="102.0" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Thiếu/Dư" />
+            <TableColumn fx:id="trangthai" prefWidth="83.99993896484375" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Trạng thái" />
             <TableColumn fx:id="thanhtoan" prefWidth="116.0" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
         </columns>
       </TableView>
@@ -99,5 +100,15 @@
             <RangeSlider fx:id="tiennop_filter" blockIncrement="100000.0" highValue="1.0E7" layoutX="95.0" layoutY="68.0" lowValue="0.0" max="1.0E7" prefHeight="14.0" prefWidth="123.0" />
          </children>
       </AnchorPane>
+      <Button fx:id="thongke" layoutX="162.0" layoutY="81.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="117.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Thống kê">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="176.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@picture/thongke.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

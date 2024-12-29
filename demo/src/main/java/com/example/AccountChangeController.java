@@ -159,9 +159,11 @@ public class AccountChangeController {
                 if(checkhoten.getText().isEmpty() && checkemail.getText().isEmpty() &&
                 checkcccd.getText().isEmpty() && checksdt.getText().isEmpty())
                 // luu vao csdl
+                    
                     gender = male.isSelected() ? "Nam" : female.isSelected() ? "Nữ" : null;
                     AccountManager.updateAllInfo(LoginPage.MaNV ,hoten.getText(), cccd.getText(), sdt.getText(), email.getText(), diachi.getText(), gender, chucvu.getValue().toString(), ngsinh.getValue().toString());
                 switchToAccount();
+
             }
     }
 
@@ -211,11 +213,11 @@ public class AccountChangeController {
     }
     @FXML
     private void switchToGiaDinh() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("FamiliesManager");
     }
     @FXML
     private void switchToDanCu() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("ResidentsManager");
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
@@ -223,11 +225,11 @@ public class AccountChangeController {
     }
     @FXML
     private void switchToCanHo() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("Apartment");
     }
     @FXML
     private void switchToTamTru() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("tamtru");
     }
     @FXML
     private void switchToTamVang() throws IOException {

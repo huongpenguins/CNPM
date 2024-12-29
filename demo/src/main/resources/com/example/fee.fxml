@@ -47,7 +47,8 @@
           <TableColumn fx:id="loai" minWidth="0.0" prefWidth="98.00001525878906" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Loại" />
             <TableColumn fx:id="batdau" minWidth="6.000030517578125" prefWidth="158.66673278808594" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Bắt đầu" />
             <TableColumn fx:id="hannop" prefWidth="149.99996948242188" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Hạn nộp" />
-            <TableColumn fx:id="ghichu" prefWidth="132.66668701171875" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Đơn giá" />
+            <TableColumn fx:id="ghichu" prefWidth="127.33331298828125" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Đơn giá" />
+            <TableColumn fx:id="donvi" prefWidth="81.33331298828125" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Đơn vị" />
             <TableColumn prefWidth="50.6666259765625" fx:id="xoa" />
             <TableColumn fx:id="chinhsua" prefWidth="53.3333740234375" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-alignment: CENTER;" />
             <TableColumn fx:id="chitiet" prefWidth="69.33331298828125" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
@@ -78,7 +79,7 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="filterbar" layoutY="-137.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="600.0" style="-fx-background-color: #3f3e3e;">
+      <AnchorPane fx:id="filterbar" layoutY="-159.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="727.0" style="-fx-background-color: #3f3e3e;">
          <children>
             <Label layoutX="25.0" layoutY="63.0" prefHeight="23.0" prefWidth="55.0" text="Từ ngày" textFill="WHITE">
                <font>
@@ -95,31 +96,37 @@
                   <Font name="Arial" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="text_ten" layoutX="61.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
-            <Label layoutX="212.0" layoutY="25.0" prefHeight="23.0" prefWidth="35.0" text="Loại" textFill="WHITE">
+            <TextField fx:id="text_ten" layoutX="61.0" layoutY="24.0" prefHeight="25.0" prefWidth="180.0" />
+            <Label layoutX="267.0" layoutY="25.0" prefHeight="23.0" prefWidth="35.0" text="Loại" textFill="WHITE">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="text_loai" layoutX="247.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
-            <Label layoutX="395.0" layoutY="25.0" prefHeight="23.0" prefWidth="55.0" text="Ghi chú" textFill="WHITE">
+            <TextField fx:id="text_loai" layoutX="314.0" layoutY="24.0" prefHeight="25.0" prefWidth="155.0" />
+            <Label layoutX="504.0" layoutY="25.0" prefHeight="23.0" prefWidth="55.0" text="Đơn giá" textFill="WHITE">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="text_ghichu" layoutX="450.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
+            <TextField fx:id="text_ghichu" layoutX="560.0" layoutY="24.0" prefHeight="25.0" prefWidth="141.0" />
             <DatePicker fx:id="tungay" layoutX="80.0" layoutY="62.0" prefHeight="25.0" prefWidth="123.0" />
             <DatePicker fx:id="denngay" layoutX="285.0" layoutY="62.0" prefHeight="25.0" prefWidth="123.0" />
-            <Button fx:id="remove" layoutX="512.0" layoutY="59.0" mnemonicParsing="false" onAction="#Remove" prefHeight="31.0" prefWidth="70.0" text="Remove">
+            <Button fx:id="remove" layoutX="643.0" layoutY="59.0" mnemonicParsing="false" onAction="#Remove" prefHeight="31.0" prefWidth="70.0" text="Remove">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="apply" layoutX="440.0" layoutY="59.0" mnemonicParsing="false" onAction="#applyFilter" prefHeight="31.0" prefWidth="64.0" text="Apply">
+            <Button fx:id="apply" layoutX="571.0" layoutY="59.0" mnemonicParsing="false" onAction="#applyFilter" prefHeight="31.0" prefWidth="64.0" text="Apply">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
             </Button>
+            <Label layoutX="422.0" layoutY="63.0" prefHeight="23.0" prefWidth="45.0" text="Đơn vị" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="text_donvi" layoutX="469.0" layoutY="62.0" prefHeight="25.0" prefWidth="84.0" />
          </children>
       </AnchorPane>
       <VBox id="sidebar" fx:id="sidebar" alignment="CENTER" layoutX="-200.0" layoutY="49.0" prefHeight="553.0" prefWidth="200.0" spacing="35.0" styleClass="sidebar" stylesheets="@home.css" AnchorPane.topAnchor="49.0">

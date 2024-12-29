@@ -28,7 +28,7 @@ public class TamVangDAL extends Admin {
     static String tableName = "tamvangtbl";
 
     // insert du lieu
-    public boolean insertTamVang(String[] tableName, String[] columns, String[] types) {
+    public boolean insertTamVang(String tableName, String[] columns, String[] types) {
         int MaNhanKhauIndex = -1;
 
         //tim chi so cot MaNhanKhau

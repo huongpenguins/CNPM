@@ -12,17 +12,33 @@ public class KhoanThu {
     SimpleStringProperty loai;
     SimpleObjectProperty<LocalDate> batdau;
     SimpleObjectProperty<LocalDate> hannop;
-    SimpleIntegerProperty ghichu;
+    SimpleIntegerProperty ghichu; // don gia
+    SimpleStringProperty donvi;
+    boolean completed;
 
     public KhoanThu(String id, String ten,String loai, 
-    LocalDate batdau, LocalDate hannop,int ghichu) {
+    LocalDate batdau, LocalDate hannop,int ghichu,String donvi) {
         this.id = new SimpleStringProperty(id);
         this.ten = new SimpleStringProperty(ten);
         this.loai = new SimpleStringProperty(loai);
         this.ghichu = new SimpleIntegerProperty(ghichu);
         this.batdau = new SimpleObjectProperty<>(batdau);
         this.hannop = new SimpleObjectProperty<>(hannop);
-        
+        this.donvi = new SimpleStringProperty(donvi);
+        completed=false;
+    }
+
+    
+    public boolean isCompleted() {
+        return this.completed;
+    }
+
+    public boolean getCompleted() {
+        return this.completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     public String getId() {
@@ -49,7 +65,13 @@ public class KhoanThu {
         this.loai.set(loai);
     }
 
+    public String getDonvi() {
+        return this.donvi.get();
+    }
 
+    public void setDonvi(String donvi) {
+        this.loai.set(donvi);
+    }
 
     public  LocalDate getBatdau() {
         return this.batdau.get();

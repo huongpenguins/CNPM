@@ -343,6 +343,7 @@ public class ResidentsManagerController {
             switchToSignIn();
         }
     }
+    
     @FXML
     private void switchToHome() throws IOException {
         App.setRoot("home");
@@ -361,20 +362,17 @@ public class ResidentsManagerController {
     }
     @FXML
     private void switchToCanHo() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("Apartment");
     }
     @FXML
     private void switchToTamTru() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("tamtru");
     }
     @FXML
     private void switchToTamVang() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("tamvang");
     }
-    @FXML
-    private void switchToSignIn(){
-        // Chuyển sang màn hình đăng nhập
-    }
+   
     @FXML
     private void switchToAccount() {
         try {
@@ -383,5 +381,9 @@ public class ResidentsManagerController {
             System.out.println("Lỗi: Không thể chuyển sang màn hình tài khoản.");
             e.printStackTrace();
         }
+    }
+     @FXML
+    private void switchToSignIn(){
+        // Chuyển sang màn hình đăng nhập
     }
 }

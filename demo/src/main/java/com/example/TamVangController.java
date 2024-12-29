@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.function.Predicate;
 
 import com.example.Entities.TamVang;
+import com.example.dal.TamVangDAL;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -279,12 +280,12 @@ public class TamVangController {
         subStage.setTitle("Thêm phí thu");
         subStage.show();
         subStage.setOnHiding(event->{
-            
+        
             if(addTamVangController.newTamVang==null) return;
             else{
-                data.add(addTamVangController.newTamVang);
-                 
-
+                //data.add(addTamVangController.newTamVang);
+                 //tải lại csdl r cap nhat bảng
+                
 
             }
         });
@@ -349,6 +350,7 @@ public class TamVangController {
 
 
     }
+    
     @FXML
     private void switchToHome() throws IOException {
         App.setRoot("home");
@@ -359,7 +361,7 @@ public class TamVangController {
     }
     @FXML
     private void switchToDanCu() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("ResidentsManager");
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
@@ -367,11 +369,11 @@ public class TamVangController {
     }
     @FXML
     private void switchToCanHo() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("Apartment");
     }
     @FXML
     private void switchToTamTru() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("tamtru");
     }
     @FXML
     private void switchToTamVang() throws IOException {

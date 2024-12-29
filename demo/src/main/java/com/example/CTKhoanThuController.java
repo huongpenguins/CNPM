@@ -25,10 +25,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class CTKhoanThuController {
-    String maKT;
+    String maKT,tenKhoanThu;
     LocalDate tungay,denngay;
     @FXML
-    Button apply,removeremove;
+    Button apply,thongke;
     @FXML
     AnchorPane filterbar;
     @FXML
@@ -44,20 +44,20 @@ public class CTKhoanThuController {
     @FXML 
     TableColumn<CTKhoanThu,String> id,ten,trangthai;
     @FXML
-    TableColumn<CTKhoanThu,Integer> tiennop,danop;
+    TableColumn<CTKhoanThu,Integer> tiennop,danop,conthieu;
     @FXML 
     TableColumn<CTKhoanThu,LocalDate> ngaynop;
     @FXML
     TableColumn<CTKhoanThu,Void> thanhtoan;
-     ObservableList<CTKhoanThu> data = FXCollections.observableArrayList(
-        new CTKhoanThu("Học phí", "KT01", "Khoản học phí kỳ 1", LocalDate.of(2024, 1, 15), 500000, 250000),
-        new CTKhoanThu("Tiền điện", "KT02", "Thanh toán tiền điện tháng 1", LocalDate.of(2024, 2, 1), 300000, 300000),
-        new CTKhoanThu("Tiền nước", "KT03", "Thanh toán tiền nước tháng 1", LocalDate.of(2024, 2, 5), 200000, 150000),
-         new CTKhoanThu("Phí vệ sinh", "KT04", "Phí vệ sinh chung cư", LocalDate.of(2024, 3, 10), 100000, 100000),
-        new CTKhoanThu("Internet", "KT05", "Cước Internet tháng 1", LocalDate.of(2024, 1, 25), 250000, 200000)
+    //   ObservableList<CTKhoanThu> data = FXCollections.observableArrayList(
+    //     new CTKhoanThu("Học phí", "KT01", "Khoản học phí kỳ 1", LocalDate.of(2024, 1, 15), 500000, 250000),
+    //     new CTKhoanThu("Tiền điện", "KT02", "Thanh toán tiền điện tháng 1", LocalDate.of(2024, 2, 1), 300000, 300000),
+    //     new CTKhoanThu("Tiền nước", "KT03", "Thanh toán tiền nước tháng 1", LocalDate.of(2024, 2, 5), 200000, 150000),
+    //      new CTKhoanThu("Phí vệ sinh", "KT04", "Phí vệ sinh chung cư", LocalDate.of(2024, 3, 10), 100000, 100000),
+    //     new CTKhoanThu("Internet", "KT05", "Cước Internet tháng 1", LocalDate.of(2024, 1, 25), 250000, 200000)
         
-       );
-      
+    //    );
+    ObservableList<CTKhoanThu> data=FXCollections.observableArrayList();
     
     public void initialize(){
         
@@ -73,6 +73,7 @@ public class CTKhoanThuController {
         ngaynop.setCellValueFactory(new PropertyValueFactory<CTKhoanThu,LocalDate>("ngaynop"));
         danop.setCellValueFactory(new PropertyValueFactory<CTKhoanThu,Integer>("danop"));
         trangthai.setCellValueFactory(new PropertyValueFactory<CTKhoanThu,String>("trangthai"));
+        conthieu.setCellValueFactory(new PropertyValueFactory<CTKhoanThu,Integer>("conthieu"));
 
         //them DL vao bang
         table.setItems(data);
@@ -121,6 +122,15 @@ public class CTKhoanThuController {
          });
 
     }
+    
+    public void setData(){
+        
+    }
+    @FXML
+    private void ThongKe(){
+
+    }
+    
     private void ThanhToan(CTKhoanThu ct) throws IOException{
          Stage subStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("thanhtoan.fxml"));
@@ -138,18 +148,20 @@ public class CTKhoanThuController {
             
             if(thanhToanController.hoaDon==null) return;
             else{
-                for(CTKhoanThu i : data){
+                // for(CTKhoanThu i : data){
                     
-                    if(i.getId().equals(thanhToanController.hoaDon.getMaho())){
-                        i.setDanop(i.getDanop()+thanhToanController.hoaDon.getSotiennop());
-                        table.refresh();
-                        return;
+                //     if(i.getId().equals(thanhToanController.hoaDon.getMaho())){
+                //         i.setDanop(i.getDanop()+thanhToanController.hoaDon.getSotiennop());
+                //         i.setNgaynop(thanhToanController.hoaDon.getThoidiem());// cap nhat ngay nop la ngay gan nhat
+                //         table.refresh();
+                //         return;
                         
-                    }
-                }
-                data.add(new CTKhoanThu(ct.getTenKT(), thanhToanController.hoaDon.getMaho(),
-                ct.getTen(), thanhToanController.hoaDon.getThoidiem(),
-                 ct.getTiennop(), thanhToanController.hoaDon.getSotiennop()));
+                //     }
+                // }
+                // data.add(new CTKhoanThu(ct.getTenKT(), thanhToanController.hoaDon.getMaho(),
+                // ct.getTen(), thanhToanController.hoaDon.getThoidiem(),
+                //  ct.getTiennop(), thanhToanController.hoaDon.getSotiennop()));
+                // Tai lai csdl r cap nhat bangbang
 
             }
         });

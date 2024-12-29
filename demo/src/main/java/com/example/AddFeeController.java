@@ -21,13 +21,17 @@ public class AddFeeController {
     @FXML
     Button save;
     @FXML
-    ComboBox<String> loai;
+    ComboBox<String> loai,donvi;
 
     
     public void initialize(){
         
         loai.getItems().add("Quyên góp");
         loai.getItems().add("Bắt buộc");
+        donvi.getItems().add("Diện tích");
+        donvi.getItems().add("Xe");
+        donvi.getItems().add("Số điện/nước");
+        donvi.getItems().add("Không");
     
     }
     @FXML
@@ -38,6 +42,7 @@ public class AddFeeController {
         if(batdau.getValue()==null) return;
         if(hannop.getValue()==null) return;
         if(ghichu.getText().isEmpty()) return;
+        if(donvi.getValue()==null) return;
         if(batdau.getValue().isAfter(hannop.getValue())) {
             Alert alert= new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Ngày bắt đầu nộp tiền muộn hơn hạn nộp");
@@ -51,11 +56,14 @@ public class AddFeeController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Nhập sai số tiền");
             alert.showAndWait();
         } 
+
+
             this.newKhoanThu = new KhoanThu(id_text.getText(), ten_text.getText(),loai.getValue().toString()
-            ,batdau.getValue() , hannop.getValue(), sotien);
+            ,batdau.getValue() , hannop.getValue(), sotien,donvi.getValue());
+            
         
-        Stage thisStage = (Stage)save.getScene().getWindow();
-        thisStage.close();
+
+        
         
     }
 }

@@ -269,6 +269,7 @@ public class TamTruController {
 
 
     }
+    
     @FXML
     private void switchToHome() throws IOException {
         App.setRoot("home");

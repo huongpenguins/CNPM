@@ -12,6 +12,4 @@ public class HoaDonDAL extends Admin{
         return super.search(tableName, columnName, searchValue);
     }
 
-
-
 }

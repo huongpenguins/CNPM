@@ -73,16 +73,20 @@ public class AccountController {
     }
 
     @FXML
+    private void switchToAccount() throws IOException {
+        App.setRoot("account");
+    }
+    @FXML
     private void switchToHome() throws IOException {
         App.setRoot("home");
     }
     @FXML
     private void switchToGiaDinh() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("FamiliesManager");
     }
     @FXML
     private void switchToDanCu() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("ResidentsManager");
     }
     @FXML
     private void switchToKhoanThu() throws IOException {
@@ -90,11 +94,11 @@ public class AccountController {
     }
     @FXML
     private void switchToCanHo() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("Apartment");
     }
     @FXML
     private void switchToTamTru() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("tamtru");
     }
     @FXML
     private void switchToTamVang() throws IOException {
@@ -104,13 +108,5 @@ public class AccountController {
     private void switchToSignIn(){
         
     }
-    @FXML
-    private void switchToAccount() throws IOException {
-        App.setRoot("secondary");
-    }
-    
-    @FXML
-    private void switchToPrimary() throws IOException {
-        App.setRoot("primary");
-    }
+   
 }

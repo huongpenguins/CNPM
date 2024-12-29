@@ -43,8 +43,7 @@ public class AddTamTruController {
         // newTamTru.ten =
         //            .dcthuongtru=
         //            . dctamtru =
-        Stage thisStage = (Stage)save.getScene().getWindow();
-        thisStage.close();
+        
 
     }
 

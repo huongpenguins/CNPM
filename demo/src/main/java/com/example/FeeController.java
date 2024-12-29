@@ -39,10 +39,10 @@ public class FeeController {
     ResultSet resultSet;
     // noi luu tru data
     ObservableList<KhoanThu> data = FXCollections.observableArrayList(
-        new KhoanThu("KT01", "Học phí", "Giáo dục", LocalDateTime.of(2024, 1, 1, 8, 0).toLocalDate(), LocalDateTime.of(2024, 2, 28, 23, 59).toLocalDate(), 10000),
-        new KhoanThu("KT02", "Tiền điện", "Sinh hoạt", LocalDateTime.of(2024, 12, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 31, 23, 59).toLocalDate(), 20000),
-        new KhoanThu("KT03", "Tiền nước", "Sinh hoạt", LocalDateTime.of(2024, 12, 5, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 25, 23, 59).toLocalDate(), 30000),
-        new KhoanThu("KT04", "Tiền thuê nhà", "Sinh hoạt", LocalDateTime.of(2024, 1, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 1, 31, 23, 59).toLocalDate(), 40000)
+        new KhoanThu("KT01", "Học phí", "Quyên góp", LocalDateTime.of(2024, 1, 1, 8, 0).toLocalDate(), LocalDateTime.of(2024, 2, 28, 23, 59).toLocalDate(), 10000, "không"),
+        new KhoanThu("KT02", "Tiền điện", "Sinh hoạt", LocalDateTime.of(2024, 12, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 31, 23, 59).toLocalDate(), 20000, "số"),
+        new KhoanThu("KT03", "Tiền nước", "Sinh hoạt", LocalDateTime.of(2024, 12, 5, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 25, 23, 59).toLocalDate(), 30000, "m2"),
+        new KhoanThu("KT04", "Tiền thuê nhà", "Sinh hoạt", LocalDateTime.of(2024, 1, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 1, 31, 23, 59).toLocalDate(), 40000, "không")
         );
 
     @FXML
@@ -50,7 +50,7 @@ public class FeeController {
     @FXML
     Button menu,account,giadinh,dancu,khoanthu,canho,tamtru,tamvang,trangchu,apply,remove;
     @FXML
-    TextField search,text_ten,text_loai,text_ghichu,topage;
+    TextField search,text_ten,text_loai,text_ghichu,topage,text_donvi;
     @FXML
     TableView<KhoanThu> table;
     @FXML 
@@ -58,7 +58,7 @@ public class FeeController {
     @FXML 
     TableColumn<KhoanThu,String> ten;
     @FXML 
-    TableColumn<KhoanThu,String> loai;
+    TableColumn<KhoanThu,String> loai,donvi;
     @FXML
     TableColumn<KhoanThu,Integer> ghichu;
     @FXML 
@@ -83,6 +83,7 @@ public class FeeController {
         ghichu.setCellValueFactory(new PropertyValueFactory<KhoanThu,Integer>("ghichu"));
         batdau.setCellValueFactory(new PropertyValueFactory<KhoanThu,LocalDate>("batdau"));
         hannop.setCellValueFactory(new PropertyValueFactory<KhoanThu,LocalDate>("hannop"));
+        donvi.setCellValueFactory(new PropertyValueFactory<KhoanThu,String>("donvi"));
 
 
         table.setItems(data);
@@ -275,7 +276,8 @@ public class FeeController {
             {
                 btn2.setOnAction(event->{
                     try {
-                        showChiTiet(getTableView().getItems().get(getIndex()));
+                        KhoanThu k = getTableView().getItems().get(getIndex());
+                        showChiTiet(k);
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -329,7 +331,8 @@ public class FeeController {
             } catch (Exception e) {
                 return false;
             }
-            
+            if(khoanThu.getDonvi().toLowerCase().contains(l.toLowerCase()))
+            return true;
 
             return false;
         };
@@ -362,28 +365,49 @@ public class FeeController {
         
     }
     private void showChiTiet(KhoanThu k) throws IOException{
-        Stage subStage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("CTkhoanthu.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600); 
-        CTKhoanThuController ctKThuController = fxmlLoader.getController();
-        ctKThuController.maKT = k.getId();
-        ctKThuController.tungay = k.getBatdau();
-        ctKThuController.denngay = k.getHannop();
-        subStage.setResizable(false);
-        subStage.setScene(scene);
-        subStage.setTitle(k.getTen());
-        subStage.show();
+        if(k.getLoai()!="Quyên góp"){
+            Stage subStage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("CTkhoanthu.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 1000, 600); 
+            CTKhoanThuController ctKThuController = fxmlLoader.getController();
+            ctKThuController.maKT = k.getId();
+            ctKThuController.tenKhoanThu = k.getTen();
+           ctKThuController.tungay = k.getBatdau();
+            ctKThuController.denngay = k.getHannop();
+            subStage.setResizable(false);
+            subStage.setScene(scene);
+            subStage.setTitle(k.getTen());
+            subStage.show();
+        }
+        // quyep gop thi man hinh chi tiet khoan thu se khac vi ko phai bat buoc
+        else{
+            
+            Stage subStage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("quyengop.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 1000, 600); 
+            CTQuyengopController ctQGopController = fxmlLoader.getController();
+            ctQGopController.maKT = k.getId();
+            ctQGopController.tenKhoanThu = k.getTen();
+            ctQGopController.tungay = k.getBatdau();
+            ctQGopController.denngay = k.getHannop();
+            subStage.setResizable(false);
+            subStage.setScene(scene);
+            subStage.setTitle(k.getTen());
+            subStage.show();
+        }
+        
     }
+
     @FXML 
     private void applyFilter(){
         Predicate<KhoanThu> pFilter = khoanThu ->{
             boolean chk_ten = text_ten.getText().isEmpty()||khoanThu.getTen().toLowerCase().contains(text_ten.getText().toLowerCase());
             boolean chk_loai=text_loai.getText().isEmpty()||khoanThu.getLoai().toLowerCase().contains(text_loai.getText().toLowerCase());
             boolean chk_ghichu = text_ghichu.getText().isEmpty()||khoanThu.getGhichu()==Integer.parseInt(text_ghichu.getText());
-            boolean chk_tungay = tungay.getValue()==null||(tungay.getValue()!=null&&tungay.getValue().isBefore(batdau.getCellData(khoanThu)));
-            boolean chk_dennhay = denngay.getValue()==null||(denngay.getValue()!=null&&denngay.getValue().isAfter(hannop.getCellData(khoanThu)));
-            
-            return chk_ten&&chk_loai&&chk_ghichu&&chk_dennhay&&chk_tungay;
+            boolean chk_tungay = tungay.getValue()==null||(tungay.getValue().isBefore(khoanThu.getBatdau()));
+            boolean chk_dennhay = denngay.getValue()==null||(denngay.getValue().isAfter(khoanThu.getHannop()));
+            boolean chk_donvi = text_donvi.getText()==null || (khoanThu.getDonvi().toLowerCase().contains(text_donvi.getText().toLowerCase()));
+            return chk_ten&&chk_loai&&chk_ghichu&&chk_dennhay&&chk_tungay&&chk_donvi;
         };
 
         filter.setPredicate(pFilter);
