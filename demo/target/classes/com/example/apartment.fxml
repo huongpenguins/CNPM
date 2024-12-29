@@ -28,6 +28,49 @@
             </children>
         </AnchorPane>
 
+        <!-- Search Section -->
+        <TextField fx:id="txtSearch" layoutX="20.0" layoutY="80.0" prefHeight="30.0" prefWidth="400.0" promptText="Tìm kiếm căn hộ (Mã Căn Hộ hoặc Tên Chủ Hộ)" />
+        <Button fx:id="btnSearch" layoutX="430.0" layoutY="80.0" onAction="#searchCanHo" prefHeight="30.0" prefWidth="100.0" text="Tìm kiếm" />
+
+        <!-- Table Section wrapped in ScrollPane -->
+        <ScrollPane hbarPolicy="ALWAYS" layoutX="20.0" layoutY="130.0" prefHeight="400.0" prefWidth="750.0" vbarPolicy="AS_NEEDED">
+            <content>
+                <TableView fx:id="quanlycanho" prefHeight="400.0" prefWidth="955.0">
+                    <columns>
+                        <!-- Mã Hộ Gia Đình -->
+                        <TableColumn fx:id="macanho" prefWidth="150.0" text="Mã Căn Hộ" />
+                        <!-- Mã Căn Hộ -->
+                        <TableColumn fx:id="mahokhau" prefWidth="150.0" text="Mã Hộ Khẩu" />
+                        <!-- Mã Nhân Khẩu -->
+                        <TableColumn fx:id="tencanho" prefWidth="150.0" text="Tên Căn Hộ" />
+                        <!-- Mã Xe -->
+                        <TableColumn fx:id="tang" prefWidth="150.0" text="Tầng" />
+                        <!-- Ngày Cấp -->
+                        <TableColumn fx:id="dientich" prefWidth="150.0" text="Diện Tích (m2)" />
+                        <!-- Tên Chủ Hộ -->
+                        <TableColumn fx:id="mota" prefWidth="200.0" text="Mô Tả" />
+                    </columns>
+                </TableView>
+            </content>
+        </ScrollPane>
+
+        <!-- Action Buttons -->
+        <AnchorPane layoutX="780.0" layoutY="130.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;">
+            <children>
+                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" onAction="#addCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Thêm căn hộ" />
+                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" onAction="#updateCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Sửa căn hộ" />
+                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" onAction="#deleteCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Xóa căn hộ" />
+                <Button fx:id="btnViewDetails" layoutX="20.0" layoutY="240.0" onAction="#viewCanHoDetails" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Xem chi tiết" />
+            </children>
+        </AnchorPane>
+
+        <!-- Footer -->
+        <AnchorPane layoutY="550.0" prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: #f5f5f5;">
+            <children>
+                <Label layoutX="20.0" layoutY="15.0" text="© Chung cư BlueMoon - 2024" textFill="#6c7071" />
+            </children>
+        </AnchorPane>
+
         <!-- Sidebar Section -->
         <VBox id="sidebar" fx:id="sidebar" alignment="CENTER" layoutX="-200.0" layoutY="49.0" prefHeight="553.0" prefWidth="200.0" spacing="35.0" styleClass="sidebar" stylesheets="@home.css" AnchorPane.topAnchor="49.0">
             <children>
@@ -77,48 +120,5 @@
                 </VBox>
             </children>
         </VBox>
-
-        <!-- Search Section -->
-        <TextField fx:id="txtSearch" layoutX="20.0" layoutY="80.0" prefHeight="30.0" prefWidth="400.0" promptText="Tìm kiếm căn hộ (Mã Căn Hộ hoặc Tên Chủ Hộ)" />
-        <Button fx:id="btnSearch" layoutX="430.0" layoutY="80.0" onAction="#searchCanHo" prefHeight="30.0" prefWidth="100.0" text="Tìm kiếm" />
-
-        <!-- Table Section wrapped in ScrollPane -->
-        <ScrollPane hbarPolicy="ALWAYS" layoutX="20.0" layoutY="130.0" prefHeight="400.0" prefWidth="750.0" vbarPolicy="AS_NEEDED">
-            <content>
-                <TableView fx:id="quanlycanho" prefHeight="400.0" prefWidth="955.0">
-                    <columns>
-                        <!-- Mã Hộ Gia Đình -->
-                        <TableColumn fx:id="macanho" prefWidth="150.0" text="Mã Căn Hộ" />
-                        <!-- Mã Căn Hộ -->
-                        <TableColumn fx:id="mahokhau" prefWidth="150.0" text="Mã Hộ Khẩu" />
-                        <!-- Mã Nhân Khẩu -->
-                        <TableColumn fx:id="tencanho" prefWidth="150.0" text="Tên Căn Hộ" />
-                        <!-- Mã Xe -->
-                        <TableColumn fx:id="tang" prefWidth="150.0" text="Tầng" />
-                        <!-- Ngày Cấp -->
-                        <TableColumn fx:id="dientich" prefWidth="150.0" text="Diện Tích (m2)" />
-                        <!-- Tên Chủ Hộ -->
-                        <TableColumn fx:id="mota" prefWidth="200.0" text="Mô Tả" />
-                    </columns>
-                </TableView>
-            </content>
-        </ScrollPane>
-
-        <!-- Action Buttons -->
-        <AnchorPane layoutX="780.0" layoutY="130.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;">
-            <children>
-                <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" onAction="#addCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Thêm căn hộ" />
-                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" onAction="#updateCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Sửa căn hộ" />
-                <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" onAction="#deleteCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Xóa căn hộ" />
-                <Button fx:id="btnViewDetails" layoutX="20.0" layoutY="240.0" onAction="#viewCanHoDetails" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Xem chi tiết" />
-            </children>
-        </AnchorPane>
-
-        <!-- Footer -->
-        <AnchorPane layoutY="550.0" prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: #f5f5f5;">
-            <children>
-                <Label layoutX="20.0" layoutY="15.0" text="© Chung cư BlueMoon - 2024" textFill="#6c7071" />
-            </children>
-        </AnchorPane>
     </children>
 </AnchorPane>

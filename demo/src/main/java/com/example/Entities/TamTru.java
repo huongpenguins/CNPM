@@ -21,7 +21,7 @@ public class TamTru {
         this.dctamtru = new SimpleStringProperty(dctamtru);
     }
 
-    public TamTru(String maNhanKhau, String dcthuongtru, String dctamtru, LocalDate ngaybdtamtru) {
+    public TamTru(String maNhanKhau, String dctamtru, LocalDate ngaybdtamtru) {
         this.maNhanKhau.set(maNhanKhau);
         this.dctamtru.set(dctamtru);
         this.ngaybdtamtru.set(ngaybdtamtru);

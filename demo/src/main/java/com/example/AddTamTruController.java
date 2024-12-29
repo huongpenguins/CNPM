@@ -1,3 +1,4 @@
+
 package com.example;
 
 import java.io.IOException;
@@ -35,15 +36,14 @@ public class AddTamTruController {
         } catch (Exception e) {
             return ;
         }
-        newTamTru = new TamTru(id_text.getText(),dcthuongtru_text.getText(), dctamtru_text.getText(), ngaybdtamtru.getValue());
+        newTamTru = new TamTru(id_text.getText(), dctamtru_text.getText(), ngaybdtamtru.getValue());
         // luu cai tren vao csdl
 
 
-        // lay ra ho ten ,dcthuongtru, dctamtru ung vs id_text tu csdl de set cho thuoc tinh
+        // lay ra ho ten dctamtru ung vs id_text tu csdl de set cho thuoc tinh
         // newTamTru.ten =
-        //            .dcthuongtru=
         //            . dctamtru =
-        
+
 
     }
 
@@ -57,4 +57,3 @@ public class AddTamTruController {
 
 
 }
-
