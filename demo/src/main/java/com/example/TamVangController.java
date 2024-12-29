@@ -388,4 +388,7 @@ public class TamVangController {
         App.setRoot("account");
     }
 
+    public static void main(String[] args) {
+
+    }
 }

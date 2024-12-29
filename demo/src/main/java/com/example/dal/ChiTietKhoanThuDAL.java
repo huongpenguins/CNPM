@@ -69,9 +69,4 @@ public class ChiTietKhoanThuDAL extends Admin {
         return super.search(tableName, columnName, searchValue);
     }
 
-
-
-
-
-
 }

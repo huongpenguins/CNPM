@@ -44,10 +44,19 @@ public class ApartmentController {
 
     private ObservableList<CanHo> masterData = FXCollections.observableArrayList();
     private CanHoDAL canhoDal = new CanHoDAL(); // DAL cho CanHo
-
+/*
     private static final String DB_URL = "jdbc:mysql://localhost:3306/quanlychungcu";// Đổi lại cho phù hợp
     private static final String USER = "root";
     private static final String PASSWORD = "2003";
+
+ */
+
+    private Admin admin;  // Tạo đối tượng Admin
+
+    public ApartmentController() {
+        admin = new Admin();  // Khởi tạo Admin
+    }
+
 
     public void initialize() {
         // Thiết lập cellValueFactory
@@ -86,50 +95,61 @@ public class ApartmentController {
 
     private void loadCanHoData() {
         masterData.clear();
-        ArrayList<Object[]> results = canhoDal.searchCanHo("canhotbl", null, null);
-        if (results != null) {
-            for (Object[] row : results) {
-                // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa
-                String MaCanHo = (String) row[0];
-                String MaHoKhau = (String) row[1];
-                String TenCanHo = (String) row[2];
-                int Tang = (int) row[3];
-                float DienTich = (float) row[4];
-                String MoTa = (String) row[5];
+        Connection connection = admin.getConnectionAdmin();
+        if (connection != null) {
+            ArrayList<Object[]> results = canhoDal.searchCanHo("canhotbl", null, null);
+            if (results != null) {
+                for (Object[] row : results) {
+                    // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa
+                    String MaCanHo = (String) row[0];
+                    String MaHoKhau = (String) row[1];
+                    String TenCanHo = (String) row[2];
+                    int Tang = (int) row[3];
+                    float DienTich = (float) row[4];
+                    String MoTa = (String) row[5];
 
-                masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
+                    masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
+                }
             }
+            quanlycanho.setItems(masterData);
+        }else {
+            showAlert("Lỗi", "Không thể kết nối đến cơ sở dữ liệu.");
         }
-        quanlycanho.setItems(masterData);
     }
 
     @FXML
     private void searchCanHo() {
         String keyword = txtSearch.getText().trim();
         ArrayList<Object[]> results;
-        if (keyword.isEmpty()) {
-             results = canhoDal.searchCanHo("canhotbl", null, null);
-    } else {
-        // Tìm theo MaCanHo hoặc TenCanHo
-        results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
-        if (results == null || results.isEmpty()) {
-            results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
-        }
-    }
+        Connection connection = admin.getConnectionAdmin();
 
-        masterData.clear();
-        if (results != null) {
-        for (Object[] row : results) {
-            String MaCanHo = (String) row[0];
-            String MaHoKhau = (String) row[1];
-            String TenCanHo = (String) row[2];
-            int Tang = (int) row[3];
-            float DienTich = (float) row[4];
-            String MoTa = (String) row[5];
-            masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
+        if (connection != null) {
+            if (keyword.isEmpty()) {
+                results = canhoDal.searchCanHo("canhotbl", null, null);
+            } else {
+                // Tìm theo MaCanHo hoặc TenCanHo
+                results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
+                if (results == null || results.isEmpty()) {
+                    results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
+                }
+            }
+
+            masterData.clear();
+            if (results != null) {
+                for (Object[] row : results) {
+                    String MaCanHo = (String) row[0];
+                    String MaHoKhau = (String) row[1];
+                    String TenCanHo = (String) row[2];
+                    int Tang = (int) row[3];
+                    float DienTich = (float) row[4];
+                    String MoTa = (String) row[5];
+                    masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
+                }
+            }
+            quanlycanho.setItems(masterData);
+        }else {
+            showAlert("Lỗi", "Không thể kết nối đến cơ sở dữ liệu.");
         }
-    }
-        quanlycanho.setItems(masterData);
 }
 
 
@@ -176,6 +196,7 @@ public class ApartmentController {
                 String mota = details[4];
 
                 boolean allSuccess = true;
+                Connection connection = admin.getConnectionAdmin();
 
                 // Sử dụng try-catch cho các câu lệnh update vì updateCanHo ném ra SQLException
                 try {
@@ -211,7 +232,7 @@ public class ApartmentController {
             confirmAlert.setContentText("Hành động này không thể hoàn tác.");
 
             Optional<ButtonType> result = confirmAlert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
+            /*if (result.isPresent() && result.get() == ButtonType.OK) {
                 try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
                     String sql = "DELETE FROM CanHotbl WHERE macanho = ?";
                     PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -224,6 +245,15 @@ public class ApartmentController {
                     showAlert("Lỗi", "Không thể xóa căn hộ.");
                     e.printStackTrace();
                 }
+            }
+
+             */
+            boolean success = canhoDal.deleteCanHo("CanHo", "MaCanHo", selected.getMaCanHo());
+            if (success) {
+                showAlert("Xóa thành công", "Căn hộ đã được xóa.");
+                loadCanHoData();
+            } else {
+                showAlert("Lỗi", "Không thể xóa căn hộ.");
             }
         } else {
             showAlert("Lỗi", "Vui lòng chọn căn hộ cần xóa!");

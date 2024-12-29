@@ -47,7 +47,7 @@ public class NhanKhauDAL extends Admin {
               System.err.println("Error: MaHoGiaDinh không tồn tại trong bảng hogiadinhtbl");
                return false;
           }
-                       return super.insert("nhankhautbl", columns, types);
+          return super.insert("nhankhautbl", columns, types);
        }
 
 // Update dữ liệu

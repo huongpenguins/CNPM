@@ -41,12 +41,12 @@ public class HoGiaDinhDAL extends Admin{
 
     public boolean insertHoGiaDinh( String tableName, String[] columns, String[] values) {
 
-        for (int i = 0; i < columns.length; i++) {
-            if (!validateForeignKeys(columns[i], values[i])) {
-                System.err.println("Error: Giá trị" + values[i] + "không tồn tại trong bảng liên quan!");
-                return false;
-            }
-        }
+//        for (int i = 0; i < columns.length; i++) {
+//            if (!validateForeignKeys(columns[i], values[i])) {
+//                System.err.println("Error: Giá trị" + values[i] + "không tồn tại trong bảng liên quan!");
+//                return false;
+//            }
+//        }
         return super.insert("hogiadinhtbl", columns, values);
     }
 

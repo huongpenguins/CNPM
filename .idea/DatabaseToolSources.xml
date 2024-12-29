@@ -21,6 +21,9 @@
           </node>
         </introspection-scope>
       </choose-schema-mapping>
+      <use-database kind="schema">
+        <name qname="quanlychungcu" operator="@" />
+      </use-database>
       <url>jdbc:mysql://localhost:3306/quanlychungcu</url>
       <remarks />
       <vm-options />

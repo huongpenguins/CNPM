@@ -96,7 +96,7 @@
                         <!-- Mã Xe -->
                         <TableColumn fx:id="tang" prefWidth="150.0" text="Tầng" />
                         <!-- Ngày Cấp -->
-                        <TableColumn prefWidth="150.0" text="Diện Tích (m2)" />
+                        <TableColumn fx:id="dientich" prefWidth="150.0" text="Diện Tích (m2)" />
                         <!-- Tên Chủ Hộ -->
                         <TableColumn fx:id="mota" prefWidth="200.0" text="Mô Tả" />
                     </columns>
@@ -108,7 +108,7 @@
         <AnchorPane layoutX="780.0" layoutY="130.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;">
             <children>
                 <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" onAction="#addCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Thêm căn hộ" />
-                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" onAction="#editCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Sửa căn hộ" />
+                <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" onAction="#updateCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Sửa căn hộ" />
                 <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" onAction="#deleteCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Xóa căn hộ" />
                 <Button fx:id="btnViewDetails" layoutX="20.0" layoutY="240.0" onAction="#viewCanHoDetails" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Xem chi tiết" />
             </children>
