@@ -13,6 +13,7 @@ public class KhoanThu {
     SimpleObjectProperty<LocalDate> batdau;
     SimpleObjectProperty<LocalDate> hannop;
     SimpleIntegerProperty ghichu;
+    public  SimpleIntegerProperty I_Tong_tien;
 
     public KhoanThu(String id, String ten,String loai, 
     LocalDate batdau, LocalDate hannop,int ghichu) {

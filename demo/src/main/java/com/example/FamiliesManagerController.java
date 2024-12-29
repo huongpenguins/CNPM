@@ -11,6 +11,10 @@ import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -97,7 +101,20 @@ public class FamiliesManagerController {
         }
         tableHouseholds.setItems(masterData);
     }
-
+    //Tinh tong so tien phai nop theo thang cua moi ho
+    public static double tinhTongTienTheoHo(Connection connection, String maHoGiaDinh) throws SQLException {
+        double tongTien = 0;
+        String sql = "SELECT SUM(SoTien) FROM khoan_thu WHERE MaHoGiaDinh = ?"; // Sử dụng PreparedStatement
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, maHoGiaDinh); // Gán giá trị cho tham số ?
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    tongTien = resultSet.getDouble(1);
+                }
+            }
+        }
+        return tongTien;
+    }
     @FXML
     private void searchHouseholds() {
         String keyword = txtSearch.getText().trim();

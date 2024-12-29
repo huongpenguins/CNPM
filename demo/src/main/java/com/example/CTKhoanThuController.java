@@ -1,6 +1,10 @@
 package com.example;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.function.Predicate;
 import org.controlsfx.control.RangeSlider;
@@ -57,8 +61,6 @@ public class CTKhoanThuController {
         new CTKhoanThu("Internet", "KT05", "Cước Internet tháng 1", LocalDate.of(2024, 1, 25), 250000, 200000)
         
        );
-      
-    
     public void initialize(){
         
         tiennop_filter.setHighValue(tiennop_filter.getMax());
