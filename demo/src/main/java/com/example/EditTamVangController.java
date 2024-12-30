@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.example.Entities.TamVang;
+import com.example.dal.KhoanThuDAL;
 import com.example.dal.TamVangDAL;
 
 import javafx.fxml.FXML;
@@ -37,21 +38,18 @@ public class EditTamVangController {
         } catch (Exception e) {
             return ;
         }
-        newTamVang = new TamVang(id_text.getText(),lydo_text.getText(),ngayvang.getValue());
+
         ArrayList<Object[]> newTV = new ArrayList<>();
         TamVangDAL tamVangDAL = new TamVangDAL();
         String[] colums = new String[]{"MaNhanKhau","ThoiGianBatDau","LyDo"};
         String[] types=new String[]{"string","date","string"};
-        newTV = tamVangDAL.search("tamvangtbl", "MaNhanKhau", id_text.getText());
-        
-        
-        
+        //newTV = tamVangDAL.update1("tamvangtbl", column,types,);
+        String[] newValue = {id_text.getText(), ngayvang.getValue().toString(),lydo_text.getText()};
+        StringBuffer condition = new StringBuffer("MaTamVang = ");
+        condition.append("'").append(id_text.getText()).append("'");
 
-        
-        // lay ra ho ten ,cccd, phong ung vs id_text tu csdl de set cho thuoc tinh
-        // newTamVang.ten = 
-        //            .cccd = 
-        //            . phong = 
+        boolean t= KhoanThuDAL.update1("khoanthutbl", colums, types,newValue,condition.toString());
+     
         Stage thisStage = (Stage)save.getScene().getWindow();
         thisStage.close();
         

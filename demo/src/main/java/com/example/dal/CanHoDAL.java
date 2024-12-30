@@ -1,20 +1,53 @@
 package com.example.dal;
 import com.example.Admin;
+import com.example.Entities.CanHo;
+import com.example.connect.connect_mysql;
 
+import javafx.scene.control.Alert;
+
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class CanHoDAL extends Admin {
 
-
+        static Connection connection_admin = connect_mysql.getConnection();
     // Constructor should not have a return type and should match the class name
     public CanHoDAL() {
         super(); // Call the constructor of the parent class (Admin
 
     }
-
+     public static CanHo loadData(String condition){
+        
+        ResultSet resultSet=null;
+        StringBuffer query = new StringBuffer("SELECT * FROM CanHoTBL WHERE MaHoGiaDinh = ");
+        query.append("'").append(condition).append("'");
+        Statement statement;
+        try {
+            statement = connection_admin.createStatement();
+            resultSet=statement.executeQuery(query.toString());
+            while (resultSet.next()) {
+                String id = resultSet.getString("MaCanHo");
+                String householdId = resultSet.getString("MaHoGiaDinh");
+                String name = resultSet.getString("TenCanHo");
+                int floor = resultSet.getInt("Tang");
+                Float area = resultSet.getFloat("DienTich");
+                String description = resultSet.getString("MoTa");
+                
+                CanHo canHo = new CanHo(id, householdId, name, floor, area, description);
+                return canHo;
+            }
+            
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       return null;
+    }
     /**
      * Hàm thêm dữ liệu vào bảng CanHo
      * @return true nếu thêm thành công, false nếu thất bại

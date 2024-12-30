@@ -3,17 +3,17 @@ package com.example;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import com.example.Entities.KhoanThu;
 import com.example.Entities.TamVang;
+import com.example.dal.NhanKhauDAL;
 import com.example.dal.TamVangDAL;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,27 +24,19 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 public class TamVangController {
     
     ResultSet resultSet;
     // noi luu tru data
-    ObservableList<TamVang> data = FXCollections.observableArrayList(
-        new TamVang( "Nguyen Van A", "123456789", "Phòng 101", "Về quê", LocalDate.of(2024, 1, 1)),
-        new TamVang( "Tran Thi B", "987654321", "Phòng 102", "Công tác", LocalDate.of(2024, 12, 1)),
-        new TamVang( "Le Van C", "456123789", "Phòng 103", "Khám bệnh", LocalDate.of(2024, 12, 5)),
-        new TamVang( "Pham Thi D", "321654987", "Phòng 104", "Du lịch", LocalDate.of(2024, 1, 15))
-        );
+    ObservableList<TamVang> data = TamVangDAL.loadData("0");
     @FXML
     VBox sidebar;
     @FXML
@@ -64,7 +56,7 @@ public class TamVangController {
     AnchorPane filterbar;
     @FXML
     DatePicker ngayvang_date;
-
+    TamVangDAL tamVangDAL = new TamVangDAL();
     
     public void initialize(){
         table.setEditable(false);
@@ -119,12 +111,21 @@ public class TamVangController {
               btn1.setOnAction(event->{
                 
                     TamVang curItem = getTableRow().getItem();
-                    data.remove(curItem);
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Xác nhận xoá");
+                    alert.setHeaderText("Bạn có chắc muốn xoá mục này?");
+                    alert.setContentText("Mục: " + curItem.getTen());
 
-                    // Xoa trong csdl
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        boolean t = tamVangDAL.deleteTamVang("tamvangtbl","MaKTamVang" ,curItem.getMaNhanKhau());
+                        if(t==true) {
+                            data.remove(curItem);
+                            table.refresh();
+                        }
+                        
+                    }
 
-
-                    
               });
             }
 
@@ -193,12 +194,12 @@ public class TamVangController {
         subStage.show();
         subStage.setOnHiding(event->{
         
-            if(addTamVangController.newTamVang==null) return;
+            if(addTamVangController.listNew.isEmpty()) return;
             else{
-                //data.add(addTamVangController.newTamVang);
-                 //tải lại csdl r cap nhat bảng
-                
-
+                for(TamVang i : addTamVangController.listNew){
+                    data.add(i);
+                    table.refresh();
+                }
             }
         });
         
@@ -218,6 +219,14 @@ public class TamVangController {
         
         subStage.show();
         subStage.setOnHiding(event->{
+            if(!edit.id_text.getText().equals(k.getMaNhanKhau())){
+                
+            k.setMaNhanKhau(edit.id_text.getText());
+            k.setLydo(edit.lydo_text.getText());
+            k.setNgayvang(edit.ngayvang.getValue());
+
+            table.refresh();
+            }
             
         });
     }

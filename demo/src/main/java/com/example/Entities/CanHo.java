@@ -8,7 +8,13 @@ public class CanHo {
     private float DienTich;
     private String MoTa;
 
-    public CanHo(String hk001, String ch001, String nk001, int i, float i1, String môTảCănHộ) {
+    public CanHo(String maCanHo, String maHoKhau, String tenCanHo, int tang, float dienTich, String moTa) {
+        this.MaCanHo = maCanHo;
+        this.MaHoKhau = maHoKhau;
+        this.TenCanHo = tenCanHo;
+        this.Tang = tang;
+        this.DienTich = dienTich;
+        this.MoTa = moTa;
     }
 
     public void setMaHoKhau(String maHoKhau) {

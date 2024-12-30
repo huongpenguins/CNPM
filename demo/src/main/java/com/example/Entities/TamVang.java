@@ -22,13 +22,13 @@ public class TamVang {
         completed=false;
         
     }
-    public TamVang(String maNhanKhau,
-     String lydo,LocalDate ngayvang) {
-        this.maNhanKhau.set(maNhanKhau);
-        this.ngayvang.set(ngayvang);
-        this.lydo.set(lydo);
+    // public TamVang(String maNhanKhau,
+    //  String lydo,LocalDate ngayvang) {
+    //     this.maNhanKhau.set(maNhanKhau);
+    //     this.ngayvang.set(ngayvang);
+    //     this.lydo.set(lydo);
         
-    }
+    // }
 
     
     public boolean isCompleted() {

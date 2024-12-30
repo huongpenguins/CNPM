@@ -1,8 +1,11 @@
 package com.example;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.example.Entities.KhoanThu;
+import com.example.dal.KhoanThuDAL;
+import com.example.dal.TamVangDAL;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -13,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class AddFeeController {
+    ArrayList<KhoanThu> listNew=new ArrayList<>();
     KhoanThu newKhoanThu;
     @FXML 
     TextField id_text,ten_text,ghichu;
@@ -23,7 +27,7 @@ public class AddFeeController {
     @FXML
     ComboBox<String> loai,donvi;
 
-    
+   
     public void initialize(){
         
         loai.getItems().add("Quyên góp");
@@ -57,13 +61,19 @@ public class AddFeeController {
             alert.showAndWait();
         } 
 
-
-            this.newKhoanThu = new KhoanThu(id_text.getText(), ten_text.getText(),loai.getValue().toString()
+            // this.newKhoanThu = new KhoanThu(id_text.getText(), ten_text.getText(),loai.getValue().toString()
+            // ,batdau.getValue() , hannop.getValue(), sotien,donvi.getValue());
+            KhoanThuDAL khoanThuDAL =new KhoanThuDAL();
+            String[] colums = new String[]{"MaKhoanThu","TenKhoanThu","Loai","ThoiGianBatDau","ThoiGianKetThuc","SoTien","DonVi"};
+            String[] types=new String[]{"string","string","string","date","date","int","string"};
+            String[] newValue = {id_text.getText(), ten_text.getText(),loai.getValue().toString()
+                ,batdau.getValue().toString() , hannop.getValue().toString(), ghichu.getText(),donvi.getValue()};
+            boolean t= khoanThuDAL.insert1("khoanthutbl", colums, types,newValue);
+            if(t==true){
+                this.newKhoanThu = new KhoanThu(id_text.getText(), ten_text.getText(),loai.getValue().toString()
             ,batdau.getValue() , hannop.getValue(), sotien,donvi.getValue());
+                listNew.add(newKhoanThu);
+            }
             
-        
-
-        
-        
     }
 }

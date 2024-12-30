@@ -1,7 +1,14 @@
 package com.example.dal;
 import com.example.Admin;
+import com.example.Resident;
+import com.example.Entities.NhanKhau;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -10,7 +17,36 @@ import java.sql.Connection;
 
 public class NhanKhauDAL extends Admin {
 
+    public static Resident loadData(String condition){
+        
+        ResultSet resultSet=null;
+        StringBuffer query = new StringBuffer("SELECT * FROM NhanKhauTBL WHERE MaNhanKhau = ");
+        query.append("'").append(condition).append("'");
+        Statement statement;
 
+        try {
+            statement = connection_admin.createStatement();
+            resultSet=statement.executeQuery(query.toString());
+            while (resultSet.next()) {
+                String id = resultSet.getString("MaNhanKhau");
+                String householdId = resultSet.getString("MaHoGiaDinh");
+                String name = resultSet.getString("HoTen");
+                String identityCard = resultSet.getString("CCCD");
+                LocalDate dob = resultSet.getDate("NgaySinh").toLocalDate(); 
+                String placeOfBirth = resultSet.getString("NoiSinh");
+                String ethnicity = resultSet.getString("DanToc");
+                String occupation = resultSet.getString("NgheNghiep");
+                String relationship = resultSet.getString("QuanHe");
+                Resident resident = new Resident(id, householdId, name, identityCard, dob.toString(), placeOfBirth, ethnicity, occupation, relationship);
+                return resident;
+            }
+            return null;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       return null;
+    }
     //kiểm tra khóa ngoại chung
        public boolean checkForeignKey(String tableName, String columnName, String value) {
            String query = "SELECT 1 FROM " + tableName + " WHERE " + columnName + " = ?";

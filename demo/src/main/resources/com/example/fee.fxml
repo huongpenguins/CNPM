@@ -52,6 +52,7 @@
             <TableColumn prefWidth="50.6666259765625" fx:id="xoa" />
             <TableColumn fx:id="chinhsua" prefWidth="53.3333740234375" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-alignment: CENTER;" />
             <TableColumn fx:id="chitiet" prefWidth="69.33331298828125" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
+            <TableColumn fx:id="completed" prefWidth="69.33331298828125" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
         </columns>
       </TableView>
       <Button fx:id="filter" layoutX="148.0" layoutY="109.0" mnemonicParsing="false" onAction="#showFilterBar" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">

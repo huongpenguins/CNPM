@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Admin {
-    private static Connection connection_admin;
-    protected connect_mysql c_mysql;
+    protected static connect_mysql c_mysql = new connect_mysql();
+    protected static Connection connection_admin = connect_mysql.getConnection();
 
     // phương thức lấy kết nối
     public Connection getConnectionAdmin(){
@@ -27,7 +27,7 @@ public class Admin {
 //        return "admin".equals(username) && "admin123".equals(password);
 //    }
 
-public static boolean update1(String tableName, String[] columns, String[] newValue,String condition) {
+public static boolean update1(String tableName, String[] columns, String[] types,String[] newValue,String condition) {
     if (columns.length != newValue.length) {
         throw new IllegalArgumentException("Số lượng cột và kiểu dữ liệu không khớp!");
     }
@@ -37,12 +37,65 @@ public static boolean update1(String tableName, String[] columns, String[] newVa
 
     // Tạo câu lệnh SQL cho các cột
     for (int i = 0; i < columns.length; i++) {
-        query.append(columns[i]).append(" = ").append(newValue[i]);
+        query.append(columns[i]).append(" = ");
+        if(types[i].equals("string")){
+            query.append("'").append(newValue[i]).append("'");
+        }
+        else{
+            query.append(newValue[i]);
+        }
         if (i < columns.length - 1) {
             query.append(", ");
         }
     }
     query.append(" WHERE ").append(condition);
+
+             try (Statement statement = connection_admin.createStatement()) {
+                int rowsUpdated = statement.executeUpdate(query.toString());
+
+                if (rowsUpdated > 0) {
+                    System.out.println("Cập nhật thành công!");
+                    return true;
+                } else {
+                    System.out.println("Không có bản ghi nào được cập nhật.");
+                    return false;
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return false;
+        
+}
+public static boolean insert1(String tableName, String[] columns,String[] types, String[] newValue) {
+    if (columns.length != newValue.length) {
+        throw new IllegalArgumentException("Số lượng cột và kiểu dữ liệu không khớp!");
+    }
+
+    StringBuilder query = new StringBuilder("INSERT INTO ");
+    query.append(tableName).append(" (");
+     // Tạo câu lệnh SQL cho các cột
+     for (int i = 0; i < columns.length; i++) {
+        query.append(columns[i]);
+        if (i < columns.length - 1) {
+            query.append(", ");
+        }
+    }
+    query.append(") VALUES (");
+
+    // Tạo câu lệnh SQL cho các cột
+    for (int i = 0; i < columns.length; i++) {
+        if(types[i].equals("string")){
+            query.append("'").append(newValue[i]).append("'");
+        }
+        else{
+            query.append(newValue[i]);
+        }
+        if (i < columns.length - 1) {
+            query.append(", ");
+        }
+    }
+    
 
              try (Statement statement = connection_admin.createStatement()) {
                 int rowsUpdated = statement.executeUpdate(query.toString());

@@ -1,55 +1,38 @@
 package com.example;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import com.example.Entities.KhoanThu;
-import com.example.Entities.TamTru;
 import com.example.dal.KhoanThuDAL;
 
 import javafx.scene.control.TableCell;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 public class FeeController {
 
-    ResultSet resultSet;
-    // noi luu tru data
-    ObservableList<KhoanThu> data = FXCollections.observableArrayList(
-        new KhoanThu("KT01", "Học phí", "Quyên góp", LocalDateTime.of(2024, 1, 1, 8, 0).toLocalDate(), LocalDateTime.of(2024, 2, 28, 23, 59).toLocalDate(), 10000, "không"),
-        new KhoanThu("KT02", "Tiền điện", "Sinh hoạt", LocalDateTime.of(2024, 12, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 31, 23, 59).toLocalDate(), 20000, "số"),
-        new KhoanThu("KT03", "Tiền nước", "Sinh hoạt", LocalDateTime.of(2024, 12, 5, 0, 0).toLocalDate(), LocalDateTime.of(2024, 12, 25, 23, 59).toLocalDate(), 30000, "m2"),
-        new KhoanThu("KT04", "Tiền thuê nhà", "Sinh hoạt", LocalDateTime.of(2024, 1, 1, 0, 0).toLocalDate(), LocalDateTime.of(2024, 1, 31, 23, 59).toLocalDate(), 40000, "không")
-        );
+    
+    ObservableList<KhoanThu> data = KhoanThuDAL.loadData("0"); // tai khoan thu chua hoan thanh completed=0
 
     @FXML
     VBox sidebar;
@@ -70,16 +53,13 @@ public class FeeController {
     @FXML 
     TableColumn<KhoanThu,LocalDate> batdau,hannop;
     @FXML
-    TableColumn<KhoanThu,Void> chinhsua,chitiet,xoa;
+    TableColumn<KhoanThu,Void> chinhsua,chitiet,xoa,completed;
     @FXML
     AnchorPane filterbar;
     @FXML
     DatePicker tungay,denngay;
-
     KhoanThuDAL khoanThuDAL;
-    //IntegerProperty pageCount = new SimpleIntegerProperty();
-    String[] column = new String[]{"TenKhoanThu","LoaiKhoanThu","ThoiGianBatDau","ThoiGianKetThuc","DonGia","DonVi"};
-    
+  
     public void initialize(){
         table.setEditable(false);
         
@@ -106,6 +86,7 @@ public class FeeController {
                     KhoanThu k = getTableView().getItems().get(getIndex());
                         try {
                             edit_fee(k);
+                            
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -135,10 +116,20 @@ public class FeeController {
               btn1.setOnAction(event->{
                 
                     KhoanThu curItem = getTableRow().getItem();
-                    data.remove(curItem);
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Xác nhận xoá");
+                    alert.setHeaderText("Bạn có chắc muốn xoá mục này?");
+                    alert.setContentText("Mục: " + curItem.getTen());
 
-                    // Xoa trong csdl
-
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        boolean t = khoanThuDAL.deleteKhoanThu("khoanthutbl","MaKhoanThu" ,curItem.getId());
+                        if(t==true) {
+                            data.remove(curItem);
+                            table.refresh();
+                        }
+                        
+                    }
 
                     
               });
@@ -183,14 +174,46 @@ public class FeeController {
             }
         });
 
+        completed.setCellFactory(col -> new TableCell<KhoanThu, Void>() {
+            private final Button btn1 = new Button();
+
+            {
+              btn1.setOnAction(event->{
+                    KhoanThu curItem = getTableRow().getItem();
+                    try {
+                        boolean t = khoanThuDAL.updateKhoanThu(" khoanthutbl "," Completed "," 1 "," MaKhoanThu ",curItem.getId());
+                        if(t==true){
+                            data.remove(curItem);
+                            table.refresh();
+                        }
+                    } catch (SQLException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    
+              });
+            }
+
+            @Override
+            public void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btn1);
+                }
+            }
+        });
+       
+       
+       
         // nut tim kiem
         search.setOnKeyPressed(event -> { 
             if(event.getCode() == KeyCode.ENTER)
                 search();
             
          });
-         
-         
+
 
     }
     
@@ -242,14 +265,12 @@ public class FeeController {
         subStage.setTitle("Thêm phí thu");
         subStage.show();
         subStage.setOnHiding(event->{
-            
-            // if(addFeeController.newKhoanThu==null) return;
-            // else{
-            //     data.add(addFeeController.newKhoanThu);
-            //      // Them vao CSDL
-
-
-            //}
+            if(!addFeeController.listNew.isEmpty()){
+                for(KhoanThu i : addFeeController.listNew){
+                    data.add(i);
+                    table.refresh();
+                }
+            }
         });
         
     }
@@ -270,10 +291,23 @@ public class FeeController {
         edit.ten_text.setText(k.getTen());
         edit.loai.setValue(k.getLoai());
 
-        
         subStage.show();
         subStage.setOnHiding(event->{
+            k.setTen(edit.ten_text.getText());
+            k.setLoai(edit.loai.getValue());
+            k.setHannop(edit.hannop.getValue());
+            Integer sotien=null;
+            try {
+                sotien=Integer.parseInt(edit.ghichu.getText());
             
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Nhập sai số tiền");
+                alert.showAndWait();
+            } 
+            k.setGhichu(sotien);
+            k.setDonvi(edit.donvi.getValue());
+            k.setBatdau(edit.batdau.getValue());
+            //table.refresh();
         });
     }
     private void showChiTiet(KhoanThu k) throws IOException{
@@ -318,7 +352,7 @@ public class FeeController {
             boolean chk_ghichu = text_ghichu.getText().isEmpty()||khoanThu.getGhichu()==Integer.parseInt(text_ghichu.getText());
             boolean chk_tungay = tungay.getValue()==null||(tungay.getValue().isBefore(khoanThu.getBatdau()));
             boolean chk_dennhay = denngay.getValue()==null||(denngay.getValue().isAfter(khoanThu.getHannop()));
-            boolean chk_donvi = text_donvi.getText()==null || (khoanThu.getDonvi().toLowerCase().contains(text_donvi.getText().toLowerCase()));
+            boolean chk_donvi = text_donvi.getText().isEmpty()|| (khoanThu.getDonvi().toLowerCase().contains(text_donvi.getText().toLowerCase()));
             return chk_ten&&chk_loai&&chk_ghichu&&chk_dennhay&&chk_tungay&&chk_donvi;
         };
 

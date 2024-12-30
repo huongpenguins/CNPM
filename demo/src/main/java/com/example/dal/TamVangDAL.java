@@ -1,15 +1,54 @@
 
 package com.example.dal;
 import com.example.Admin;
+import com.example.Resident;
+import com.example.Entities.CanHo;
+import com.example.Entities.TamVang;
+import com.example.connect.connect_mysql;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 
 public class TamVangDAL extends Admin {
+    static Connection connection_admin = connect_mysql.getConnection();
+    public static ObservableList<TamVang> loadData(String condition){
+        ObservableList<TamVang> data = FXCollections.observableArrayList();
+        TamVang tamVang;
+        ResultSet resultSet=null;
+        StringBuffer query = new StringBuffer("SELECT * FROM TamVangTBL WHERE completed = ");
+        query.append(condition);
+        Statement statement;
 
+        try {
+            statement = connection_admin.createStatement();
+            resultSet=statement.executeQuery(query.toString());
+            while (resultSet.next()) {
+                String maNhanKhau = resultSet.getString("MaNhanKhau");
+                Resident r =NhanKhauDAL.loadData(maNhanKhau);
+                if(r!=null){
+                    CanHo c = CanHoDAL.loadData(r.getHouseholdId());
+                    String maTamVang = resultSet.getString("MaTamVang");
+                    String lydo = resultSet.getString("LyDo");
+                    LocalDate ngayvang = resultSet.getDate("ThoiGianBatDau").toLocalDate();
+                    tamVang = new TamVang(r.getName(),r.getIdentityCard(),c.getTenCanHo(),lydo,ngayvang);
+                    data.add(tamVang);
+                }
+            }
+            return data;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       return null;
+    }
     //kiểm tra khóa ngoại chung
     public boolean checkForeignKey(String tableName, String columnName, String value) {
         String query = "SELECT 1 FROM " + tableName + " WHERE " + columnName + " = ?";
