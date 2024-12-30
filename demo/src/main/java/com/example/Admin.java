@@ -1,5 +1,9 @@
 package com.example;
 import com.example.connect.*;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +41,7 @@ public static boolean update1(String tableName, String[] columns, String[] types
     // Tạo câu lệnh SQL cho các cột
     for (int i = 0; i < columns.length; i++) {
         query.append(columns[i]).append(" = ");
-        if(types[i].equals("string")){
+        if(types[i].equals("string")||types[i].equals("date")){
             query.append("'").append(newValue[i]).append("'");
         }
         else{
@@ -54,9 +58,12 @@ public static boolean update1(String tableName, String[] columns, String[] types
 
                 if (rowsUpdated > 0) {
                     System.out.println("Cập nhật thành công!");
+                     showAlert("Success", "Sửa dữ liệu thành công!", AlertType.INFORMATION);
                     return true;
                 } else {
+                  
                     System.out.println("Không có bản ghi nào được cập nhật.");
+                    showAlert("Error", "Lỗi khi sửa dữ liệu: " , AlertType.ERROR);
                     return false;
                 }
             } catch (SQLException e) {
@@ -84,7 +91,7 @@ public static boolean insert1(String tableName, String[] columns,String[] types,
 
     // Tạo câu lệnh SQL cho các cột
     for (int i = 0; i < columns.length; i++) {
-        if(types[i].equals("string")){
+        if(types[i].equals("string")||types[i].equals("date")){
             query.append("'").append(newValue[i]).append("'");
         }
         else{
@@ -94,16 +101,22 @@ public static boolean insert1(String tableName, String[] columns,String[] types,
             query.append(", ");
         }
     }
-     try (Statement statement = connection_admin.createStatement()) {
+    query.append(")");
+    
+
+             try (Statement statement = connection_admin.createStatement()) {
                 int rowsUpdated = statement.executeUpdate(query.toString());
 
                 if (rowsUpdated > 0) {
                     System.out.println("Cập nhật thành công!");
+                    showAlert("Success", "Thêm dữ liệu thành công!", AlertType.INFORMATION);
                     return true;
                 } else {
                     System.out.println("Không có bản ghi nào được cập nhật.");
+                    showAlert("Error", "Lỗi khi thêm dữ liệu: " , AlertType.ERROR);
                     return false;
                 }
+              
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -343,7 +356,13 @@ public static boolean insert1(String tableName, String[] columns,String[] types,
         }
         return resultList;
     }
-
+    public static void showAlert(String title, String message, AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
 }
 
