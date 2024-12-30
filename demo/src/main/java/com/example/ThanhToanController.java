@@ -1,9 +1,13 @@
 package com.example;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 
 import com.example.Entities.HoaDon;
+import com.example.Entities.KhoanThu;
+import com.example.dal.HoaDonDAL;
+import com.example.dal.KhoanThuDAL;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -42,10 +46,19 @@ public class ThanhToanController {
         this.ngaynop = LocalDate.now();
         this.hoaDon = new HoaDon(id.getText(),maKhoanThu, sotien, ngaynop);
     // luu hoa Don vao csdl
+            HoaDonDAL hoaDonDAL= new HoaDonDAL();
+            String[] colums = new String[]{"MaKhoanThu","MaHoKhau","SoTienDaNop","ThoiDiemNop"};
+            String[] types=new String[]{"string","string","int","date"};
+            String[] newValue = {maKhoanThu, maHo,sotiennop.getText(),LocalDate.now().toString()};
+            boolean t = hoaDonDAL.insert1("hoadontbl", colums, types,newValue);
+            if(t==true){
+                this.hoaDon = new HoaDon(maHo,maKhoanThu,sotien,LocalDate.now());
 
+            }
+            
         Stage thisStage = (Stage)save.getScene().getWindow();
         thisStage.close();
-        
     }
     
 }
+

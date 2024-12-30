@@ -40,6 +40,7 @@ public class AddFeeController {
     }
     @FXML
     private void xacnhan() throws IOException{
+
         if(id_text.getText().isEmpty()) return;
         if(ten_text.getText().isEmpty()) return;
         if(loai.getValue() == null) return;
@@ -61,8 +62,6 @@ public class AddFeeController {
             alert.showAndWait();
         } 
 
-            // this.newKhoanThu = new KhoanThu(id_text.getText(), ten_text.getText(),loai.getValue().toString()
-            // ,batdau.getValue() , hannop.getValue(), sotien,donvi.getValue());
             KhoanThuDAL khoanThuDAL =new KhoanThuDAL();
             String[] colums = new String[]{"MaKhoanThu","TenKhoanThu","Loai","ThoiGianBatDau","ThoiGianKetThuc","SoTien","DonVi"};
             String[] types=new String[]{"string","string","string","date","date","int","string"};
@@ -73,7 +72,15 @@ public class AddFeeController {
                 this.newKhoanThu = new KhoanThu(id_text.getText(), ten_text.getText(),loai.getValue().toString()
             ,batdau.getValue() , hannop.getValue(), sotien,donvi.getValue());
                 listNew.add(newKhoanThu);
+
             }
             
+            id_text.clear();
+            ten_text.clear();
+            loai.setValue(null);
+            batdau.setValue(null);
+            hannop.setValue(null);
+            ghichu.clear();
+            donvi.setValue(null);
     }
 }

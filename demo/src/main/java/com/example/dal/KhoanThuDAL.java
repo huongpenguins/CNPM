@@ -35,7 +35,7 @@ public class KhoanThuDAL extends Admin {
             while (resultSet.next()) {
                 String maKhoanThu = resultSet.getString("MaKhoanThu");
                 String tenKhoanThu = resultSet.getString("TenKhoanThu");
-                String loai = resultSet.getString("LoaiLoai");
+                String loai = resultSet.getString("Loai");
                 LocalDate batdau = resultSet.getDate("ThoiGianBatDau").toLocalDate();
                 LocalDate hannop = resultSet.getDate("ThoiGianKetThuc").toLocalDate();
                 int dongia = resultSet.getInt("SoTien");

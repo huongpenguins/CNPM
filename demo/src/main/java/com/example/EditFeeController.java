@@ -49,8 +49,9 @@ public class EditFeeController {
             alert.setContentText("Ngày bắt đầu nộp tiền muộn hơn hạn nộp");
             return;
         }
+
             String[] columns = new String[]{"MaKhoanThu","TenKhoanThu","Loai","ThoiGianBatDau","ThoiGianKetThuc","SoTien","DonVi"};
-            String[] types=new String[]{"string","string","string","date","date","int","int"};
+            String[] types=new String[]{"string","string","string","date","date","int","string"};
             String[] newValue = {id_text.getText(), ten_text.getText(),loai.getValue().toString()
                 ,batdau.getValue().toString() , hannop.getValue().toString(), ghichu.getText(),donvi.getValue()};
             StringBuffer condition = new StringBuffer("MaKhoanThu = ");

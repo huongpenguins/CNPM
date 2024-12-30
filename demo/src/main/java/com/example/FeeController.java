@@ -58,7 +58,7 @@ public class FeeController {
     AnchorPane filterbar;
     @FXML
     DatePicker tungay,denngay;
-    KhoanThuDAL khoanThuDAL;
+    KhoanThuDAL khoanThuDAL = new KhoanThuDAL();
   
     public void initialize(){
         table.setEditable(false);
@@ -126,7 +126,7 @@ public class FeeController {
                         boolean t = khoanThuDAL.deleteKhoanThu("khoanthutbl","MaKhoanThu" ,curItem.getId());
                         if(t==true) {
                             data.remove(curItem);
-                            table.refresh();
+                            //table.refresh();
                         }
                         
                     }
@@ -285,7 +285,7 @@ public class FeeController {
         subStage.setTitle("Sửa phí thu");
         edit.batdau.setValue(k.getBatdau());
         edit.donvi.setValue(k.getDonvi());
-        edit.ghichu.setText(k.ghichu.toString());
+        edit.ghichu.setText(k.ghichu.getValue().toString());
         edit.hannop.setValue(k.getHannop());
         edit.id_text.setText(k.getId());
         edit.ten_text.setText(k.getTen());
@@ -307,7 +307,7 @@ public class FeeController {
             k.setGhichu(sotien);
             k.setDonvi(edit.donvi.getValue());
             k.setBatdau(edit.batdau.getValue());
-            //table.refresh();
+            table.refresh();
         });
     }
     private void showChiTiet(KhoanThu k) throws IOException{
