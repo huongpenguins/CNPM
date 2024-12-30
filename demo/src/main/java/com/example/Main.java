@@ -47,15 +47,11 @@ public class Main {
 //            System.out.println("cap nhat du lieu thanh cong");
 //        }
 //        canHoDAL.deleteCanHo("canhotbl","MaCanHo","1");
-// Tìm kiếm trong bảng CUDAN với cột TenCuDan và giá trị cần tìm kiếm
-        ArrayList<Object[]> result = admin.search("canhotbl", "TenCanHo", "maia");
-
-        // Hiển thị kết quả tìm kiếm
-        for (Object[] row : result) {
-            for (Object col : row) {
-                System.out.print(col + " | ");
-            }
-            System.out.println();
-        }
-    }
+//// Tìm kiếm trong bảng CUDAN với cột TenCuDan và giá trị cần tìm kiếm
+//        String[] column = {"MaLoaiXe","LoaiXe"};
+//        String[] newV = {"MLX10","Yamaha"};
+//        String condition = "MaLoaiXe";
+//        String[] conditionV = {"p13"};
+//        admin.update("loaixetbl",column,newV,condition,conditionV);
+   }
 }

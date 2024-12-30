@@ -1,11 +1,9 @@
 package com.example;
 import com.example.connect.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -27,40 +25,7 @@ public class Admin {
 //        return "admin".equals(username) && "admin123".equals(password);
 //    }
 
-public static boolean update1(String tableName, String[] columns, String[] newValue,String condition) {
-    if (columns.length != newValue.length) {
-        throw new IllegalArgumentException("Số lượng cột và kiểu dữ liệu không khớp!");
-    }
 
-    StringBuilder query = new StringBuilder("UPDATE ");
-    query.append(tableName).append(" SET ");
-
-    // Tạo câu lệnh SQL cho các cột
-    for (int i = 0; i < columns.length; i++) {
-        query.append(columns[i]).append(" = ").append(newValue[i]);
-        if (i < columns.length - 1) {
-            query.append(", ");
-        }
-    }
-    query.append(" WHERE ").append(condition);
-
-             try (Statement statement = connection_admin.createStatement()) {
-                int rowsUpdated = statement.executeUpdate(query.toString());
-
-                if (rowsUpdated > 0) {
-                    System.out.println("Cập nhật thành công!");
-                    return true;
-                } else {
-                    System.out.println("Không có bản ghi nào được cập nhật.");
-                    return false;
-                }
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return false;
-        
-}
     /**
      * Hàm insert chung, nhập dữ liệu trực tiếp từ bàn phím
      *
@@ -200,30 +165,45 @@ public static boolean update1(String tableName, String[] columns, String[] newVa
     public ArrayList<Object[]> search(String tableName, String columnName, String searchValue) {
         ArrayList<Object[]> resultList = new ArrayList<>();
 
-        // SQL truy vấn linh hoạt với tham số
-        String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
+        // Nếu cột hoặc giá trị bị null => lấy all
+        if (columnName == null || searchValue == null) {
+            String sqlAll = "SELECT * FROM " + tableName;
+            try (PreparedStatement preStatement = connection_admin.prepareStatement(sqlAll);
+                 ResultSet resultSet = preStatement.executeQuery()) {
+                int columnCount = resultSet.getMetaData().getColumnCount();
+                while (resultSet.next()) {
+                    Object[] row = new Object[columnCount];
+                    for (int i = 1; i <= columnCount; i++) {
+                        row[i - 1] = resultSet.getObject(i);
+                    }
+                    resultList.add(row);
+                }
+            } catch (SQLException e) {
+                System.err.println("Lỗi khi load ALL dữ liệu: " + e.getMessage());
+            }
+            return resultList;
+        }
 
+        // Ngược lại, search = cột = value
+        String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
         try (PreparedStatement preStatement = connection_admin.prepareStatement(sql)) {
             preStatement.setString(1, searchValue);
             ResultSet resultSet = preStatement.executeQuery();
 
-            // Lấy số lượng cột của bảng
             int columnCount = resultSet.getMetaData().getColumnCount();
-
-            // Duyệt qua từng dòng kết quả
             while (resultSet.next()) {
-                Object[] row = new Object[columnCount]; // Mảng chứa dữ liệu của một dòng
+                Object[] row = new Object[columnCount];
                 for (int i = 1; i <= columnCount; i++) {
-                    row[i - 1] = resultSet.getObject(i); // Gán giá trị từng cột vào mảng
+                    row[i - 1] = resultSet.getObject(i);
                 }
-                resultList.add(row); // Thêm dòng vào danh sách kết quả
+                resultList.add(row);
             }
         } catch (SQLException e) {
             System.err.println("Lỗi khi tìm kiếm dữ liệu: " + e.getMessage());
         }
-
-        return resultList; // Trả về danh sách kết quả
+        return resultList;
     }
+
 
 }
 

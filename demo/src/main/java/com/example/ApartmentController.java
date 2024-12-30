@@ -107,6 +107,7 @@ public class ApartmentController {
         quanlycanho.setItems(masterData);
     }
 
+
     @FXML
     private void searchCanHo() {
         String keyword = txtSearch.getText().trim();

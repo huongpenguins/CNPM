@@ -1,5 +1,7 @@
 package com.example.Entities;
 
+import javafx.scene.control.TableColumn;
+
 public class CanHo {
     private String MaCanHo;
     private String MaHoKhau;
@@ -10,6 +12,8 @@ public class CanHo {
 
     public CanHo(String hk001, String ch001, String nk001, int i, float i1, String môTảCănHộ) {
     }
+    TableColumn<CanHo, String> maCanHoCol = new TableColumn<>("Mã Căn Hộ");
+//    maCanHoCol.setCellValueFactory(new PropertyValueFactory<>("MaCanHo"));
 
     public void setMaHoKhau(String maHoKhau) {
         this.MaHoKhau = maHoKhau;

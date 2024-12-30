@@ -18,10 +18,10 @@ public class KhoanThuDAL extends Admin {
         String[] types = {"int", "String", "LocalDateTime", "LocalDateTime", "String", "String", "String"};
         return insert(tableName, columns, types);
     }
-    public static boolean update(String[] column, String[] newValue,String condition){
-      return update1("khoanthutbl",column,newValue,condition);
-
-    }
+//    public static boolean update(String[] column, String[] newValue,String condition){
+//      return update1("khoanthutbl",column,newValue,condition);
+//
+//    }
     public static boolean updateKhoanThu(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) throws SQLException {
         return update(tableName, columnName, newValue, conditionColumn, conditionValue);
     }
