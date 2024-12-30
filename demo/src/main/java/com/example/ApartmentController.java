@@ -121,7 +121,7 @@ public class ApartmentController {
                      results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
                  }
             } else {
-                results = canhoDal.searchCanHo("CanHo", "TenCanHo", keyword);
+                results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
             }
         }
 
@@ -184,11 +184,11 @@ public class ApartmentController {
                 boolean allSuccess = true;
 
                 try {
-                    allSuccess &= canhoDal.updateCanHo("CanHo", "MaHoKhau", mahokhau, "MaCanHo", macanho);
-                    allSuccess &= canhoDal.updateCanHo("CanHo", "TenCanHo", tencanho, "MaCanHo", macanho);
-                    allSuccess &= canhoDal.updateCanHo("CanHo", "Tang", tang, "MaCanHo", macanho);
-                    allSuccess &= canhoDal.updateCanHo("CanHo", "DienTich", dientich, "MaCanHo", macanho);
-                    allSuccess &= canhoDal.updateCanHo("CanHo", "Mota", mota, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "MaHoKhau", mahokhau, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "TenCanHo", tencanho, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "Tang", tang, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "DienTich", dientich, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "Mota", mota, "MaCanHo", macanho);
                 } catch (SQLException e) {
                     e.printStackTrace();
                     allSuccess = false;
