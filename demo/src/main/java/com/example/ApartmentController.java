@@ -152,11 +152,13 @@ public class ApartmentController {
             String tang = details[2];
             String dientich = details[3];
             String mota = details[4];
-
+            /*
             String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
             String[] values = {macanho, mahokhau, tencanho, tang, dientich, mota};
 
-            boolean success = canhoDal.insertCanHo();
+             */
+            CanHo newCanHo = new CanHo(macanho, mahokhau, tencanho, Integer.parseInt(tang), Float.parseFloat(dientich), mota);
+            boolean success = canhoDal.insertCanHo(newCanHo);
             if (success) {
                 showAlert("Thành công", "Căn hộ mới đã được thêm!");
                 loadCanHoData();
