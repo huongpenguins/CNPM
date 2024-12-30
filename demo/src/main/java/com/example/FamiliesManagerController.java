@@ -6,15 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,21 +48,27 @@ public class FamiliesManagerController {
     private HoGiaDinhDAL hoGiaDinhDal = new HoGiaDinhDAL(); // DAL cho HoGiaDinh
     private NhanKhauDAL nhanKhauDal = new NhanKhauDAL();    // Để xem chi tiết cư dân trong gia đình
 
+    @FXML
     public void initialize() {
+        // 1) Map các cột trong TableView đến các getter của Household
+        //    (Đảm bảo class Household có getHouseholdId(), getApartmentId(), v.v.)
+        colHouseholdId.setCellValueFactory(new PropertyValueFactory<>("householdId"));
+        colApartmentId.setCellValueFactory(new PropertyValueFactory<>("apartmentId"));
+        colResidentId.setCellValueFactory(new PropertyValueFactory<>("residentId"));
+        colVehicleId.setCellValueFactory(new PropertyValueFactory<>("vehicleId"));
+        colIssueDate.setCellValueFactory(new PropertyValueFactory<>("issueDate"));
+        colOwnerName.setCellValueFactory(new PropertyValueFactory<>("ownerName"));
+        colPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+
+        // 2) Ẩn sidebar khi khởi chạy
         if (sidebar != null) {
             sidebar.setLayoutX(-sidebar.getPrefWidth());
         }
 
-        colHouseholdId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getHouseholdId()));
-        colApartmentId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApartmentId()));
-        colResidentId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getResidentId()));
-        colVehicleId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getVehicleId()));
-        colIssueDate.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getIssueDate()));
-        colOwnerName.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getOwnerName()));
-        colPhoneNumber.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getPhoneNumber()));
-
+        // 3) Tải dữ liệu ban đầu
         loadHouseholdData();
 
+        // 4) Vô hiệu hóa Edit/Delete/View khi chưa chọn hàng
         btnEdit.setDisable(true);
         btnDelete.setDisable(true);
         btnViewDetails.setDisable(true);
@@ -77,55 +80,64 @@ public class FamiliesManagerController {
             btnViewDetails.setDisable(!isSelected);
         });
 
+        // 5) Khi gõ vào txtSearch thì tiến hành search
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             searchHouseholds();
         });
     }
 
+    /**
+     * Hàm load tất cả dữ liệu từ bảng hogiadinhtbl (nếu columnName=null, searchValue=null)
+     */
     private void loadHouseholdData() {
+        System.out.println("Bắt đầu tải dữ liệu...");
         masterData.clear();
-        ArrayList<Object[]> results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinhtbl", null, null);
-        if (results != null) {
-            for (Object[] row : results) {
-                // Giả định thứ tự cột trong CSDL: MaHoGiaDinh, MaCanHo, MaNhanKhau, MaXe, NgayCap, OwnerName, PhoneNumber
-                String householdId = (String) row[0];
-                String apartmentId = (String) row[1];
-                String residentId = (String) row[2];
-                String vehicleId = (String) row[3];
-                String issueDate = (String) row[4];
-                String ownerName = (String) row[5];
-                String phoneNumber = (String) row[6];
 
-                masterData.add(new Household(householdId, apartmentId, residentId, vehicleId, issueDate, ownerName, phoneNumber));
-            }
-        }
-        tableHouseholds.setItems(masterData);
-    }
-    //Tinh tong so tien phai nop theo thang cua moi ho
-    public static double tinhTongTienTheoHo(Connection connection, String maHoGiaDinh) throws SQLException {
-        double tongTien = 0;
-        String sql = "SELECT SUM(SoTien) FROM khoan_thu WHERE MaHoGiaDinh = ?"; // Sử dụng PreparedStatement
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, maHoGiaDinh); // Gán giá trị cho tham số ?
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    tongTien = resultSet.getDouble(1);
+        ArrayList<Object[]> results = hoGiaDinhDal.searchHoGiaDinh("hogiadinhtbl", null, null);
+
+        if (results != null && !results.isEmpty()) {
+            for (Object[] row : results) {
+                try {
+                    String householdId = row[0] != null ? row[0].toString() : "";
+                    String apartmentId = row[1] != null ? row[1].toString() : "";
+                    String residentId = row[2] != null ? row[2].toString() : "";
+                    String vehicleId = row[3] != null ? row[3].toString() : "";
+                    String issueDate = row[4] != null ? row[4].toString() : "";
+                    String ownerName = row[5] != null ? row[5].toString() : "";
+                    String phoneNumber = row[6] != null ? row[6].toString() : "";
+
+                    Household household = new Household(
+                            householdId, apartmentId, residentId,
+                            vehicleId, issueDate, ownerName, phoneNumber
+                    );
+                    masterData.add(household);
+                    System.out.println("Đã thêm hộ gia đình: " + householdId);
+                } catch (Exception e) {
+                    System.err.println("Lỗi khi xử lý dòng dữ liệu: " + e.getMessage());
                 }
             }
         }
-        return tongTien;
+
+        System.out.println("Tổng số hộ gia đình đã tải: " + masterData.size());
+        tableHouseholds.setItems(masterData);
     }
+
+    /**
+     * Tìm kiếm theo MaHoGiaDinh hoặc TenChuHo
+     */
     @FXML
     private void searchHouseholds() {
         String keyword = txtSearch.getText().trim();
         ArrayList<Object[]> results;
         if (keyword.isEmpty()) {
-            results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinhtbl", null, null);
+            // Nếu user xóa trắng -> load all
+            results = hoGiaDinhDal.searchHoGiaDinh("hogiadinhtbl", null, null);
         } else {
-            // Tìm theo MaHoGiaDinh hoặc OwnerName
-            results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinhtbl", "MaHoGiaDinh", keyword);
+            // Tìm theo MaHoGiaDinh
+            results = hoGiaDinhDal.searchHoGiaDinh("hogiadinhtbl", "MaHoGiaDinh", keyword);
             if (results == null || results.isEmpty()) {
-                results = hoGiaDinhDal.searchHoGiaDinh("HoGiaDinhtbl", "OwnerName", keyword);
+                // Nếu không có => tìm theo TenChuHo
+                results = hoGiaDinhDal.searchHoGiaDinh("hogiadinhtbl", "TenChuHo", keyword);
             }
         }
 
@@ -134,35 +146,45 @@ public class FamiliesManagerController {
             for (Object[] row : results) {
                 String householdId = (String) row[0];
                 String apartmentId = (String) row[1];
-                String residentId = (String) row[2];
-                String vehicleId = (String) row[3];
-                String issueDate = (String) row[4];
-                String ownerName = (String) row[5];
-                String phoneNumber = (String) row[6];
-                masterData.add(new Household(householdId, apartmentId, residentId, vehicleId, issueDate, ownerName, phoneNumber));
+                String residentId  = (String) row[2];
+                String vehicleId   = (String) row[3];
+                String issueDate   = String.valueOf(row[4]);
+                String ownerName   = (String) row[5];
+                String phoneNumber = String.valueOf(row[6]);
+
+                masterData.add(new Household(householdId, apartmentId, residentId, vehicleId,
+                        issueDate, ownerName, phoneNumber));
             }
         }
         tableHouseholds.setItems(masterData);
     }
 
+    /**
+     * Thêm 1 hộ gia đình
+     */
     @FXML
     private void addHousehold() {
         Dialog<Pair<String, String[]>> dialog = createHouseholdDialog("Thêm hộ khẩu", null);
         Optional<Pair<String, String[]>> result = dialog.showAndWait();
         result.ifPresent(data -> {
             String householdId = data.getKey();
-            String[] details = data.getValue();
+            String[] details   = data.getValue();
             String apartmentId = details[0];
-            String residentId = details[1];
-            String vehicleId = details[2];
-            String issueDate = details[3];
-            String ownerName = details[4];
+            String residentId  = details[1];
+            String vehicleId   = details[2];
+            String issueDate   = details[3];
+            String ownerName   = details[4];
             String phoneNumber = details[5];
 
-            String[] columns = {"MaHoGiaDinh","MaCanHo","MaNhanKhau","MaXe","NgayCap","OwnerName","PhoneNumber"};
-            String[] values = {householdId, apartmentId, residentId, vehicleId, issueDate, ownerName, phoneNumber};
+            // DB cột: MaHoGiaDinh, MaCanHo, MaNhanKhau, MaXe, NgayCap, TenChuHo, SDT
+            String[] columns = {
+                    "MaHoGiaDinh", "MaCanHo", "MaNhanKhau", "MaXe", "NgayCap", "TenChuHo", "SDT"
+            };
+            String[] values = {
+                    householdId, apartmentId, residentId, vehicleId, issueDate, ownerName, phoneNumber
+            };
 
-            boolean success = hoGiaDinhDal.insertHoGiaDinh("HoGiaDinhtbl", columns, values);
+            boolean success = hoGiaDinhDal.insertHoGiaDinh("hogiadinhtbl", columns, values);
             if (success) {
                 showAlert("Thành công", "Hộ khẩu mới đã được thêm!");
                 loadHouseholdData();
@@ -172,6 +194,9 @@ public class FamiliesManagerController {
         });
     }
 
+    /**
+     * Sửa thông tin hộ gia đình
+     */
     @FXML
     private void editHousehold() {
         Household selected = tableHouseholds.getSelectionModel().getSelectedItem();
@@ -180,25 +205,21 @@ public class FamiliesManagerController {
             Optional<Pair<String, String[]>> result = dialog.showAndWait();
             result.ifPresent(data -> {
                 String householdId = data.getKey();
-                String[] details = data.getValue();
+                String[] details   = data.getValue();
                 String apartmentId = details[0];
-                String residentId = details[1];
-                String vehicleId = details[2];
-                String issueDate = details[3];
-                String ownerName = details[4];
+                String residentId  = details[1];
+                String vehicleId   = details[2];
+                String issueDate   = details[3];
+                String ownerName   = details[4];
                 String phoneNumber = details[5];
 
                 boolean allSuccess = true;
-
-                // Tương tự như bên ResidentsManager, update từng cột, nếu updateHoGiaDinh ném SQLException thì cũng cần try-catch.
-                // Tuy nhiên HoGiaDinhDAL updateHoGiaDinh không khai throws SQLException ở code Hà viết, nên có lẽ không cần try-catch.
-                // Nếu cần, có thể thêm try-catch.
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "MaCanHo", apartmentId, "MaHoGiaDinh", householdId);
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "MaNhanKhau", residentId, "MaHoGiaDinh", householdId);
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "MaXe", vehicleId, "MaHoGiaDinh", householdId);
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "NgayCap", issueDate, "MaHoGiaDinh", householdId);
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "OwnerName", ownerName, "MaHoGiaDinh", householdId);
-                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("HoGiaDinhtbl", "PhoneNumber", phoneNumber, "MaHoGiaDinh", householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("hogiadinhtbl","MaCanHo",   apartmentId,"MaHoGiaDinh",householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("hogiadinhtbl","MaNhanKhau",residentId, "MaHoGiaDinh",householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("hogiadinhtbl","MaXe",      vehicleId,  "MaHoGiaDinh",householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("hogiadinhtbl","NgayCap",   issueDate,  "MaHoGiaDinh",householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("hogiadinhtbl","TenChuHo",  ownerName,  "MaHoGiaDinh",householdId);
+                allSuccess &= hoGiaDinhDal.updateHoGiaDinh("hogiadinhtbl","SDT",       phoneNumber,"MaHoGiaDinh",householdId);
 
                 if (allSuccess) {
                     showAlert("Sửa thành công", "Thông tin hộ khẩu đã được cập nhật!");
@@ -212,6 +233,9 @@ public class FamiliesManagerController {
         }
     }
 
+    /**
+     * Xóa hộ gia đình
+     */
     @FXML
     private void deleteHousehold() {
         Household selected = tableHouseholds.getSelectionModel().getSelectedItem();
@@ -220,9 +244,10 @@ public class FamiliesManagerController {
             confirmAlert.setTitle("Xóa hộ khẩu");
             confirmAlert.setHeaderText("Bạn có chắc chắn muốn xóa hộ khẩu này?");
             confirmAlert.setContentText("Hành động này không thể hoàn tác.");
+
             Optional<ButtonType> result = confirmAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                boolean success = hoGiaDinhDal.deleteHoGiaDinh("HoGiaDinhtbl", "MaHoGiaDinh", selected.getHouseholdId());
+                boolean success = hoGiaDinhDal.deleteHoGiaDinh("hogiadinhtbl", "MaHoGiaDinh", selected.getHouseholdId());
                 if (success) {
                     showAlert("Xóa thành công", "Hộ khẩu đã được xóa khỏi hệ thống!");
                     loadHouseholdData();
@@ -235,31 +260,37 @@ public class FamiliesManagerController {
         }
     }
 
+    /**
+     * Xem chi tiết các thành viên trong hộ gia đình
+     */
     @FXML
     private void viewHouseholdDetails() {
         Household selected = tableHouseholds.getSelectionModel().getSelectedItem();
         if (selected != null) {
             String householdId = selected.getHouseholdId();
 
-            // Lấy danh sách cư dân với MaHoGiaDinh = householdId
-            ArrayList<Object[]> results = nhanKhauDal.searchNhanKhau("NhanKhautbl", "MaHoGiaDinh", householdId);
+            // Lấy danh sách cư dân (nhankhautbl) có MaHoGiaDinh = householdId
+            ArrayList<Object[]> results = nhanKhauDal.searchNhanKhau("nhankhautbl", "MaHoGiaDinh", householdId);
             if (results == null || results.isEmpty()) {
                 showAlert("Thông báo", "Không có thành viên nào trong hộ gia đình này!");
                 return;
             }
             List<Resident> familyMembers = new ArrayList<>();
             for (Object[] row : results) {
-                String id = (String) row[0];
-                String hoGiaDinh = (String) row[1];
-                String name = (String) row[2];
+                String id           = (String) row[0];
+                String hoGiaDinh    = (String) row[1];
+                String name         = (String) row[2];
                 String identityCard = (String) row[3];
-                String dob = (String) row[4];
+                String dob          = String.valueOf(row[4]);
                 String placeOfBirth = (String) row[5];
-                String ethnicity = (String) row[6];
-                String occupation = (String) row[7];
+                String ethnicity    = (String) row[6];
+                String occupation   = (String) row[7];
                 String relationship = (String) row[8];
 
-                familyMembers.add(new Resident(id, hoGiaDinh, name, identityCard, dob, placeOfBirth, ethnicity, occupation, relationship));
+                familyMembers.add(new Resident(
+                        id, hoGiaDinh, name, identityCard, dob, placeOfBirth,
+                        ethnicity, occupation, relationship
+                ));
             }
 
             // Hiển thị dialog chi tiết
@@ -270,25 +301,27 @@ public class FamiliesManagerController {
             detailDialog.getDialogPane().getButtonTypes().addAll(closeButtonType);
 
             TableView<Resident> memberTable = new TableView<>();
-            TableColumn<Resident, String> colMemberId = new TableColumn<>("Mã Nhân Khẩu");
-            TableColumn<Resident, String> colMemberName = new TableColumn<>("Họ và Tên");
+            TableColumn<Resident, String> colMemberId       = new TableColumn<>("Mã Nhân Khẩu");
+            TableColumn<Resident, String> colMemberName     = new TableColumn<>("Họ và Tên");
             TableColumn<Resident, String> colMemberRelation = new TableColumn<>("Quan Hệ");
 
-            colMemberId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getId()));
-            colMemberName.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getName()));
-            colMemberRelation.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getRelationship()));
+            colMemberId.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(cd.getValue().getId()));
+            colMemberName.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(cd.getValue().getName()));
+            colMemberRelation.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(cd.getValue().getRelationship()));
 
             memberTable.getColumns().addAll(colMemberId, colMemberName, colMemberRelation);
             memberTable.setItems(FXCollections.observableArrayList(familyMembers));
 
             detailDialog.getDialogPane().setContent(memberTable);
             detailDialog.showAndWait();
-
         } else {
             showAlert("Lỗi", "Vui lòng chọn hộ khẩu để xem chi tiết!");
         }
     }
 
+    /**
+     * Tạo dialog (Form) nhập/ sửa dữ liệu Household
+     */
     private Dialog<Pair<String, String[]>> createHouseholdDialog(String title, Household householdData) {
         Dialog<Pair<String, String[]>> dialog = new Dialog<>();
         dialog.setTitle(title);
@@ -302,10 +335,10 @@ public class FamiliesManagerController {
 
         TextField txtHouseholdId = new TextField();
         TextField txtApartmentId = new TextField();
-        TextField txtResidentId = new TextField();
-        TextField txtVehicleId = new TextField();
-        TextField txtIssueDate = new TextField();
-        TextField txtOwnerName = new TextField();
+        TextField txtResidentId  = new TextField();
+        TextField txtVehicleId   = new TextField();
+        TextField txtIssueDate   = new TextField();
+        TextField txtOwnerName   = new TextField();
         TextField txtPhoneNumber = new TextField();
 
         grid.add(new Label("Mã Hộ Gia Đình:"), 0, 0);
@@ -337,6 +370,8 @@ public class FamiliesManagerController {
 
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == okButtonType) {
+                // Key = householdId
+                // Value = [apartmentId, residentId, vehicleId, issueDate, ownerName, phoneNumber]
                 return new Pair<>(txtHouseholdId.getText(), new String[]{
                         txtApartmentId.getText(),
                         txtResidentId.getText(),
@@ -360,6 +395,7 @@ public class FamiliesManagerController {
         alert.showAndWait();
     }
 
+    //region Chuyển màn hình
     @FXML
     private void menuClick() {
         if (sidebar != null) {
@@ -381,7 +417,7 @@ public class FamiliesManagerController {
         alert.setTitle("Đăng xuất");
         alert.setContentText("Bạn muốn đăng xuất?");
         alert.showAndWait();
-        if(alert.getResult()== ButtonType.OK){
+        if(alert.getResult() == ButtonType.OK){
             switchToSignIn();
         }
     }
@@ -390,34 +426,42 @@ public class FamiliesManagerController {
     private void switchToHome() throws IOException {
         App.setRoot("home");
     }
+
     @FXML
     private void switchToGiaDinh() throws IOException {
         App.setRoot("FamiliesManager");
     }
+
     @FXML
     private void switchToDanCu() throws IOException {
         App.setRoot("ResidentsManager");
     }
+
     @FXML
     private void switchToKhoanThu() throws IOException {
         App.setRoot("fee");
     }
+
     @FXML
     private void switchToCanHo() throws IOException {
         App.setRoot("secondary");
     }
+
     @FXML
     private void switchToTamTru() throws IOException {
         App.setRoot("secondary");
     }
+
     @FXML
     private void switchToTamVang() throws IOException {
         App.setRoot("secondary");
     }
+
     @FXML
     private void switchToSignIn(){
         // Chuyển sang màn hình đăng nhập
     }
+
     @FXML
     private void switchToAccount() {
         try {
@@ -427,5 +471,5 @@ public class FamiliesManagerController {
             e.printStackTrace();
         }
     }
-
+    //endregion
 }

@@ -1,71 +1,96 @@
 package com.example.Entities;
 
+import javafx.beans.property.*;
+
 public class CanHo {
-    private String MaCanHo;
-    private String MaHoKhau;
-    private String TenCanHo;
-    private int Tang;
-    private float DienTich;
-    private String MoTa;
+    private StringProperty maCanHo;
+    private StringProperty maHoKhau;
+    private StringProperty tenCanHo;
+    private IntegerProperty tang;
+    private FloatProperty dienTich;
+    private StringProperty moTa;
 
+    // Constructor
     public CanHo(String maCanHo, String maHoKhau, String tenCanHo, int tang, float dienTich, String moTa) {
-        this.MaCanHo = maCanHo;
-        this.MaHoKhau = maHoKhau;
-        this.TenCanHo = tenCanHo;
-        this.Tang = tang;
-        this.DienTich = dienTich;
-        this.MoTa = moTa;
+        this.maCanHo = new SimpleStringProperty(maCanHo);
+        this.maHoKhau = new SimpleStringProperty(maHoKhau);
+        this.tenCanHo = new SimpleStringProperty(tenCanHo);
+        this.tang = new SimpleIntegerProperty(tang);
+        this.dienTich = new SimpleFloatProperty(dienTich);
+        this.moTa = new SimpleStringProperty(moTa);
     }
 
-    public void setMaHoKhau(String maHoKhau) {
-        this.MaHoKhau = maHoKhau;
-    }
-
-    public void setMaCanHo(String maCanHo) {
-        this.MaCanHo = maCanHo;
-    }
-
-    public void setMoTa(String moTa) {
-        this.MoTa = moTa;
-    }
-
-    public void setTenCanHo(String tenCanHo) {
-        this.TenCanHo = tenCanHo;
-    }
-
-    public void setTang(int tang) {
-        this.Tang = tang;
-    }
-
-    public void setDienTich(float dienTich) {
-        this.DienTich = dienTich;
-    }
-
-    public String getMaHoKhau() {
-        return MaHoKhau;
-    }
-
-    public float getDienTich() {
-        return DienTich;
+    // Getters and Setters using Properties
+    public StringProperty maCanHoProperty() {
+        return maCanHo;
     }
 
     public String getMaCanHo() {
-        return MaCanHo;
+        return maCanHo.get();
     }
 
-    public String getMoTa() {
-        return MoTa;
+    public void setMaCanHo(String maCanHo) {
+        this.maCanHo.set(maCanHo);
+    }
+
+    public StringProperty maHoKhauProperty() {
+        return maHoKhau;
+    }
+
+    public String getMaHoKhau() {
+        return maHoKhau.get();
+    }
+
+    public void setMaHoKhau(String maHoKhau) {
+        this.maHoKhau.set(maHoKhau);
+    }
+
+    public StringProperty tenCanHoProperty() {
+        return tenCanHo;
     }
 
     public String getTenCanHo() {
-        return TenCanHo;
+        return tenCanHo.get();
+    }
+
+    public void setTenCanHo(String tenCanHo) {
+        this.tenCanHo.set(tenCanHo);
+    }
+
+    public IntegerProperty tangProperty() {
+        return tang;
     }
 
     public int getTang() {
-        return Tang;
+        return tang.get();
     }
 
-    public static void main(String[] args) {
+    public void setTang(int tang) {
+        this.tang.set(tang);
+    }
 
+    public FloatProperty dienTichProperty() {
+        return dienTich;
+    }
+
+    public float getDienTich() {
+        return dienTich.get();
+    }
+
+    public void setDienTich(float dienTich) {
+        this.dienTich.set(dienTich);
+    }
+
+    public StringProperty moTaProperty() {
+        return moTa;
+    }
+
+    public String getMoTa() {
+        return moTa.get();
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa.set(moTa);
     }
 }
+

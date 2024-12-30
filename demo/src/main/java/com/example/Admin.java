@@ -1,7 +1,6 @@
 package com.example;
 import com.example.connect.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -253,30 +252,45 @@ public static boolean insert1(String tableName, String[] columns,String[] types,
     public ArrayList<Object[]> search(String tableName, String columnName, String searchValue) {
         ArrayList<Object[]> resultList = new ArrayList<>();
 
-        // SQL truy vấn linh hoạt với tham số
-        String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
+        // Nếu cột hoặc giá trị bị null => lấy all
+        if (columnName == null || searchValue == null) {
+            String sqlAll = "SELECT * FROM " + tableName;
+            try (PreparedStatement preStatement = connection_admin.prepareStatement(sqlAll);
+                 ResultSet resultSet = preStatement.executeQuery()) {
+                int columnCount = resultSet.getMetaData().getColumnCount();
+                while (resultSet.next()) {
+                    Object[] row = new Object[columnCount];
+                    for (int i = 1; i <= columnCount; i++) {
+                        row[i - 1] = resultSet.getObject(i);
+                    }
+                    resultList.add(row);
+                }
+            } catch (SQLException e) {
+                System.err.println("Lỗi khi load ALL dữ liệu: " + e.getMessage());
+            }
+            return resultList;
+        }
 
+        // Ngược lại, search = cột = value
+        String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
         try (PreparedStatement preStatement = connection_admin.prepareStatement(sql)) {
             preStatement.setString(1, searchValue);
             ResultSet resultSet = preStatement.executeQuery();
 
-            // Lấy số lượng cột của bảng
             int columnCount = resultSet.getMetaData().getColumnCount();
-
-            // Duyệt qua từng dòng kết quả
             while (resultSet.next()) {
-                Object[] row = new Object[columnCount]; // Mảng chứa dữ liệu của một dòng
+                Object[] row = new Object[columnCount];
                 for (int i = 1; i <= columnCount; i++) {
-                    row[i - 1] = resultSet.getObject(i); // Gán giá trị từng cột vào mảng
+                    row[i - 1] = resultSet.getObject(i);
                 }
-                resultList.add(row); // Thêm dòng vào danh sách kết quả
+                resultList.add(row);
             }
         } catch (SQLException e) {
             System.err.println("Lỗi khi tìm kiếm dữ liệu: " + e.getMessage());
         }
-
-        return resultList; // Trả về danh sách kết quả
+        return resultList;
     }
+
 
 }
 

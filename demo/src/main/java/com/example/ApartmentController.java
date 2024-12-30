@@ -89,7 +89,7 @@ public class ApartmentController {
         }
         masterData.clear();
         ArrayList<Object[]> results = canhoDal.searchCanHo("canhotbl", null, null);
-        if (results != null && !results.isEmpty()) {
+        if (results != null) {
 
             for (Object[] row : results) {
                 // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, Mota
@@ -107,6 +107,7 @@ public class ApartmentController {
         quanlycanho.setItems(masterData);
     }
 
+
     @FXML
     private void searchCanHo() {
         String keyword = txtSearch.getText().trim();
@@ -114,9 +115,12 @@ public class ApartmentController {
         if (keyword.isEmpty()) {
             results = canhoDal.searchCanHo("canhotbl", null, null);
         } else {
-            // Tìm theo MaCanHo hoặc TenCanHo
-            results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
-            if (results == null || results.isEmpty()) {
+            if (keyword.matches("\\d+")) {
+                results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
+                 if (results == null || results.isEmpty()) {
+                     results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
+                 }
+            } else {
                 results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
             }
         }
@@ -148,16 +152,18 @@ public class ApartmentController {
             String tang = details[2];
             String dientich = details[3];
             String mota = details[4];
-
+            /*
             String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
             String[] values = {macanho, mahokhau, tencanho, tang, dientich, mota};
 
-            boolean success = canhoDal.insertCanHo();
+             */
+            CanHo newCanHo = new CanHo(macanho, mahokhau, tencanho, Integer.parseInt(tang), Float.parseFloat(dientich), mota);
+            boolean success = canhoDal.insertCanHo(newCanHo);
             if (success) {
-                showAlert("Thành công", "Hộ khẩu mới đã được thêm!");
+                showAlert("Thành công", "Căn hộ mới đã được thêm!");
                 loadCanHoData();
             } else {
-                showAlert("Lỗi", "Không thể thêm hộ khẩu!");
+                showAlert("Lỗi", "Không thể thêm căn hộ!");
             }
         });
     }
@@ -180,11 +186,11 @@ public class ApartmentController {
                 boolean allSuccess = true;
 
                 try {
-                    allSuccess &= canhoDal.updateCanHo("CanHo", "MaHoKhau", mahokhau, "MaCanHo", macanho);
-                    allSuccess &= canhoDal.updateCanHo("CanHo", "TenCanHo", tencanho, "MaCanHo", macanho);
-                    allSuccess &= canhoDal.updateCanHo("CanHo", "Tang", tang, "MaCanHo", macanho);
-                    allSuccess &= canhoDal.updateCanHo("CanHo", "DienTich", dientich, "MaCanHo", macanho);
-                    allSuccess &= canhoDal.updateCanHo("CanHo", "Mota", mota, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "MaHoKhau", mahokhau, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "TenCanHo", tencanho, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "Tang", tang, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "DienTich", dientich, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "Mota", mota, "MaCanHo", macanho);
                 } catch (SQLException e) {
                     e.printStackTrace();
                     allSuccess = false;
@@ -194,11 +200,11 @@ public class ApartmentController {
                     showAlert("Sửa thành công", "Thông tin căn hộ đã được cập nhật!");
                     loadCanHoData();
                 } else {
-                    showAlert("Lỗi", "Không thể cập nhật hộ khẩu!");
+                    showAlert("Lỗi", "Không thể cập nhật căn hộ!");
                 }
             });
         } else {
-            showAlert("Lỗi", "Vui lòng chọn hộ khẩu cần sửa!");
+            showAlert("Lỗi", "Vui lòng chọn căn hộ cần sửa!");
         }
     }
 

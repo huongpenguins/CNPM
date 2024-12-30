@@ -53,9 +53,19 @@ public class CanHoDAL extends Admin {
      * @return true nếu thêm thành công, false nếu thất bại
      */
     static String tableName = "canhotbl";
-    public boolean insertCanHo() {
+    public boolean insertCanHo(CanHo canho ){
         String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
+        String[] values = {
+                canho.getMaCanHo(),
+                canho.getMaHoKhau(),
+                canho.getTenCanHo(),
+                String.valueOf(canho.getTang()),   // Chuyển kiểu int sang String
+                String.valueOf(canho.getDienTich()), // Chuyển kiểu float sang String
+                canho.getMoTa()
+        };
+        /*
         String[] values = {"macanho, mahokhau, tencanho, tang, dientich, mota"};
+        */
 
         return insert(tableName, columns, values); // Gọi hàm insert từ Admin
     }
