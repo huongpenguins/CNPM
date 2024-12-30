@@ -92,18 +92,27 @@ public class ApartmentController {
         if (results != null) {
 
             for (Object[] row : results) {
-                // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, Mota
-                String MaCanHo = (String) row[0];
-                String MaHoKhau = (String) row[1];
-                String TenCanHo = (String) row[2];
-                int Tang = (int) row[3];
-                float DienTich = (float) row[4];
-                String MoTa = (String) row[5];
+                try {
+                    // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, Mota
+                    String MaCanHo = row[0] != null ? row[0].toString() : "";
+                    String MaHoKhau = row[1] != null ? row[1].toString() : "";
+                    String TenCanHo = row[2] != null ? row[2].toString() : "";
+                    int Tang = row[3] != null ? Integer.parseInt(row[3].toString()) : 0; // Xử lý null và ép kiểu an toàn
+                    float DienTich = row[4] != null ? Float.parseFloat(row[4].toString()) : 0.0f; // Xử lý null và ép kiểu an toàn
+                    String MoTa = row[5] != null ? row[5].toString() : "";
+                    CanHo canho = new CanHo(
+                            MaCanHo, MaHoKhau, TenCanHo,
+                            Tang, DienTich, MoTa
+                    );
 
-
-                masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
+                    masterData.add(canho);
+                    System.out.println("Đã thêm căn hộ: " + MaCanHo);
+                }catch(Exception e){
+                    System.err.println("Lỗi khi xử lý dòng dữ liệu: " + e.getMessage());
+                }
             }
         }
+        System.out.println("Tổng số căn hộ đã tải: " + masterData.size());
         quanlycanho.setItems(masterData);
     }
 
@@ -115,13 +124,9 @@ public class ApartmentController {
         if (keyword.isEmpty()) {
             results = canhoDal.searchCanHo("canhotbl", null, null);
         } else {
-            if (keyword.matches("\\d+")) {
-                results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
-                 if (results == null || results.isEmpty()) {
+            results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
+            if (results == null || results.isEmpty()) {
                      results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
-                 }
-            } else {
-                results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
             }
         }
 
@@ -152,13 +157,11 @@ public class ApartmentController {
             String tang = details[2];
             String dientich = details[3];
             String mota = details[4];
-            /*
+
             String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
             String[] values = {macanho, mahokhau, tencanho, tang, dientich, mota};
 
-             */
-            CanHo newCanHo = new CanHo(macanho, mahokhau, tencanho, Integer.parseInt(tang), Float.parseFloat(dientich), mota);
-            boolean success = canhoDal.insertCanHo(newCanHo);
+            boolean success = canhoDal.insertCanHo();
             if (success) {
                 showAlert("Thành công", "Căn hộ mới đã được thêm!");
                 loadCanHoData();

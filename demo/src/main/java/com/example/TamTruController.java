@@ -4,10 +4,14 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import com.example.Entities.TamTru;
 
+import com.example.Entities.TamVang;
+import com.example.dal.TamTruDAL;
+import com.example.dal.TamVangDAL;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -37,12 +41,8 @@ public class TamTruController {
 
     ResultSet resultSet;
     // noi luu tru data
-    ObservableList<TamTru> data = FXCollections.observableArrayList(
-            new TamTru( "Nguyen Van A", "123456789", "Hải Phòng", "Phòng 201", LocalDate.of(2024, 1, 1)),
-            new TamTru( "Tran Thi B", "987654321", "Thanh Hóa", "Phòng 205", LocalDate.of(2024, 12, 1)),
-            new TamTru( "Le Van C", "456123789", "Nam Định", "Phòng 302", LocalDate.of(2024, 12, 5)),
-            new TamTru( "Pham Thi D", "321654987", "Hải Dương", "Phòng 601", LocalDate.of(2024, 1, 15))
-    );
+    ObservableList<TamTru> data = TamTruDAL.loadData("0");
+
     @FXML
     VBox sidebar;
     @FXML
@@ -62,6 +62,7 @@ public class TamTruController {
     AnchorPane filterbar;
     @FXML
     DatePicker ngaybdtamtru_date;
+    TamTruDAL tamtruDAL = new TamTruDAL();
 
 
     public void initialize(){
@@ -81,107 +82,18 @@ public class TamTruController {
         // them button chinh sua vao cot
         chinhsua.setCellFactory(col -> new TableCell<TamTru, Void>() {
             private final Button btn = new Button("Sửa");
-
             {
 
                 btn.setOnAction(event->{
-
-                    table.setEditable(true);
-
-                    //chinh sua ten
-                    ten.setCellFactory(TextFieldTableCell.forTableColumn());
-                    ten.setOnEditCommit(
-                            new EventHandler<CellEditEvent<TamTru, String>>() {
-                                @Override
-                                public void handle(CellEditEvent<TamTru, String> t) {
-                                    ((TamTru) t.getTableView().getItems().get(t.getTablePosition().getRow())).setTen(t.getNewValue());
-                                }
-                            }
-                            // them vao csdl
-
-                    );
-
-                    cccd.setCellFactory(TextFieldTableCell.forTableColumn());
-                    cccd.setOnEditCommit(
-                            new EventHandler<CellEditEvent<TamTru, String>>() {
-                                @Override
-                                public void handle(CellEditEvent<TamTru, String> t) {
-                                    ((TamTru) t.getTableView().getItems().get(
-                                            t.getTablePosition().getRow())
-                                    ).setCCCD(t.getNewValue());
-                                }
-                            }
-                            // them vao csdl
-
-                    );
-
-                    dcthuongtru.setCellFactory(TextFieldTableCell.forTableColumn());
-                    dcthuongtru.setOnEditCommit(
-                            new EventHandler<CellEditEvent<TamTru, String>>() {
-                                @Override
-                                public void handle(CellEditEvent<TamTru, String> t) {
-                                    ((TamTru) t.getTableView().getItems().get(
-                                            t.getTablePosition().getRow())
-                                    ).setDcThuongTru(t.getNewValue());
-                                }
-                            }
-                            // them vao csdl
-
-                    );
-
-                    dctamtru.setCellFactory(TextFieldTableCell.forTableColumn());
-                    dctamtru.setOnEditCommit(
-                            new EventHandler<CellEditEvent<TamTru, String>>() {
-                                @Override
-                                public void handle(CellEditEvent<TamTru, String> t) {
-                                    ((TamTru) t.getTableView().getItems().get(
-                                            t.getTablePosition().getRow())
-                                    ).setDcTamTru(t.getNewValue());
-                                }
-                            }
-                            // them vao csdl
-
-                    );
-                    // chinh sua ngaybdtamtru
-                    ngaybdtamtru.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<LocalDate>() {
-                        @Override
-                        public String toString(LocalDate date){
-                            return date.toString();
-                        }
-                        @Override
-                        public LocalDate fromString(String string){
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                            LocalDate date = LocalDate.parse(string, formatter);
-                            if(date==null){
-                                Alert alert = new Alert(Alert.AlertType.ERROR, "Định dạng ngày không hợp lệ! Vui lòng nhập theo định dạng yyyy-MM-dd.");
-                                alert.showAndWait();
-
-                            }
-                            return date;
-                        }
-                    }));
-                    ngaybdtamtru.setOnEditCommit(
-                            new EventHandler<CellEditEvent<TamTru, LocalDate>>() {
-                                @Override
-                                public void handle(CellEditEvent<TamTru, LocalDate> t) {
-                                    ((TamTru) t.getTableView().getItems().get(
-                                            t.getTablePosition().getRow())
-                                    ).setNgaybdtamtru(t.getNewValue());
-                                }
-                            }
-                    );
-
-
-
-                });
-
-                table.setOnKeyPressed(keyevent -> {
-                    if (keyevent.getCode() == KeyCode.ENTER) {
-                        table.setEditable(false);
+                    TamTru k = getTableView().getItems().get(getIndex());
+                    try {
+                        edit_tamtru(k);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
 
                 });
-
 
             }
 
@@ -206,11 +118,20 @@ public class TamTruController {
                 btn1.setOnAction(event->{
 
                     TamTru curItem = getTableRow().getItem();
-                    data.remove(curItem);
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Xác nhận xoá");
+                    alert.setHeaderText("Bạn có chắc muốn xoá mục này?");
+                    alert.setContentText("Mục: " + curItem.getTen());
 
-                    // Xoa trong csdl
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        boolean t = tamtruDAL.deleteTamTru("tamtrutbl","MaKTamTru" ,curItem.getMaNhanKhau());
+                        if(t==true) {
+                            data.remove(curItem);
+                            table.refresh();
+                        }
 
-
+                    }
 
                 });
             }
@@ -282,13 +203,39 @@ public class TamTruController {
 
             if(addTamTruController.newTamTru==null) return;
             else{
-                data.add(addTamTruController.newTamTru);
-
-
-
+                for(TamTru i : addTamTruController.listNew){
+                    data.add(i);
+                    table.refresh();
+                }
             }
         });
 
+    }
+
+    private void edit_tamtru(TamTru k) throws IOException{
+        Stage subStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("edit_tamtru.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 500, 450);
+        EditTamTruController edit = fxmlLoader.getController();
+        subStage.setResizable(false);
+        subStage.setScene(scene);
+        subStage.setTitle("Sửa tạm trú");
+        edit.id_text.setText(k.getMaNhanKhau());
+        edit.dctamtru_text.setText(k.getDcTamTru());
+        edit.ngaybdtamtru.setValue(k.getNgaybdtamtru());
+
+        subStage.show();
+        subStage.setOnHiding(event->{
+            if(!edit.id_text.getText().equals(k.getMaNhanKhau())){
+
+                k.setMaNhanKhau(edit.id_text.getText());
+                k.setDcTamTru(edit.dctamtru_text.getText());
+                k.setNgaybdtamtru(edit.ngaybdtamtru.getValue());
+
+                table.refresh();
+            }
+
+        });
     }
 
     @FXML
@@ -360,7 +307,7 @@ public class TamTruController {
     }
     @FXML
     private void switchToDanCu() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("ResidentsManager");
     }
     @FXML
     private void switchToKhoanThu() throws IOException {

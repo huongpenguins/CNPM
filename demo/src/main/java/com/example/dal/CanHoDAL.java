@@ -35,7 +35,7 @@ public class CanHoDAL extends Admin {
                 String householdId = resultSet.getString("MaHoGiaDinh");
                 String name = resultSet.getString("TenCanHo");
                 int floor = resultSet.getInt("Tang");
-                Float area = resultSet.getFloat("DienTich");
+                float area = resultSet.getFloat("DienTich");
                 String description = resultSet.getString("MoTa");
                 
                 CanHo canHo = new CanHo(id, householdId, name, floor, area, description);
@@ -53,19 +53,9 @@ public class CanHoDAL extends Admin {
      * @return true nếu thêm thành công, false nếu thất bại
      */
     static String tableName = "canhotbl";
-    public boolean insertCanHo(CanHo canho ){
+    public boolean insertCanHo(){
         String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
-        String[] values = {
-                canho.getMaCanHo(),
-                canho.getMaHoKhau(),
-                canho.getTenCanHo(),
-                String.valueOf(canho.getTang()),   // Chuyển kiểu int sang String
-                String.valueOf(canho.getDienTich()), // Chuyển kiểu float sang String
-                canho.getMoTa()
-        };
-        /*
         String[] values = {"macanho, mahokhau, tencanho, tang, dientich, mota"};
-        */
 
         return insert(tableName, columns, values); // Gọi hàm insert từ Admin
     }

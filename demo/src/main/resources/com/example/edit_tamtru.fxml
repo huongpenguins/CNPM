@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="500.0" styleClass="AnchorPane" stylesheets="@home.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.EditTamTruController">
+    <children>
+        <Label layoutX="36.0" layoutY="185.0" prefHeight="31.0" prefWidth="95.0" text="Đc Tạm Trú:">
+            <font>
+                <Font name="Arial Bold" size="15.0" />
+            </font>
+        </Label>
+        <Label layoutX="34.0" layoutY="132.0" prefHeight="31.0" prefWidth="105.0" text="Mã nhân khẩu:">
+            <font>
+                <Font name="Arial Bold" size="15.0" />
+            </font>
+        </Label>
+        <Label layoutX="34.0" layoutY="238.0" prefHeight="31.0" prefWidth="129.0" text="Ngày bd tạm trú:">
+            <font>
+                <Font name="Arial Bold" size="15.0" />
+            </font>
+        </Label>
+        <Button fx:id="save" layoutX="303.0" layoutY="325.0" mnemonicParsing="false" onAction="#xacnhan" prefHeight="49.0" prefWidth="83.0" text="Lưu" textAlignment="CENTER">
+            <font>
+                <Font name="Arial" size="19.0" />
+            </font>
+        </Button>
+        <TextField fx:id="dctamtru_text" layoutX="136.0" layoutY="185.0" prefHeight="29.0" prefWidth="190.0" style="-fx-border-color: transparent transparent black transparent; -fx-background-color: transparent;">
+            <font>
+                <Font name="Arial" size="15.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="id_text" layoutX="139.0" layoutY="135.0" prefHeight="25.0" prefWidth="184.0" style="-fx-border-color: transparent transparent black transparent; -fx-background-color: transparent;">
+            <font>
+                <Font name="Arial" size="15.0" />
+            </font>
+        </TextField>
+        <Label alignment="CENTER" layoutX="18.0" layoutY="192.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+        <Label alignment="CENTER" layoutX="16.0" layoutY="139.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+        <Label alignment="CENTER" layoutX="18.0" layoutY="245.0" prefHeight="21.0" prefWidth="17.0" text="*" textFill="RED" />
+        <DatePicker fx:id="ngaybdtamtru" layoutX="173.0" layoutY="243.0" prefHeight="25.0" prefWidth="153.0" promptText="mm/dd/yyyy" />
+        <Label alignment="CENTER" layoutX="155.0" layoutY="55.0" prefHeight="41.0" prefWidth="190.0" text="Sửa tạm trú">
+            <font>
+                <Font name="Arial Bold" size="20.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>

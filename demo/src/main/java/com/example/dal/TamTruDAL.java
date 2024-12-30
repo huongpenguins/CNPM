@@ -1,13 +1,48 @@
 package com.example.dal;
 import com.example.Admin;
+import com.example.Entities.CanHo;
+import com.example.Entities.TamTru;
+import com.example.Resident;
+import com.example.connect.connect_mysql;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.ResultSet;
-import java.sql.PreparedStatement;
-import java.sql.Connection;
 
 public class TamTruDAL extends Admin {
+    static Connection connection_admin = connect_mysql.getConnection();
+    public static ObservableList<TamTru> loadData(String condition){
+        ObservableList<TamTru> data = FXCollections.observableArrayList();
+        TamTru tamtru;
+        ResultSet resultSet=null;
+        StringBuffer query = new StringBuffer("SELECT * FROM TamTruTBL WHERE completed = ");
+        query.append(condition);
+        Statement statement;
+
+        try {
+            statement = connection_admin.createStatement();
+            resultSet=statement.executeQuery(query.toString());
+            while (resultSet.next()) {
+                String maNhanKhau = resultSet.getString("MaNhanKhau");
+                Resident r =NhanKhauDAL.loadData(maNhanKhau);
+                if(r!=null){
+                    CanHo c = CanHoDAL.loadData(r.getHouseholdId());
+                    String maTamTru = resultSet.getString("MaTamTru");
+                    String dctamtru = resultSet.getString("DcTamTru");
+                    LocalDate ngaybdtamtru = resultSet.getDate("Ngaybdtamtru").toLocalDate();
+                    tamtru = new TamTru(r.getName(),r.getIdentityCard(),c.getTenCanHo(),dctamtru,ngaybdtamtru);
+                    data.add(tamtru);
+                }
+            }
+            return data;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     //kiểm tra khóa ngoại chung
     public boolean checkForeignKey(String tableName, String columnName, String value) {
