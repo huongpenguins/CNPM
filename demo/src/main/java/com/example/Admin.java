@@ -122,7 +122,6 @@ public static boolean insert1(String tableName, String[] columns,String[] types,
                 e.printStackTrace();
             }
             return false;
-        
 }
     /**
      * Hàm insert chung, nhập dữ liệu trực tiếp từ bàn phím
@@ -140,7 +139,7 @@ public static boolean insert1(String tableName, String[] columns,String[] types,
         StringBuilder query = new StringBuilder("INSERT INTO ");
         query.append(tableName).append(" (");
 
-        // Tạo câu lệnh SQL cho các cột
+        // Phần tạo câu lệnh SQL giữ nguyên
         for (int i = 0; i < columns.length; i++) {
             query.append(columns[i]);
             if (i < columns.length - 1) {
@@ -149,7 +148,6 @@ public static boolean insert1(String tableName, String[] columns,String[] types,
         }
         query.append(") VALUES (");
 
-        // Tạo câu lệnh SQL cho các giá trị (?)
         for (int i = 0; i < columns.length; i++) {
             query.append("?");
             if (i < columns.length - 1) {
@@ -158,44 +156,101 @@ public static boolean insert1(String tableName, String[] columns,String[] types,
         }
         query.append(")");
 
-        try (Scanner scanner = new Scanner(System.in);
-             PreparedStatement preparedStatement = connection_admin.prepareStatement(query.toString())) {
-
+        try (PreparedStatement preparedStatement = connection_admin.prepareStatement(query.toString())) {
             System.out.println("Nhập thông tin cần thêm vào bảng " + tableName + ":");
+            Scanner scanner = new Scanner(System.in);
 
             for (int i = 0; i < types.length; i++) {
                 System.out.print("Nhập giá trị cho cột " + columns[i] + " (" + types[i] + "): ");
                 String input = scanner.nextLine();
 
-                switch (types[i].toLowerCase()) {
+                // Chuẩn hóa kiểu dữ liệu thành chữ thường và bỏ khoảng trắng
+                String normalizedType = types[i].toLowerCase().trim();
+
+                switch (normalizedType) {
                     case "string":
+                    case "varchar":
+                    case "text":
                         preparedStatement.setString(i + 1, input);
                         break;
                     case "int":
-                        preparedStatement.setInt(i + 1, Integer.parseInt(input));
+                    case "integer":
+                        // Xử lý trường hợp input rỗng cho các trường có thể NULL
+                        if (input.trim().isEmpty()) {
+                            preparedStatement.setNull(i + 1, java.sql.Types.INTEGER);
+                        } else {
+                            preparedStatement.setInt(i + 1, Integer.parseInt(input));
+                        }
                         break;
-                    case "float":
-                        preparedStatement.setFloat(i + 1, Float.parseFloat(input));
+                    case "datetime":
+                    case "timestamp":
+                        if (input.trim().isEmpty()) {
+                            preparedStatement.setNull(i + 1, java.sql.Types.TIMESTAMP);
+                        } else {
+                            // Chuyển đổi chuỗi ngày tháng sang java.sql.Timestamp
+                            java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(input);
+                            preparedStatement.setTimestamp(i + 1, timestamp);
+                        }
                         break;
-                    case "long":
-                        preparedStatement.setLong(i + 1, Long.parseLong(input));
-                        break;
-                    case "boolean":
-                        preparedStatement.setBoolean(i + 1, Boolean.parseBoolean(input));
-                        break;
+                    // Thêm các kiểu dữ liệu khác nếu cần
                     default:
-                        throw new IllegalArgumentException("Kiểu dữ liệu không được hỗ trợ: " + types[i]);
+                        throw new IllegalArgumentException("Kiểu dữ liệu không được hỗ trợ: " + types[i] +
+                                " cho cột " + columns[i]);
                 }
             }
 
-            // Thực hiện truy vấn
             int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Thêm dữ liệu thành công!");
+            }
             return rowsInserted > 0;
         } catch (SQLException e) {
-            System.err.println("Lỗi khi thêm dữ liệu: " + e.getMessage());
+            System.err.println("Lỗi SQL khi thêm dữ liệu: " + e.getMessage());
+            return false;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Lỗi kiểu dữ liệu: " + e.getMessage());
             return false;
         } catch (Exception e) {
-            System.err.println("Lỗi nhập dữ liệu: " + e.getMessage());
+            System.err.println("Lỗi không xác định: " + e.getMessage());
+            return false;
+        }
+    }
+    public boolean insertRecord(String tableName, String[] columns, String[] values) {
+        if (columns.length != values.length) {
+            throw new IllegalArgumentException("Số lượng cột và giá trị không khớp!");
+        }
+
+        // Tạo câu lệnh INSERT INTO tableName (col1,col2,...) VALUES (?,?,...)
+        StringBuilder query = new StringBuilder("INSERT INTO ");
+        query.append(tableName).append(" (");
+        for (int i = 0; i < columns.length; i++) {
+            query.append(columns[i]);
+            if (i < columns.length - 1) {
+                query.append(", ");
+            }
+        }
+        query.append(") VALUES (");
+        for (int i = 0; i < columns.length; i++) {
+            query.append("?");
+            if (i < columns.length - 1) {
+                query.append(", ");
+            }
+        }
+        query.append(")");
+
+        try (PreparedStatement preparedStatement = getConnectionAdmin().prepareStatement(query.toString())) {
+
+            // Ở đây, để đơn giản, ta set tất cả dưới dạng string
+            // MySQL sẽ tự ép kiểu (int, datetime...) nếu chuỗi đúng format
+            for (int i = 0; i < values.length; i++) {
+                preparedStatement.setString(i + 1, values[i]);
+            }
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            return rowsInserted > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi thêm dữ liệu: " + e.getMessage());
             return false;
         }
     }

@@ -38,15 +38,8 @@ public class HoGiaDinhDAL extends Admin {
 
     // Insert dữ liệu
     public boolean insertHoGiaDinh(String tableName, String[] columns, String[] values) {
-        // Tùy bạn có muốn check foreign key trước khi insert
-        // for (int i = 0; i < columns.length; i++) {
-        //     if (!validateForeignKeys(columns[i], values[i])) {
-        //         System.err.println("Error: Giá trị " + values[i] + " không tồn tại trong bảng liên quan!");
-        //         return false;
-        //     }
-        // }
-        // Sử dụng super.insert(...) với bảng "hogiadinhtbl"
-        return super.insert("hogiadinhtbl", columns, values);
+        // (Nếu bạn vẫn muốn checkForeignKey thì giữ code check ở đây)
+        return super.insertRecord(tableName, columns, values);
     }
 
     // Update dữ liệu

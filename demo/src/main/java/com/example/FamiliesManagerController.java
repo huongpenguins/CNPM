@@ -164,9 +164,16 @@ public class FamiliesManagerController {
      */
     @FXML
     private void addHousehold() {
+        // Gọi một Dialog để thu thập dữ liệu mới
         Dialog<Pair<String, String[]>> dialog = createHouseholdDialog("Thêm hộ khẩu", null);
+
+        // Show dialog và chờ người dùng bấm Lưu hoặc Cancel
         Optional<Pair<String, String[]>> result = dialog.showAndWait();
+
+        // Nếu người dùng bấm Lưu (OK), sẽ có dữ liệu
         result.ifPresent(data -> {
+            // data.getKey() là Mã Hộ Gia Đình
+            // data.getValue() là mảng String[] gồm [apartmentId, residentId, vehicleId, issueDate, ownerName, phoneNumber]
             String householdId = data.getKey();
             String[] details   = data.getValue();
             String apartmentId = details[0];
@@ -176,18 +183,19 @@ public class FamiliesManagerController {
             String ownerName   = details[4];
             String phoneNumber = details[5];
 
-            // DB cột: MaHoGiaDinh, MaCanHo, MaNhanKhau, MaXe, NgayCap, TenChuHo, SDT
+            // Tạo mảng cột và giá trị
             String[] columns = {
-                    "MaHoGiaDinh", "MaCanHo", "MaNhanKhau", "MaXe", "NgayCap", "TenChuHo", "SDT"
+                    "MaHoGiaDinh","MaCanHo","MaNhanKhau","MaXe","NgayCap","TenChuHo","SDT"
             };
             String[] values = {
                     householdId, apartmentId, residentId, vehicleId, issueDate, ownerName, phoneNumber
             };
 
+            // Gọi DAL để chèn vào DB
             boolean success = hoGiaDinhDal.insertHoGiaDinh("hogiadinhtbl", columns, values);
             if (success) {
                 showAlert("Thành công", "Hộ khẩu mới đã được thêm!");
-                loadHouseholdData();
+                loadHouseholdData(); // Tải lại bảng
             } else {
                 showAlert("Lỗi", "Không thể thêm hộ khẩu!");
             }
