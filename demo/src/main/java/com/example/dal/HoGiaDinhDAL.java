@@ -46,7 +46,7 @@ public class HoGiaDinhDAL extends Admin {
     public boolean updateHoGiaDinh(String tableName, String columnName, String newValue,
                                    String conditionColumn, String conditionValue) {
         // Kiểm tra khóa ngoại cho MaCanHo, MaXe
-        if ("MaCanHo".equalsIgnoreCase(columnName)) {
+       /* if ("MaCanHo".equalsIgnoreCase(columnName)) {
             if (!checkForeignKey("canhotbl", "MaCanHo", newValue)) {
                 System.err.println("Error: MaCanHo không tồn tại trong bảng canhotbl!");
                 return false;
@@ -57,7 +57,7 @@ public class HoGiaDinhDAL extends Admin {
                 return false;
             }
         }
-
+*/
         // Trước đây bị sai, update sang "nhankhautbl"
         // Giờ sửa lại để update sang chính "hogiadinhtbl"
         return super.update("hogiadinhtbl", columnName, newValue, conditionColumn, conditionValue);
