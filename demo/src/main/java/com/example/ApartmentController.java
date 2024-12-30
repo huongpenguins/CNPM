@@ -89,7 +89,7 @@ public class ApartmentController {
         }
         masterData.clear();
         ArrayList<Object[]> results = canhoDal.searchCanHo("canhotbl", null, null);
-        if (results != null && !results.isEmpty()) {
+        if (results != null) {
 
             for (Object[] row : results) {
                 // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, Mota
@@ -115,10 +115,13 @@ public class ApartmentController {
         if (keyword.isEmpty()) {
             results = canhoDal.searchCanHo("canhotbl", null, null);
         } else {
-            // Tìm theo MaCanHo hoặc TenCanHo
-            results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
-            if (results == null || results.isEmpty()) {
-                results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
+            if (keyword.matches("\\d+")) {
+                results = canhoDal.searchCanHo("canhotbl", "MaCanHo", keyword);
+                 if (results == null || results.isEmpty()) {
+                     results = canhoDal.searchCanHo("canhotbl", "TenCanHo", keyword);
+                 }
+            } else {
+                results = canhoDal.searchCanHo("CanHo", "TenCanHo", keyword);
             }
         }
 
@@ -155,10 +158,10 @@ public class ApartmentController {
 
             boolean success = canhoDal.insertCanHo();
             if (success) {
-                showAlert("Thành công", "Hộ khẩu mới đã được thêm!");
+                showAlert("Thành công", "Căn hộ mới đã được thêm!");
                 loadCanHoData();
             } else {
-                showAlert("Lỗi", "Không thể thêm hộ khẩu!");
+                showAlert("Lỗi", "Không thể thêm căn hộ!");
             }
         });
     }
@@ -195,11 +198,11 @@ public class ApartmentController {
                     showAlert("Sửa thành công", "Thông tin căn hộ đã được cập nhật!");
                     loadCanHoData();
                 } else {
-                    showAlert("Lỗi", "Không thể cập nhật hộ khẩu!");
+                    showAlert("Lỗi", "Không thể cập nhật căn hộ!");
                 }
             });
         } else {
-            showAlert("Lỗi", "Vui lòng chọn hộ khẩu cần sửa!");
+            showAlert("Lỗi", "Vui lòng chọn căn hộ cần sửa!");
         }
     }
 
