@@ -41,7 +41,7 @@ public class EditTamTruController {
 
         ArrayList<Object[]> newTV = new ArrayList<>();
         TamTruDAL tamtruDAL = new TamTruDAL();
-        String[] colums = new String[]{"MaNhanKhau","Dc Tạm Trú","Ngày bd Tạm Trú"};
+        String[] colums = new String[]{"MaNhanKhau","DiaChiTamTru","NgayBatDauTamTru"};
         String[] types=new String[]{"string","string","date"};
         //newTT = tamTruDAL.update1("tamtrutbl", column,types,);
         String[] newValue = {id_text.getText(), ngaybdtamtru.getValue().toString(),dctamtru_text.getText()};

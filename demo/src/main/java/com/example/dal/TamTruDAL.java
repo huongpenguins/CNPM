@@ -30,8 +30,8 @@ public class TamTruDAL extends Admin {
                 if(r!=null){
                     CanHo c = CanHoDAL.loadData(r.getHouseholdId());
                     String maTamTru = resultSet.getString("MaTamTru");
-                    String dctamtru = resultSet.getString("DcTamTru");
-                    LocalDate ngaybdtamtru = resultSet.getDate("Ngaybdtamtru").toLocalDate();
+                    String dctamtru = resultSet.getString("DiaChiTamTru");
+                    LocalDate ngaybdtamtru = resultSet.getDate("NgayBatDauTamTru").toLocalDate();
                     tamtru = new TamTru(r.getName(),r.getIdentityCard(),c.getTenCanHo(),dctamtru,ngaybdtamtru);
                     data.add(tamtru);
                 }
