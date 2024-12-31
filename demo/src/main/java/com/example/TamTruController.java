@@ -70,11 +70,11 @@ public class TamTruController {
 
 
         // lien ket cot voi thuoc tinh trong TamTru
-        dcthuongtru.setCellValueFactory(new PropertyValueFactory<TamTru,String>("dcThuongTru"));
-        ten.setCellValueFactory(new PropertyValueFactory<TamTru,String>("ten"));
-        dctamtru.setCellValueFactory(new PropertyValueFactory<TamTru,String>("dcTamTru"));
+        dcthuongtru.setCellValueFactory(new PropertyValueFactory<TamTru,String>("DiaChiThuongTru"));
+        ten.setCellValueFactory(new PropertyValueFactory<TamTru,String>("HoTen"));
+        dctamtru.setCellValueFactory(new PropertyValueFactory<TamTru,String>("DiaChiTamTru"));
         cccd.setCellValueFactory(new PropertyValueFactory<TamTru,String>("CCCD"));
-        ngaybdtamtru.setCellValueFactory(new PropertyValueFactory<TamTru,LocalDate>("ngaybdtamtru"));
+        ngaybdtamtru.setCellValueFactory(new PropertyValueFactory<TamTru,LocalDate>("NgayBatDauTamTru"));
 
 
         table.setItems(data);
@@ -125,7 +125,7 @@ public class TamTruController {
 
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
-                        boolean t = tamtruDAL.deleteTamTru("tamtrutbl","MaKTamTru" ,curItem.getMaNhanKhau());
+                        boolean t = tamtruDAL.deleteTamTru("tamtrutbl","MaTamTru" ,curItem.getMaNhanKhau());
                         if(t==true) {
                             data.remove(curItem);
                             table.refresh();
