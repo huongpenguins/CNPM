@@ -47,13 +47,16 @@ public class AddTamVangController {
         
         String[] column = new String[]{"MaNhanKhau","ThoiGianBatDau","LyDo"};
         String [] types = new String[]{"string","date","string"};
+
         String[] value = {id_text.getText(),ngayvang.getValue().toString(),lydo_text.getText()};
         Resident r =NhanKhauDAL.loadData(id_text.getText());
 
                 if(r!=null){
                     CanHo c = CanHoDAL.loadData(r.getHouseholdId());
-                    newTamVang = new TamVang(r.getName(),r.getIdentityCard(),c.getTenCanHo(),lydo_text.getText(),ngayvang.getValue());
+                    
                     boolean t= TamVangDAL.insert1("khoanthutbl", column, types,value);
+                    String newMaTamVang = TamVangDAL.selectMaTrigger("tamvangtbl", "MaTamVang", column, types, value);
+                    newTamVang = new TamVang(newMaTamVang,r.getId(),r.getName(),r.getIdentityCard(),c.getTenCanHo(),lydo_text.getText(),ngayvang.getValue());
                     if(t==true){
                     listNew.add(newTamVang);
                         }

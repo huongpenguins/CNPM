@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class TamVang {
+    String maTamVang;
     SimpleStringProperty maNhanKhau;
     SimpleStringProperty cccd,phong;
     SimpleStringProperty ten;
@@ -12,8 +13,10 @@ public class TamVang {
     SimpleObjectProperty<LocalDate> ngayvang;
     boolean completed ;
 
-    public TamVang(String ten, String cccd,String phong,
+    public TamVang(String maTamVang,String maNhanKhau,String ten, String cccd,String phong,
      String lydo,LocalDate ngayvang) {
+        this.maTamVang = maTamVang;
+        this.maNhanKhau = new SimpleStringProperty(maNhanKhau);
         this.cccd = new SimpleStringProperty(cccd);
         this.ten = new SimpleStringProperty(ten);
         this.phong = new SimpleStringProperty(phong);
@@ -22,6 +25,7 @@ public class TamVang {
         completed=false;
         
     }
+    
     // public TamVang(String maNhanKhau,
     //  String lydo,LocalDate ngayvang) {
     //     this.maNhanKhau.set(maNhanKhau);
@@ -90,6 +94,15 @@ public class TamVang {
 
     public void setLydo(String lydo) {
         this.lydo.set(lydo);
+    }
+
+
+    public String getMaTamVang() {
+        return this.maTamVang;
+    }
+
+    public void setMaTamVang(String maTamVang) {
+        this.maTamVang = maTamVang;
     }
 
 }

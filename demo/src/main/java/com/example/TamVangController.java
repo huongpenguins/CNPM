@@ -118,7 +118,7 @@ public class TamVangController {
 
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
-                        boolean t = tamVangDAL.deleteTamVang("tamvangtbl","MaKTamVang" ,curItem.getMaNhanKhau());
+                        boolean t = tamVangDAL.deleteTamVang("tamvangtbl","MaTamVang" ,curItem.getMaTamVang());
                         if(t==true) {
                             data.remove(curItem);
                             table.refresh();
@@ -213,6 +213,7 @@ public class TamVangController {
         subStage.setResizable(false);
         subStage.setScene(scene);
         subStage.setTitle("Sửa phí thu");
+        edit.maTamVang=(k.getMaTamVang());
         edit.id_text.setText(k.getMaNhanKhau());
         edit.lydo_text.setText(k.getLydo());
         edit.ngayvang.setValue(k.getNgayvang());

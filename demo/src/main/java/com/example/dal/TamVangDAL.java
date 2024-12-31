@@ -8,6 +8,7 @@ import com.example.connect.connect_mysql;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert.AlertType;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,7 +39,7 @@ public class TamVangDAL extends Admin {
                     String maTamVang = resultSet.getString("MaTamVang");
                     String lydo = resultSet.getString("LyDo");
                     LocalDate ngayvang = resultSet.getDate("ThoiGianBatDau").toLocalDate();
-                    tamVang = new TamVang(r.getName(),r.getIdentityCard(),c.getTenCanHo(),lydo,ngayvang);
+                    tamVang = new TamVang(resultSet.getString("MaTamVang"),maNhanKhau,r.getName(),r.getIdentityCard(),c.getTenCanHo(),lydo,ngayvang);
                     data.add(tamVang);
                 }
             }
@@ -49,6 +50,60 @@ public class TamVangDAL extends Admin {
         }
        return null;
     }
+
+    
+    // insert
+
+   public static boolean insertTamVang(String tableName, String[] columns,String[] types, String[] newValue) {
+    if (columns.length != newValue.length) {
+        throw new IllegalArgumentException("Số lượng cột và kiểu dữ liệu không khớp!");
+    }
+
+    StringBuilder query = new StringBuilder("INSERT INTO ");
+    query.append(tableName).append(" (");
+     // Tạo câu lệnh SQL cho các cột
+     for (int i = 0; i < columns.length; i++) {
+        query.append(columns[i]);
+        if (i < columns.length - 1) {
+            query.append(", ");
+        }
+    }
+    query.append(") VALUES (");
+
+    // Tạo câu lệnh SQL cho các cột
+    for (int i = 0; i < columns.length; i++) {
+        if(types[i].equals("string")||types[i].equals("date")){
+            query.append("'").append(newValue[i]).append("'");
+        }
+        else{
+            query.append(newValue[i]);
+        }
+        if (i < columns.length - 1) {
+            query.append(", ");
+        }
+    }
+    query.append(") ");
+    
+
+             try (Statement statement = connection_admin.createStatement()) {
+                int rowsUpdated = statement.executeUpdate(query.toString());
+
+                if (rowsUpdated > 0) {
+                    System.out.println("Cập nhật thành công!");
+                    showAlert("Success", "Thêm dữ liệu thành công!", AlertType.INFORMATION);
+                    return false;
+                } else {
+                    System.out.println("Không có bản ghi nào được cập nhật.");
+                    showAlert("Error", "Lỗi khi thêm dữ liệu: " , AlertType.ERROR);
+                    return false;
+                }
+              
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return false;
+}
     //kiểm tra khóa ngoại chung
     public boolean checkForeignKey(String tableName, String columnName, String value) {
         String query = "SELECT 1 FROM " + tableName + " WHERE " + columnName + " = ?";

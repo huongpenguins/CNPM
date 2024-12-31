@@ -53,7 +53,7 @@ public class ThanhToanController {
             boolean t = hoaDonDAL.insert1("hoadontbl", colums, types,newValue);
             if(t==true){
                 this.hoaDon = new HoaDon(maHo,maKhoanThu,sotien,LocalDate.now());
-
+                
             }
             
         Stage thisStage = (Stage)save.getScene().getWindow();
