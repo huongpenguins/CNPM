@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -133,7 +134,8 @@ public class FamiliesManagerController {
         ArrayList<Object[]> results;
         if (keyword.isEmpty()) {
             // Nếu user xóa trắng -> load all
-            results = hoGiaDinhDal.searchHoGiaDinh("hogiadinhtbl", null, null);
+            loadHouseholdData();
+           results = hoGiaDinhDal.searchHoGiaDinh("hogiadinhtbl", null, null);
         } else {
             // Tìm theo MaHoGiaDinh
             results = hoGiaDinhDal.searchHoGiaDinh("hogiadinhtbl", "MaHoGiaDinh", keyword);
@@ -181,9 +183,9 @@ public class FamiliesManagerController {
             String apartmentId = details[0];
             String residentId  = details[1];
            // String vehicleId   = details[2];
-            String issueDate   = details[3];
-            String ownerName   = details[4];
-            String phoneNumber = details[5];
+            String issueDate   = details[2];
+            String ownerName   = details[3];
+            String phoneNumber = details[4];
 
             // Tạo mảng cột và giá trị
             String[] columns = {
@@ -247,7 +249,7 @@ public class FamiliesManagerController {
      * Xóa hộ gia đình
      */
     @FXML
-    private void deleteHousehold() {
+    private void deleteHousehold() throws SQLException {
         Household selected = tableHouseholds.getSelectionModel().getSelectedItem();
         if (selected != null) {
             Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -257,7 +259,7 @@ public class FamiliesManagerController {
 
             Optional<ButtonType> result = confirmAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                boolean success = hoGiaDinhDal.deleteHoGiaDinh("hogiadinhtbl", "MaHoGiaDinh", selected.getHouseholdId());
+                boolean success = hoGiaDinhDal.deleteHoGiaDinhP("hogiadinhtbl", "MaHoGiaDinh", selected.getHouseholdId());
                 if (success) {
                     showAlert("Xóa thành công", "Hộ khẩu đã được xóa khỏi hệ thống!");
                     loadHouseholdData();

@@ -13,9 +13,14 @@ public class HoGiaDinhDAL extends Admin {
 
     // Kiểm tra khóa ngoại chung
     public boolean checkForeignKey(String tableName, String columnName, String value) {
+        Connection conn = getConnectionAdmin();
+        if (conn == null || isConnectionClosed(conn)) {
+            System.err.println("Lỗi: Kết nối không khả dụng trong checkForeignKey.");
+            return false;
+        }
+
         String query = "SELECT 1 FROM " + tableName + " WHERE " + columnName + " = ?";
-        try (Connection conn = getConnectionAdmin();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, value);
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next(); // trả về true nếu tìm thấy
@@ -25,6 +30,17 @@ public class HoGiaDinhDAL extends Admin {
             return false;
         }
     }
+
+    // Thêm hàm kiểm tra trạng thái kết nối
+    private boolean isConnectionClosed(Connection conn) {
+        try {
+            return conn == null || conn.isClosed();
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi kiểm tra trạng thái kết nối: " + e.getMessage());
+            return true;
+        }
+    }
+
 
     // Kiểm tra khóa ngoại cho từng cột
     private boolean validateForeignKeys(String columnName, String value) {
@@ -65,16 +81,23 @@ public class HoGiaDinhDAL extends Admin {
 
     // Delete dữ liệu
     private boolean isReferencedInOtherTables(String conditionValue) {
-        // Kiểm tra tham chiếu trong nhankhautbl
+        Connection conn = getConnectionAdmin();
+        if (conn == null || isConnectionClosed(conn)) {
+            System.err.println("Lỗi: Kết nối không khả dụng trong isReferencedInOtherTables.");
+            return false;
+        }
+
         if (checkForeignKey("nhankhautbl", "MaHoGiaDinh", conditionValue)) {
             return true;
         }
-        // Kiểm tra tham chiếu trong chitietkhoanthutbl (nếu có)
+        /*
         if (checkForeignKey("chitietkhoanthutbl", "MaHoGiaDinh", conditionValue)) {
             return true;
         }
+        */
         return false;
     }
+
 
     public boolean deleteHoGiaDinh(String tableName, String conditionColumn, String conditionValue) {
         if ("MaHoGiaDinh".equalsIgnoreCase(conditionColumn)) {
@@ -84,6 +107,16 @@ public class HoGiaDinhDAL extends Admin {
             }
         }
         return super.delete("hogiadinhtbl", conditionColumn, conditionValue);
+    }
+
+    public boolean deleteHoGiaDinhP(String tableName, String conditionColumn, String conditionValue) throws SQLException {
+        if ("MaHoGiaDinh".equalsIgnoreCase(conditionColumn)) {
+            if (isReferencedInOtherTables(conditionValue)) {
+                System.err.println("Error: Không thể xóa vì MaHoGiaDinh đang được tham chiếu!");
+                return false;
+            }
+        }
+        return super.deleteP("hogiadinhtbl", conditionColumn, conditionValue);
     }
 
     // Search dữ liệu

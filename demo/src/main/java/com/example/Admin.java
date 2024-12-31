@@ -295,6 +295,26 @@ public static boolean insert1(String tableName, String[] columns,String[] types,
         }
     }
 
+    public static boolean deleteP(String tableName, String conditionColumn, String ColumnValue) throws SQLException {
+        Admin adminInstance = new Admin(); // Tạo đối tượng Admin
+        Connection connection = adminInstance.getConnectionAdmin();
+
+        if (connection == null || connection.isClosed()) {
+            System.err.println("Lỗi: Kết nối vẫn không khả dụng sau khi khởi tạo lại.");
+            return false;
+        }
+
+        String query = "DELETE FROM " + tableName + " WHERE " + conditionColumn + " = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, ColumnValue);
+            int rowsDeleted = preparedStatement.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi xóa dữ liệu: " + e.getMessage());
+            return false;
+        }
+    }
+
     // method xoa du lieu theo hang
     public static boolean delete(String tableName, String conditionColumn, String ColumnValue) {
         String query = "DELETE FROM " + tableName + " WHERE " + conditionColumn + " = ?";
@@ -362,6 +382,41 @@ public static boolean insert1(String tableName, String[] columns,String[] types,
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    public static String selectMaTrigger(String tableName,String MaMuonLay,String[]columns,String[] types,String[] value){
+        String ma=null;
+        StringBuilder query = new StringBuilder("SELECT ").append(MaMuonLay).append( " FROM ");
+        query.append(tableName).append(" WHERE ");
+
+        // Tạo câu lệnh SQL cho các cột
+        for (int i = 0; i < columns.length; i++) {
+            query.append(columns[i]).append(" = ");
+            if(types[i].equals("string")||types[i].equals("date")){
+                query.append("'").append(value[i]).append("'");
+            }
+            else{
+                query.append(value[i]);
+            }
+            if (i < columns.length - 1) {
+                query.append(" AND ");
+            }
+        }
+
+        try (Statement statement = connection_admin.createStatement()) {
+            ResultSet r = statement.executeQuery(query.toString());
+
+            while(r.next()){
+                ma = r.getString(MaMuonLay);
+            }
+
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return ma;
+
     }
 
 }
