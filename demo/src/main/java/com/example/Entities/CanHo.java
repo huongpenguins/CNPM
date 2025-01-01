@@ -4,20 +4,27 @@ import javafx.beans.property.*;
 
 public class CanHo {
     private StringProperty maCanHo;
-    private StringProperty maHoKhau;
+    private StringProperty maHoGiaDinh;
     private StringProperty tenCanHo;
     private IntegerProperty tang;
     private FloatProperty dienTich;
     private StringProperty moTa;
 
     // Constructor
-    public CanHo(String maCanHo, String maHoKhau, String tenCanHo, int tang, float dienTich, String moTa) {
+    public CanHo(String maCanHo, String maHoGiaDinh, String tenCanHo, int tang, float dienTich, String moTa) {
         this.maCanHo = new SimpleStringProperty(maCanHo);
-        this.maHoKhau = new SimpleStringProperty(maHoKhau);
+        this.maHoGiaDinh = new SimpleStringProperty(maHoGiaDinh);
         this.tenCanHo = new SimpleStringProperty(tenCanHo);
         this.tang = new SimpleIntegerProperty(tang);
         this.dienTich = new SimpleFloatProperty(dienTich);
         this.moTa = new SimpleStringProperty(moTa);
+    }
+
+    private String ten;  // Thuộc tính tên căn hộ
+
+    // Getter cho thuộc tính ten
+    public String getTen() {
+        return ten;
     }
 
     // Getters and Setters using Properties
@@ -33,16 +40,16 @@ public class CanHo {
         this.maCanHo.set(maCanHo);
     }
 
-    public StringProperty maHoKhauProperty() {
-        return maHoKhau;
+    public StringProperty maHoGiaDinhProperty() {
+        return maHoGiaDinh;
     }
 
-    public String getMaHoKhau() {
-        return maHoKhau.get();
+    public String getMaHoGiaDinh() {
+        return maHoGiaDinh.get();
     }
 
-    public void setMaHoKhau(String maHoKhau) {
-        this.maHoKhau.set(maHoKhau);
+    public void setMaHoGiaDinh(String maHoGiaDinh) {
+        this.maHoGiaDinh.set(maHoGiaDinh);
     }
 
     public StringProperty tenCanHoProperty() {

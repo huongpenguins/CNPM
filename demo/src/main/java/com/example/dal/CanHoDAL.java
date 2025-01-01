@@ -53,14 +53,21 @@ public class CanHoDAL extends Admin {
      * @return true nếu thêm thành công, false nếu thất bại
      */
     static String tableName = "canhotbl";
-    public boolean insertCanHo(){
+    /*public boolean insertCanHo(){
         String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
         String[] values = {"macanho, mahokhau, tencanho, tang, dientich, mota"};
 
         return insert(tableName, columns, values); // Gọi hàm insert từ Admin
     }
-    public static boolean updateCanHo(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) throws SQLException {
-        return update(tableName, columnName, newValue, conditionColumn,conditionValue);
+
+     */
+    public boolean insertCanHo(String tableName, String[] columns, String[] values) {
+        // (Nếu bạn vẫn muốn checkForeignKey thì giữ code check ở đây)
+        return insertRecord(tableName, columns, values);
+    }
+    public static boolean updateCanHo(String tableName, String columnName, String newValue,
+                                      String conditionColumn, String conditionValue) {
+        return update("canhotbl", columnName, newValue, conditionColumn, conditionValue);
     }
 
  //delete du lieu
