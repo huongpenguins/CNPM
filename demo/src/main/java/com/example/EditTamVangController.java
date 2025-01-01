@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 import com.example.Entities.TamVang;
 import com.example.dal.KhoanThuDAL;
-import com.example.dal.TamVangDAL;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -14,8 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class EditTamVangController {
-     TamVang newTamVang;
-
+    TamVang newTamVang;
+    String maTamVang;
     @FXML 
     TextField id_text,lydo_text;
     @FXML
@@ -39,17 +37,14 @@ public class EditTamVangController {
             return ;
         }
 
-        ArrayList<Object[]> newTV = new ArrayList<>();
-        TamVangDAL tamVangDAL = new TamVangDAL();
-        String[] colums = new String[]{"MaNhanKhau","ThoiGianBatDau","LyDo"};
-        String[] types=new String[]{"string","date","string"};
-        //newTV = tamVangDAL.update1("tamvangtbl", column,types,);
-        String[] newValue = {id_text.getText(), ngayvang.getValue().toString(),lydo_text.getText()};
+        String[] colums = new String[]{"MaTamVang","MaNhanKhau","ThoiGianBatDau","LyDo"};
+        String[] types=new String[]{"string","string","date","string"};
+        String[] newValue = {maTamVang,id_text.getText(), ngayvang.getValue().toString(),lydo_text.getText()};
         StringBuffer condition = new StringBuffer("MaTamVang = ");
-        condition.append("'").append(id_text.getText()).append("'");
+        condition.append("'").append(maTamVang).append("'");
 
-        boolean t= KhoanThuDAL.update1("khoanthutbl", colums, types,newValue,condition.toString());
-     
+        boolean t= KhoanThuDAL.update1("tamvangtbl", colums, types,newValue,condition.toString());
+        
         Stage thisStage = (Stage)save.getScene().getWindow();
         thisStage.close();
         

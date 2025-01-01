@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
@@ -43,8 +44,6 @@ public class FeeController {
     @FXML
     TableView<KhoanThu> table;
     @FXML 
-    TableColumn<KhoanThu,String> id;
-    @FXML 
     TableColumn<KhoanThu,String> ten;
     @FXML 
     TableColumn<KhoanThu,String> loai,donvi;
@@ -65,7 +64,6 @@ public class FeeController {
         
        
         // lien ket cot voi thuoc tinh trong KhoanThu
-        id.setCellValueFactory(new PropertyValueFactory<KhoanThu,String>("id"));
         ten.setCellValueFactory(new PropertyValueFactory<KhoanThu,String>("ten"));
         loai.setCellValueFactory(new PropertyValueFactory<KhoanThu,String>("loai"));
         ghichu.setCellValueFactory(new PropertyValueFactory<KhoanThu,Integer>("ghichu"));
@@ -81,7 +79,13 @@ public class FeeController {
             private final Button btn = new Button("Sửa");
 
             {   
-                
+
+                btn.setStyle("-fx-background-image: url('picture/edit.png'); "+
+                "-fx-background-position: center; "+
+                "-fx-background-repeat: no-repeat; " +
+                "-fx-background-size: contain; "  );
+
+   
                 btn.setOnAction(event->{
                     KhoanThu k = getTableView().getItems().get(getIndex());
                         try {
@@ -114,7 +118,13 @@ public class FeeController {
 
             {
               btn1.setOnAction(event->{
-                
+
+                    btn1.setStyle("-fx-background-image: url('picture/xoa.png'); "+
+                    "-fx-background-position: center; "+
+                    "-fx-background-repeat: no-repeat; " +
+                    "-fx-background-size: contain; "  );
+
+   
                     KhoanThu curItem = getTableRow().getItem();
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Xác nhận xoá");
@@ -151,6 +161,12 @@ public class FeeController {
             private final Button btn2 = new Button("Chi tiết");
 
             {
+                btn2.setStyle("-fx-background-image: url('picture/detail.png'); "+
+                "-fx-background-position: center; "+
+                "-fx-background-repeat: no-repeat; " +
+                "-fx-background-size: contain; "  );
+
+   
                 btn2.setOnAction(event->{
                     try {
                         KhoanThu k = getTableView().getItems().get(getIndex());
@@ -178,6 +194,13 @@ public class FeeController {
             private final Button btn1 = new Button();
 
             {
+                btn1.setStyle("-fx-background-image: url('picture/tick.png'); "+
+                "-fx-background-position: center; "+
+                "-fx-background-repeat: no-repeat; " +
+                "-fx-background-size: contain; "  );
+
+                
+
               btn1.setOnAction(event->{
                     KhoanThu curItem = getTableRow().getItem();
                     try {
@@ -311,7 +334,7 @@ public class FeeController {
         });
     }
     private void showChiTiet(KhoanThu k) throws IOException{
-        if(k.getLoai()!="Quyên góp"){
+        if(!k.getLoai().toString().equals("Quyên góp")){
             Stage subStage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("CTkhoanthu.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1000, 600); 
@@ -320,6 +343,7 @@ public class FeeController {
             ctKThuController.tenKhoanThu = k.getTen();
             ctKThuController.tungay = k.getBatdau();
             ctKThuController.denngay = k.getHannop();
+            ctKThuController.loadData();
             subStage.setResizable(false);
             subStage.setScene(scene);
             subStage.setTitle(k.getTen());
@@ -336,6 +360,7 @@ public class FeeController {
             ctQGopController.tenKhoanThu = k.getTen();
             ctQGopController.tungay = k.getBatdau();
             ctQGopController.denngay = k.getHannop();
+            
             subStage.setResizable(false);
             subStage.setScene(scene);
             subStage.setTitle(k.getTen());

@@ -83,7 +83,12 @@ public class TamTruController {
         chinhsua.setCellFactory(col -> new TableCell<TamTru, Void>() {
             private final Button btn = new Button("Sửa");
             {
+                btn.setStyle("-fx-background-image: url('picture/edit.png'); "+
+                "-fx-background-position: center; "+
+                "-fx-background-repeat: no-repeat; " +
+                "-fx-background-size: contain; "  );
 
+   
                 btn.setOnAction(event->{
                     TamTru k = getTableView().getItems().get(getIndex());
                     try {
@@ -115,6 +120,12 @@ public class TamTruController {
             private final Button btn1 = new Button("Xoá");
 
             {
+                btn1.setStyle("-fx-background-image: url('picture/xoa.png; ') "+
+                "-fx-background-position: center; "+
+                "-fx-background-repeat: no-repeat; " +
+                "-fx-background-size: contain; "  );
+
+   
                 btn1.setOnAction(event->{
 
                     TamTru curItem = getTableRow().getItem();

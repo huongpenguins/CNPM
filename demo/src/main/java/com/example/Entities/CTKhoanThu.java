@@ -11,14 +11,17 @@ public class    CTKhoanThu {
     SimpleStringProperty maKT,trangthai;
     SimpleStringProperty tenKT;
     SimpleStringProperty id;    // ma ho
+    SimpleStringProperty phong;
     SimpleStringProperty ten; // ten 
     SimpleObjectProperty<LocalDate> ngaynop;
     SimpleIntegerProperty tiennop,danop,conthieu;
 
 
-    public CTKhoanThu(String tenKT, String id,String ten, 
+    public CTKhoanThu(String maKT,String tenKT, String id,String phong,String ten, 
     LocalDate ngaynop, int tiennop,int danop) {
+        this.maKT = new SimpleStringProperty(maKT);
         this.id = new SimpleStringProperty(id);
+        this.phong = new SimpleStringProperty(phong);
         this.ten = new SimpleStringProperty(ten);
         this.tenKT= new SimpleStringProperty(tenKT);
         this.tiennop = new SimpleIntegerProperty(tiennop);

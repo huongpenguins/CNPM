@@ -36,6 +36,7 @@ public class TamVangDAL extends Admin {
                 Resident r =NhanKhauDAL.loadData(maNhanKhau);
                 if(r!=null){
                     CanHo c = CanHoDAL.loadData(r.getHouseholdId());
+                    if(c==null) continue;
                     String maTamVang = resultSet.getString("MaTamVang");
                     String lydo = resultSet.getString("LyDo");
                     LocalDate ngayvang = resultSet.getDate("ThoiGianBatDau").toLocalDate();

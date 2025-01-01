@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import org.controlsfx.control.RangeSlider;
 
 import com.example.Entities.CTQuyenGop;
+import com.example.dal.ChiTietKhoanThuDAL;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,19 +44,13 @@ public class CTQuyengopController {
     @FXML
     TableColumn<CTQuyenGop,String> tenKT;
     @FXML 
-    TableColumn<CTQuyenGop,String> id,ten;
+    TableColumn<CTQuyenGop,String> id,ten,phong;
     @FXML
     TableColumn<CTQuyenGop,Integer> danop;
     @FXML 
     TableColumn<CTQuyenGop,LocalDate> ngaynop;
 
-     ObservableList<CTQuyenGop> data = FXCollections.observableArrayList(
-        new CTQuyenGop("Học phí", "KT01", "Khoản học phí kỳ 1", LocalDate.of(2024, 1, 15), 500000),
-        new CTQuyenGop("ĐiệnĐiện", "KT02", "Thanh toán tiền điện tháng 1", LocalDate.of(2024, 2, 1), 300000),
-        new CTQuyenGop("NướcNước", "KT03", "Thanh toán tiền nước tháng 1", LocalDate.of(2024, 2, 5), 200000),
-         new CTQuyenGop("Vệ sinh", "KT04", "Phí vệ sinh chung cư", LocalDate.of(2024, 3, 10), 100000),
-        new CTQuyenGop("Mạng", "KT05", "Cước Internet tháng 1", LocalDate.of(2024, 1, 25), 250000)
-       );
+     ObservableList<CTQuyenGop> data = FXCollections.observableArrayList();
       
     
     public void initialize(){
@@ -63,6 +58,7 @@ public class CTQuyengopController {
         tiennop_filter.setHighValue(tiennop_filter.getMax());
         tiennop_filter.setLowValue(tiennop_filter.getMin());
         id.setCellValueFactory(new PropertyValueFactory<CTQuyenGop,String>("id"));
+        phong.setCellValueFactory(new PropertyValueFactory<CTQuyenGop,String>("phong"));
         ten.setCellValueFactory(new PropertyValueFactory<CTQuyenGop,String>("ten"));
         tenKT.setCellValueFactory(new PropertyValueFactory<CTQuyenGop,String>("tenKT"));
         ngaynop.setCellValueFactory(new PropertyValueFactory<CTQuyenGop,LocalDate>("ngaynop"));
@@ -79,14 +75,14 @@ public class CTQuyengopController {
 
     }
     
-    public void setData(){
-        
+    public void loadData(){
+       data = ChiTietKhoanThuDAL.loadDataQuyenGop(maKT, "0", "Quyên góp");
     }
     @FXML
     private void ThongKe(){
 
     }
-    
+    @FXML
     private void Add() throws IOException{
         Stage subStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("thanhtoan.fxml"));
@@ -113,7 +109,7 @@ public class CTQuyengopController {
                 // lay ttin ten tu ma ho
 
 
-                data.add(new CTQuyenGop(tenKhoanThu, t.hoaDon.getMaho(), " ", t.hoaDon.getThoidiem(), t.hoaDon.getSotiennop()));
+                data.add(new CTQuyenGop(maKT,tenKhoanThu, t.hoaDon.getMaho(), " ", t.hoaDon.getThoidiem(), t.hoaDon.getSotiennop()));
                
 
             }

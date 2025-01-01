@@ -54,7 +54,7 @@ public class AddTamVangController {
                 if(r!=null){
                     CanHo c = CanHoDAL.loadData(r.getHouseholdId());
                     
-                    boolean t= TamVangDAL.insert1("khoanthutbl", column, types,value);
+                    boolean t= TamVangDAL.insert1("tamvangtbl", column, types,value);
                     String newMaTamVang = TamVangDAL.selectMaTrigger("tamvangtbl", "MaTamVang", column, types, value);
                     newTamVang = new TamVang(newMaTamVang,r.getId(),r.getName(),r.getIdentityCard(),c.getTenCanHo(),lydo_text.getText(),ngayvang.getValue());
                     if(t==true){
