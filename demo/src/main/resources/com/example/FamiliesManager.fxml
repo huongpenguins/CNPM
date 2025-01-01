@@ -29,28 +29,28 @@
         </AnchorPane>
 
         <!-- Search Section -->
-        <TextField fx:id="txtSearch" layoutX="20.0" layoutY="80.0" prefHeight="30.0" prefWidth="400.0" promptText="Tìm kiếm hộ gia đình (Mã Hộ Gia Đình hoặc Tên Chủ Hộ)" />
-        <Button fx:id="btnSearch" layoutX="430.0" layoutY="80.0" onAction="#searchHouseholds" prefHeight="30.0" prefWidth="100.0" text="Tìm kiếm" />
+        <TextField fx:id="txtSearch" layoutX="20.0" layoutY="80.0" prefHeight="30.0" prefWidth="400.0" promptText="Tìm kiếm hộ gia đình (Mã Hộ Gia Đình)" />
+        <Button fx:id="btnSearch" layoutX="430.0" layoutY="80.0" onAction="#searchHouseholds" prefHeight="30.0" prefWidth="100.0" text="Tìm kiếm" styleClass="button2" stylesheets="@manager/home2.css"/>
 
         <!-- Table Section wrapped in ScrollPane -->
         <ScrollPane layoutX="20.0" layoutY="130.0" prefHeight="400.0" prefWidth="750.0" hbarPolicy="ALWAYS" vbarPolicy="AS_NEEDED">
             <content>
-                <TableView fx:id="tableHouseholds" prefHeight="400.0" prefWidth="950.0">
+                <TableView fx:id="tableHouseholds" prefHeight="400.0" prefWidth="750.0">
                     <columns>
                         <!-- Mã Hộ Gia Đình -->
-                        <TableColumn fx:id="colHouseholdId" prefWidth="150.0" text="Mã Hộ Gia Đình" />
+                        <TableColumn fx:id="colHouseholdId" prefWidth="187.5" text="Mã Hộ Gia Đình" />
                         <!-- Mã Căn Hộ -->
-                        <TableColumn fx:id="colApartmentId" prefWidth="150.0" text="Mã Căn Hộ" />
+                        <TableColumn fx:id="colApartmentId" prefWidth="187.5" text="Mã Căn Hộ" />
                         <!-- Mã Nhân Khẩu -->
-                        <TableColumn fx:id="colResidentId" prefWidth="150.0" text="Mã Nhân Khẩu" />
+                        <TableColumn fx:id="colResidentId" prefWidth="187.5" text="Mã Nhân Khẩu" />
                         <!-- Mã Xe -->
                        <!-- <TableColumn fx:id="colVehicleId" prefWidth="150.0" text="Mã Xe" /> -->
                         <!-- Ngày Cấp -->
-                        <TableColumn fx:id="colIssueDate" prefWidth="150.0" text="Ngày Cấp" />
+                        <TableColumn fx:id="colIssueDate" prefWidth="187.5" text="Ngày Cấp" />
                         <!-- Tên Chủ Hộ -->
-                        <TableColumn fx:id="colOwnerName" prefWidth="200.0" text="Tên Chủ Hộ" />
+                      <!--  <TableColumn fx:id="colOwnerName" prefWidth="200.0" text="Tên Chủ Hộ" /> -->
                         <!-- Số Điện Thoại -->
-                        <TableColumn fx:id="colPhoneNumber" prefWidth="150.0" text="Số Điện Thoại" />
+                       <!-- <TableColumn fx:id="colPhoneNumber" prefWidth="150.0" text="Tổng Tiền Phải Đóng" /> -->
                     </columns>
                 </TableView>
             </content>
