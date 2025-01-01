@@ -24,7 +24,7 @@ public class CanHoDAL extends Admin {
      public static CanHo loadData(String condition){
         
         ResultSet resultSet=null;
-        StringBuffer query = new StringBuffer("SELECT * FROM CanHoTBL WHERE MaHoGiaDinh = ");
+        StringBuffer query = new StringBuffer("SELECT * FROM CanHoTBL ch join hogiadinhtbl gd on ch.MaCanHo = gd.MaCanHo WHERE MaHoGiaDinh = ");
         query.append("'").append(condition).append("'");
         Statement statement;
         try {

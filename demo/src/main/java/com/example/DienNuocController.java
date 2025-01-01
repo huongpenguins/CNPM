@@ -223,7 +223,8 @@ public class DienNuocController {
                 }
             }
 
-            data = ChiTietKhoanThuDAL.loadData1(maKT, "0", "Bắt buộc");
+            data = ChiTietKhoanThuDAL.loadDienNuoc(maKT, "0", "Bắt buộc");
+            table.setItems(data);
         }
 
     
