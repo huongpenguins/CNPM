@@ -11,13 +11,15 @@ public class CTQuyenGop {
     SimpleStringProperty maKT;
     SimpleStringProperty tenKT;
     SimpleStringProperty id;    // ma ho
+    SimpleStringProperty phong; 
     SimpleStringProperty ten; // ten 
     SimpleObjectProperty<LocalDate> ngaynop;
     SimpleIntegerProperty danop;
 
 
-    public CTQuyenGop(String tenKT, String id,String ten, 
+    public CTQuyenGop(String maKT,String tenKT, String id,String ten, 
     LocalDate ngaynop, int danop) {
+        this.maKT = new SimpleStringProperty(maKT);
         this.id = new SimpleStringProperty(id);
         this.ten = new SimpleStringProperty(ten);
         this.tenKT= new SimpleStringProperty(tenKT);

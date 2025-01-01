@@ -42,17 +42,16 @@
          </graphic></Button>
       <TableView fx:id="table" layoutX="26.0" layoutY="154.0" prefHeight="381.0" prefWidth="948.0">
         <columns>
-            <TableColumn fx:id="id" prefWidth="105.33330726623535" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Mã phí" />
-          <TableColumn fx:id="ten" prefWidth="125.99996948242188" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Tên" />
-          <TableColumn fx:id="loai" minWidth="0.0" prefWidth="98.00001525878906" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Loại" />
-            <TableColumn fx:id="batdau" minWidth="6.000030517578125" prefWidth="158.66673278808594" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Bắt đầu" />
-            <TableColumn fx:id="hannop" prefWidth="149.99996948242188" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Hạn nộp" />
-            <TableColumn fx:id="ghichu" prefWidth="127.33331298828125" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Đơn giá" />
-            <TableColumn fx:id="donvi" prefWidth="81.33331298828125" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Đơn vị" />
-            <TableColumn prefWidth="50.6666259765625" fx:id="xoa" />
-            <TableColumn fx:id="chinhsua" prefWidth="53.3333740234375" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-alignment: CENTER;" />
+          <TableColumn fx:id="ten" prefWidth="176.66666221618652" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Tên" />
+          <TableColumn fx:id="loai" minWidth="0.0" prefWidth="101.33335876464844" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Loại" />
+            <TableColumn fx:id="batdau" minWidth="6.000030517578125" prefWidth="141.33331298828125" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Bắt đầu" />
+            <TableColumn fx:id="hannop" prefWidth="142.0" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Hạn nộp" />
+            <TableColumn fx:id="ghichu" prefWidth="128.6666259765625" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Đơn giá" />
+            <TableColumn fx:id="donvi" prefWidth="78.6666259765625" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Đơn vị" />
+            <TableColumn prefWidth="57.33331298828125" fx:id="xoa" />
+            <TableColumn fx:id="chinhsua" prefWidth="56.00006103515625" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-alignment: CENTER;" />
             <TableColumn fx:id="chitiet" prefWidth="69.33331298828125" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
-            <TableColumn fx:id="completed" prefWidth="69.33331298828125" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
+            <TableColumn fx:id="completed" prefWidth="42.66668701171875" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: CENTER;" />
         </columns>
       </TableView>
       <Button fx:id="filter" layoutX="148.0" layoutY="109.0" mnemonicParsing="false" onAction="#showFilterBar" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">

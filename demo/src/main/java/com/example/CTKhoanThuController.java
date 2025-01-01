@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import org.controlsfx.control.RangeSlider;
 
 import com.example.Entities.CTKhoanThu;
+import com.example.dal.ChiTietKhoanThuDAL;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,21 +43,14 @@ public class CTKhoanThuController {
     @FXML
     TableColumn<CTKhoanThu,String> tenKT;
     @FXML 
-    TableColumn<CTKhoanThu,String> id,ten,trangthai;
+    TableColumn<CTKhoanThu,String> id,ten,trangthai,phong;
     @FXML
     TableColumn<CTKhoanThu,Integer> tiennop,danop,conthieu;
     @FXML 
     TableColumn<CTKhoanThu,LocalDate> ngaynop;
     @FXML
     TableColumn<CTKhoanThu,Void> thanhtoan;
-    //   ObservableList<CTKhoanThu> data = FXCollections.observableArrayList(
-    //     new CTKhoanThu("Học phí", "KT01", "Khoản học phí kỳ 1", LocalDate.of(2024, 1, 15), 500000, 250000),
-    //     new CTKhoanThu("Tiền điện", "KT02", "Thanh toán tiền điện tháng 1", LocalDate.of(2024, 2, 1), 300000, 300000),
-    //     new CTKhoanThu("Tiền nước", "KT03", "Thanh toán tiền nước tháng 1", LocalDate.of(2024, 2, 5), 200000, 150000),
-    //      new CTKhoanThu("Phí vệ sinh", "KT04", "Phí vệ sinh chung cư", LocalDate.of(2024, 3, 10), 100000, 100000),
-    //     new CTKhoanThu("Internet", "KT05", "Cước Internet tháng 1", LocalDate.of(2024, 1, 25), 250000, 200000)
-        
-    //    );
+    
     ObservableList<CTKhoanThu> data=FXCollections.observableArrayList();
     
     public void initialize(){
@@ -67,6 +61,7 @@ public class CTKhoanThuController {
         tienthieu_filter.setLowValue(tienthieu_filter.getMin());
 
         id.setCellValueFactory(new PropertyValueFactory<CTKhoanThu,String>("id"));
+        phong.setCellValueFactory(new PropertyValueFactory<CTKhoanThu,String>("phong"));
         ten.setCellValueFactory(new PropertyValueFactory<CTKhoanThu,String>("ten"));
         tenKT.setCellValueFactory(new PropertyValueFactory<CTKhoanThu,String>("tenKT"));
         tiennop.setCellValueFactory(new PropertyValueFactory<CTKhoanThu,Integer>("tiennop"));
@@ -84,6 +79,12 @@ public class CTKhoanThuController {
             private final Button btn = new Button("Thanh toán");
 
             {   
+                 btn.setStyle("-fx-background-image: url('picture/thanh_toan.png'); "+
+                "-fx-background-position: center; "+
+                "-fx-background-repeat: no-repeat; " +
+                "-fx-background-size: contain; "  );
+
+
                 btn.setOnAction(event->{
                     try {
                         ThanhToan(getTableView().getItems().get(getIndex()));
@@ -123,8 +124,8 @@ public class CTKhoanThuController {
 
     }
     
-    public void setData(){
-        
+    public void loadData(){
+        data = ChiTietKhoanThuDAL.loadData1(maKT, "0", "Bắt buộc");
     }
     @FXML
     private void ThongKe(){

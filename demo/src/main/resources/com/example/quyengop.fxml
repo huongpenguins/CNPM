@@ -32,6 +32,7 @@
         <columns>
             <TableColumn fx:id="tenKT" prefWidth="173.9999942779541" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-alignment: CENTER;" text="Tên khoản thu" />
             <TableColumn fx:id="id" prefWidth="124.00007629394531" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Mã hộ" />
+            <TableColumn fx:id="phong" prefWidth="124.00007629394531" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Phòng" />
           <TableColumn fx:id="ten" prefWidth="206.6666259765625" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Tên chủ hộ" />
           <TableColumn fx:id="ngaynop" minWidth="0.0" prefWidth="202.00006103515625" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Ngày nộp" />
             <TableColumn fx:id="danop" prefWidth="242.0" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Số tiền quyên góp" />

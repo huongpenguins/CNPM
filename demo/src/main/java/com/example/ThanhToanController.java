@@ -1,13 +1,10 @@
 package com.example;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.time.LocalDate;
 
 import com.example.Entities.HoaDon;
-import com.example.Entities.KhoanThu;
 import com.example.dal.HoaDonDAL;
-import com.example.dal.KhoanThuDAL;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;

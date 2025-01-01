@@ -5,21 +5,18 @@ import java.util.ArrayList;
 
 import com.example.Entities.KhoanThu;
 import com.example.dal.KhoanThuDAL;
-import com.example.dal.TamVangDAL;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 public class AddFeeController {
     ArrayList<KhoanThu> listNew=new ArrayList<>();
     KhoanThu newKhoanThu;
     @FXML 
-    TextField id_text,ten_text,ghichu;
+    TextField ten_text,ghichu;
     @FXML
     DatePicker batdau,hannop;
     @FXML
@@ -41,7 +38,6 @@ public class AddFeeController {
     @FXML
     private void xacnhan() throws IOException{
 
-        if(id_text.getText().isEmpty()) return;
         if(ten_text.getText().isEmpty()) return;
         if(loai.getValue() == null) return;
         if(batdau.getValue()==null) return;
@@ -63,19 +59,19 @@ public class AddFeeController {
         } 
 
             KhoanThuDAL khoanThuDAL =new KhoanThuDAL();
-            String[] colums = new String[]{"MaKhoanThu","TenKhoanThu","Loai","ThoiGianBatDau","ThoiGianKetThuc","SoTien","DonVi"};
-            String[] types=new String[]{"string","string","string","date","date","int","string"};
-            String[] newValue = {id_text.getText(), ten_text.getText(),loai.getValue().toString()
+            String[] colums = new String[]{"TenKhoanThu","Loai","ThoiGianBatDau","ThoiGianKetThuc","SoTien","DonVi"};
+            String[] types=new String[]{"string","string","date","date","int","string"};
+            String[] newValue = { ten_text.getText(),loai.getValue().toString()
                 ,batdau.getValue().toString() , hannop.getValue().toString(), ghichu.getText(),donvi.getValue()};
             boolean t= khoanThuDAL.insert1("khoanthutbl", colums, types,newValue);
             if(t==true){
-                this.newKhoanThu = new KhoanThu(id_text.getText(), ten_text.getText(),loai.getValue().toString()
+                String id = khoanThuDAL.selectMaTrigger("khoanthutbl", "MaKhoanThu", colums, types, newValue);
+                this.newKhoanThu = new KhoanThu(id, ten_text.getText(),loai.getValue().toString()
             ,batdau.getValue() , hannop.getValue(), sotien,donvi.getValue());
                 listNew.add(newKhoanThu);
 
             }
             
-            id_text.clear();
             ten_text.clear();
             loai.setValue(null);
             batdau.setValue(null);

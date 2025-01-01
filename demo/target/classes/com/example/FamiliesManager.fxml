@@ -35,7 +35,7 @@
         <!-- Table Section wrapped in ScrollPane -->
         <ScrollPane layoutX="20.0" layoutY="130.0" prefHeight="400.0" prefWidth="750.0" hbarPolicy="ALWAYS" vbarPolicy="AS_NEEDED">
             <content>
-                <TableView fx:id="tableHouseholds" prefHeight="400.0" prefWidth="1100.0">
+                <TableView fx:id="tableHouseholds" prefHeight="400.0" prefWidth="950.0">
                     <columns>
                         <!-- Mã Hộ Gia Đình -->
                         <TableColumn fx:id="colHouseholdId" prefWidth="150.0" text="Mã Hộ Gia Đình" />
@@ -44,7 +44,7 @@
                         <!-- Mã Nhân Khẩu -->
                         <TableColumn fx:id="colResidentId" prefWidth="150.0" text="Mã Nhân Khẩu" />
                         <!-- Mã Xe -->
-                        <TableColumn fx:id="colVehicleId" prefWidth="150.0" text="Mã Xe" />
+                       <!-- <TableColumn fx:id="colVehicleId" prefWidth="150.0" text="Mã Xe" /> -->
                         <!-- Ngày Cấp -->
                         <TableColumn fx:id="colIssueDate" prefWidth="150.0" text="Ngày Cấp" />
                         <!-- Tên Chủ Hộ -->

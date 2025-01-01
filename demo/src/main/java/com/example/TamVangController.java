@@ -74,8 +74,15 @@ public class TamVangController {
         
         // them button chinh sua vao cot
         chinhsua.setCellFactory(col -> new TableCell<TamVang, Void>() {
+            
             private final Button btn = new Button("Sửa");
-            {   
+           
+            {    
+                btn.setStyle("-fx-background-image: url('picture/edit.png'); "+
+                             "-fx-background-position: center; "+
+                             "-fx-background-repeat: no-repeat; " +
+                             "-fx-background-size: contain; "  );
+            
                 
                btn.setOnAction(event->{
                 TamVang k = getTableView().getItems().get(getIndex());
@@ -109,7 +116,12 @@ public class TamVangController {
 
             {
               btn1.setOnAction(event->{
-                
+                    btn1.setStyle("-fx-background-image: url('picture/xoa.png'); "+
+                    "-fx-background-position: center; "+
+                    "-fx-background-repeat: no-repeat; " +
+                    "-fx-background-size: contain; "  );
+
+   
                     TamVang curItem = getTableRow().getItem();
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Xác nhận xoá");
