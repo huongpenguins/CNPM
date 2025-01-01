@@ -297,7 +297,7 @@ public static boolean update1(String tableName, String[] columns, String[] types
             return rowsInserted > 0;
 
         } catch (SQLException e) {
-            System.err.println("Lỗi khi thêm dữ liệu: " + e.getMessage());
+            System.err.println("Lỗi khi thêm dữ liệu, thử thêm hộ gia đình trước!. Lỗi chi tiết: " + e.getMessage());
             return false;
         }
     }
@@ -430,41 +430,7 @@ public static boolean update1(String tableName, String[] columns, String[] types
         alert.setContentText(message);
         alert.showAndWait();
     }
-    // public static String selectMaTrigger(String tableName,String MaMuonLay,String[]columns,String[] types,String[] value){
-    //     String ma=null;
-    //     StringBuilder query = new StringBuilder("SELECT ").append(MaMuonLay).append( " FROM ");
-    //     query.append(tableName).append(" WHERE ");
 
-    //     // Tạo câu lệnh SQL cho các cột
-    //     for (int i = 0; i < columns.length; i++) {
-    //         query.append(columns[i]).append(" = ");
-    //         if(types[i].equals("string")||types[i].equals("date")){
-    //             query.append("'").append(value[i]).append("'");
-    //         }
-    //         else{
-    //             query.append(value[i]);
-    //         }
-    //         if (i < columns.length - 1) {
-    //             query.append(" AND ");
-    //         }
-    //     }
-
-    //     try (Statement statement = connection_admin.createStatement()) {
-    //         ResultSet r = statement.executeQuery(query.toString());
-
-    //         while(r.next()){
-    //             ma = r.getString(MaMuonLay);
-    //         }
-
-
-
-    //     } catch (SQLException e) {
-    //         // TODO Auto-generated catch block
-    //         e.printStackTrace();
-    //     }
-    //     return ma;
-
-    // }
 
 }
 

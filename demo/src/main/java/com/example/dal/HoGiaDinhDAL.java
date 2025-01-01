@@ -102,7 +102,7 @@ public class HoGiaDinhDAL extends Admin {
     public boolean deleteHoGiaDinh(String tableName, String conditionColumn, String conditionValue) {
         if ("MaHoGiaDinh".equalsIgnoreCase(conditionColumn)) {
             if (isReferencedInOtherTables(conditionValue)) {
-                System.err.println("Error: Không thể xóa vì MaHoGiaDinh đang được tham chiếu!");
+                System.err.println("Error: Không thể xóa vì MaHoGiaDinh đang được tham chiếu! Hãy xóa hết cư dân trong hộ khẩu trước!");
                 return false;
             }
         }
@@ -124,4 +124,48 @@ public class HoGiaDinhDAL extends Admin {
         // Gọi super.search với đúng bảng "hogiadinhtbl"
         return super.search("hogiadinhtbl", columnName, searchValue);
     }
+
+    public ArrayList<Object[]> getPaymentDetailsForHousehold(String householdId) {
+        String sql = "SELECT " +
+                " kt.MaKhoanThu," +
+                " kt.TenKhoanThu," +
+                " kt.ThoiGianBatDau," +
+                " kt.ThoiGianKetThuc," +
+                " kt.SoTien AS TienQuyDinh," +
+                " kt.DonVi," +
+                " kt.loai," +
+                " hdt.SoTienDaNop," +
+                " hdt.ThoiDiemNop," +
+                " sdn.SO AS SoDienNuoc " +
+                "FROM hogiadinhtbl hg " +
+                " LEFT JOIN hoadontbl hdt ON hg.MaHoGiaDinh = hdt.MaHoGiaDinh " +
+                " LEFT JOIN khoanthutbl kt ON kt.MaKhoanThu = hdt.MaKhoanThu " +
+                " LEFT JOIN sodiennuoctbl sdn ON sdn.MaKhoanThu = kt.MaKhoanThu " +
+                "       AND sdn.MaHoGiaDinh = hg.MaHoGiaDinh " +
+                "WHERE hg.MaHoGiaDinh = ?";
+
+        ArrayList<Object[]> list = new ArrayList<>();
+        try (PreparedStatement ps = getConnectionAdmin().prepareStatement(sql)) {
+            ps.setString(1, householdId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Object[] row = new Object[10];
+                row[0] = rs.getString("MaKhoanThu");
+                row[1] = rs.getString("TenKhoanThu");
+                row[2] = rs.getDate("ThoiGianBatDau");
+                row[3] = rs.getDate("ThoiGianKetThuc");
+                row[4] = rs.getInt("TienQuyDinh");
+                row[5] = rs.getString("DonVi");
+                row[6] = rs.getString("loai");
+                row[7] = rs.getInt("SoTienDaNop");  // cẩn thận với null => default 0
+                row[8] = rs.getDate("ThoiDiemNop");
+                row[9] = rs.getInt("SoDienNuoc");   // cẩn thận với null => default 0
+                list.add(row);
+            }
+        } catch (SQLException ex) {
+            System.err.println("Lỗi getPaymentDetailsForHousehold(): " + ex.getMessage());
+        }
+        return list;
+    }
+
 }

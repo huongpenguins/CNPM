@@ -186,7 +186,7 @@ public class ResidentsManagerController {
                 String householdId  = (String) row[1];
                 String name         = (String) row[2];
                 String identityCard = (String) row[3];
-                String dob          = (String) row[4];
+                String dob          = String.valueOf(row[4]);
                 String placeOfBirth = (String) row[5];
                 String ethnicity    = (String) row[6];
                 String occupation   = (String) row[7];
