@@ -5,27 +5,46 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class TamTru {
+    String maTamTru;
     SimpleStringProperty maNhanKhau;
     SimpleStringProperty cccd;           // Khai báo biến
     SimpleStringProperty ten;
     SimpleStringProperty dcthuongtru;
     SimpleStringProperty dctamtru;
     SimpleObjectProperty<LocalDate> ngaybdtamtru;
+    boolean completed;
 
-    public TamTru(String ten, String cccd, String dcthuongtru,
+    public TamTru(String maTamTru, String maNhanKhau,String ten, String cccd, String dcthuongtru,
                   String dctamtru, LocalDate ngaybdtamtru) {
+        this.maTamTru = maTamTru;
+        this.maNhanKhau = new SimpleStringProperty(maNhanKhau);
         this.cccd = new SimpleStringProperty(cccd);
         this.ten = new SimpleStringProperty(ten);
         this.dcthuongtru = new SimpleStringProperty(dcthuongtru);
         this.ngaybdtamtru = new SimpleObjectProperty<>(ngaybdtamtru);
         this.dctamtru = new SimpleStringProperty(dctamtru);
+        completed=false;
     }
-
+/*
     public TamTru(String maNhanKhau, String dctamtru, LocalDate ngaybdtamtru) {
         this.maNhanKhau.set(maNhanKhau);
         this.dctamtru.set(dctamtru);
         this.ngaybdtamtru.set(ngaybdtamtru);
     }
+
+ */
+public boolean isCompleted() {
+    return this.completed;
+}
+
+    public boolean getCompleted() {
+        return this.completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
 
     public String getMaNhanKhau() {
         return this.maNhanKhau.get();
@@ -65,4 +84,12 @@ public class TamTru {
     public String getDcTamTru() {return this.dctamtru.get();}
 
     public void setDcTamTru(String dctamtru) {this.dctamtru.set(dctamtru);}
+
+    public String getMaTamTru() {
+        return this.maTamTru;
+    }
+
+    public void setMaTamTru(String maTamTru) {
+        this.maTamTru = maTamTru;
+    }
 }
