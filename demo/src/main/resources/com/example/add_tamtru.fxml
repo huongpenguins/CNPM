@@ -54,12 +54,10 @@
                 <Font name="Arial Bold" size="15.0" />
             </font>
         </Label>
-        <TextField fx:id="dctamtru_text1" layoutX="129.0" layoutY="240.0" prefHeight="29.0" prefWidth="190.0" style="-fx-border-color: transparent transparent black transparent; -fx-background-color: transparent;">
+        <TextField fx:id="dctamtru_text" layoutX="129.0" layoutY="240.0" prefHeight="29.0" prefWidth="190.0" style="-fx-border-color: transparent transparent black transparent; -fx-background-color: transparent;">
             <font>
                 <Font name="Arial" size="15.0" />
             </font>
         </TextField>
     </children>
 </AnchorPane>
-
-

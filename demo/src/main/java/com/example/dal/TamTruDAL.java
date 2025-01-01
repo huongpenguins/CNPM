@@ -2,6 +2,7 @@ package com.example.dal;
 import com.example.Admin;
 import com.example.Entities.CanHo;
 import com.example.Entities.TamTru;
+import com.example.Entities.TamVang;
 import com.example.Resident;
 import com.example.connect.connect_mysql;
 import javafx.collections.FXCollections;
@@ -28,11 +29,11 @@ public class TamTruDAL extends Admin {
                 String maNhanKhau = resultSet.getString("MaNhanKhau");
                 Resident r =NhanKhauDAL.loadData(maNhanKhau);
                 if(r!=null){
-                    CanHo c = CanHoDAL.loadData(r.getHouseholdId());
                     String maTamTru = resultSet.getString("MaTamTru");
+                    String dcthuongtru = resultSet.getString("DiaChiThuongTru");
                     String dctamtru = resultSet.getString("DiaChiTamTru");
                     LocalDate ngaybdtamtru = resultSet.getDate("NgayBatDauTamTru").toLocalDate();
-                    tamtru = new TamTru(r.getName(),r.getIdentityCard(),c.getTenCanHo(),dctamtru,ngaybdtamtru);
+                    tamtru = new TamTru(resultSet.getString("MaTamTru"),maNhanKhau,r.getName(),r.getIdentityCard(),dcthuongtru,dctamtru,ngaybdtamtru);
                     data.add(tamtru);
                 }
             }

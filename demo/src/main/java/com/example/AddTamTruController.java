@@ -4,8 +4,12 @@ package com.example;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.example.Entities.CanHo;
 import com.example.Entities.TamTru;
-import com.example.Entities.TamVang;
+
+import com.example.dal.TamTruDAL;
+import com.example.dal.NhanKhauDAL;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -30,6 +34,7 @@ public class AddTamTruController {
     }
     @FXML
     private void xacnhan() throws IOException{
+        id_text.setEditable(false);
         if(id_text.getText().isEmpty()) return;
         if(dcthuongtru_text.getText().isEmpty()) return;
         if(dctamtru_text.getText().isEmpty()) return;
@@ -39,13 +44,22 @@ public class AddTamTruController {
         } catch (Exception e) {
             return ;
         }
-        newTamTru = new TamTru(id_text.getText(), dctamtru_text.getText(), ngaybdtamtru.getValue());
-        // luu cai tren vao csdl
 
+        String[] column = new String[]{"MaNhanKhau","DiaChiThuongTru", "DiaChiTamTru","NgayBatDauTamTru"};
+        String [] types = new String[]{"string","string","string", "date"};
 
-        // lay ra ho ten dctamtru ung vs id_text tu csdl de set cho thuoc tinh
-        // newTamTru.ten =
-        //            . dctamtru =
+        String[] value = {id_text.getText(),dcthuongtru_text.getText(), dctamtru_text.getText(), ngaybdtamtru.getValue().toString()};
+        Resident r = NhanKhauDAL.loadData(id_text.getText());
+
+        if(r!=null){
+            boolean t= TamTruDAL.insert1("tamtrutbl", column, types,value);
+            String newMaTamTru = TamTruDAL.selectMaTrigger("tamtrutbl", "MaTamTru", column, types, value);
+            newTamTru = new TamTru(newMaTamTru,r.getId(),r.getName(),r.getIdentityCard(),dcthuongtru_text.getText(),dctamtru_text.getText(),ngaybdtamtru.getValue());
+            if(t==true){
+                listNew.add(newTamTru);
+            }
+
+        }
 
 
     }
