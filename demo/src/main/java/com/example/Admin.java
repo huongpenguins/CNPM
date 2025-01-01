@@ -430,41 +430,41 @@ public static boolean update1(String tableName, String[] columns, String[] types
         alert.setContentText(message);
         alert.showAndWait();
     }
-    public static String selectMaTrigger(String tableName,String MaMuonLay,String[]columns,String[] types,String[] value){
-        String ma=null;
-        StringBuilder query = new StringBuilder("SELECT ").append(MaMuonLay).append( " FROM ");
-        query.append(tableName).append(" WHERE ");
+    // public static String selectMaTrigger(String tableName,String MaMuonLay,String[]columns,String[] types,String[] value){
+    //     String ma=null;
+    //     StringBuilder query = new StringBuilder("SELECT ").append(MaMuonLay).append( " FROM ");
+    //     query.append(tableName).append(" WHERE ");
 
-        // Tạo câu lệnh SQL cho các cột
-        for (int i = 0; i < columns.length; i++) {
-            query.append(columns[i]).append(" = ");
-            if(types[i].equals("string")||types[i].equals("date")){
-                query.append("'").append(value[i]).append("'");
-            }
-            else{
-                query.append(value[i]);
-            }
-            if (i < columns.length - 1) {
-                query.append(" AND ");
-            }
-        }
+    //     // Tạo câu lệnh SQL cho các cột
+    //     for (int i = 0; i < columns.length; i++) {
+    //         query.append(columns[i]).append(" = ");
+    //         if(types[i].equals("string")||types[i].equals("date")){
+    //             query.append("'").append(value[i]).append("'");
+    //         }
+    //         else{
+    //             query.append(value[i]);
+    //         }
+    //         if (i < columns.length - 1) {
+    //             query.append(" AND ");
+    //         }
+    //     }
 
-        try (Statement statement = connection_admin.createStatement()) {
-            ResultSet r = statement.executeQuery(query.toString());
+    //     try (Statement statement = connection_admin.createStatement()) {
+    //         ResultSet r = statement.executeQuery(query.toString());
 
-            while(r.next()){
-                ma = r.getString(MaMuonLay);
-            }
+    //         while(r.next()){
+    //             ma = r.getString(MaMuonLay);
+    //         }
 
 
 
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return ma;
+    //     } catch (SQLException e) {
+    //         // TODO Auto-generated catch block
+    //         e.printStackTrace();
+    //     }
+    //     return ma;
 
-    }
+    // }
 
 }
 

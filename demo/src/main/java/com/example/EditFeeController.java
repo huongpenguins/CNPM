@@ -3,6 +3,7 @@ package com.example;
 import java.io.IOException;
 
 import com.example.Entities.KhoanThu;
+import com.example.Entities.TamVang;
 import com.example.dal.KhoanThuDAL;
 
 import javafx.fxml.FXML;
@@ -14,7 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class EditFeeController {
-    
+    KhoanThu k;
     @FXML 
     TextField id_text,ten_text,ghichu;
     @FXML
@@ -49,6 +50,7 @@ public class EditFeeController {
             alert.setContentText("Ngày bắt đầu nộp tiền muộn hơn hạn nộp");
             return;
         }
+        
 
             String[] columns = new String[]{"MaKhoanThu","TenKhoanThu","Loai","ThoiGianBatDau","ThoiGianKetThuc","SoTien","DonVi"};
             String[] types=new String[]{"string","string","string","date","date","int","string"};
@@ -58,7 +60,17 @@ public class EditFeeController {
             condition.append("'").append(id_text.getText()).append("'");
 
             boolean t= KhoanThuDAL.update1("khoanthutbl", columns, types,newValue,condition.toString());
+                
+            if(t==true){
+                Integer sotien=null;
+                try {
+                    sotien=Integer.parseInt(ghichu.getText());
+                
+                } catch (Exception e) {
+                    
+                } 
      
+            }
             Stage thisStage = (Stage)save.getScene().getWindow();
             thisStage.close();
 

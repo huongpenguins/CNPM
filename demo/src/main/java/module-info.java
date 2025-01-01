@@ -14,6 +14,8 @@ module com.example {
     requires org.apache.httpcomponents.httpclient;
     requires java.xml.bind;
     requires jakarta.mail;
+    requires org.apache.poi.poi;
+    requires org.apache.poi.ooxml;
 
 
     opens com.example.Entities to javafx.base;

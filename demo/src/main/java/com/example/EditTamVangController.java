@@ -36,7 +36,7 @@ public class EditTamVangController {
         } catch (Exception e) {
             return ;
         }
-
+        
         String[] colums = new String[]{"MaTamVang","MaNhanKhau","ThoiGianBatDau","LyDo"};
         String[] types=new String[]{"string","string","date","string"};
         String[] newValue = {maTamVang,id_text.getText(), ngayvang.getValue().toString(),lydo_text.getText()};

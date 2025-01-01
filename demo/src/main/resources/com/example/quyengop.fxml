@@ -30,12 +30,12 @@
          </graphic></Button>
       <TableView fx:id="table" layoutX="26.0" layoutY="154.0" prefHeight="381.0" prefWidth="948.0">
         <columns>
-            <TableColumn fx:id="tenKT" prefWidth="173.9999942779541" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-alignment: CENTER;" text="Tên khoản thu" />
-            <TableColumn fx:id="id" prefWidth="124.00007629394531" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Mã hộ" />
-            <TableColumn fx:id="phong" prefWidth="124.00007629394531" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Phòng" />
-          <TableColumn fx:id="ten" prefWidth="206.6666259765625" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Tên chủ hộ" />
-          <TableColumn fx:id="ngaynop" minWidth="0.0" prefWidth="202.00006103515625" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Ngày nộp" />
-            <TableColumn fx:id="danop" prefWidth="242.0" resizable="false" style="-fx-font-family: Arial; -fx-font-size: 14;" text="Số tiền quyên góp" />
+            <TableColumn fx:id="tenKT" prefWidth="173.9999942779541" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Tên khoản thu" />
+            <TableColumn fx:id="id" prefWidth="124.00007629394531" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Mã hộ" />
+            <TableColumn fx:id="phong" prefWidth="124.00007629394531" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Phòng" />
+          <TableColumn fx:id="ten" prefWidth="206.6666259765625" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Tên chủ hộ" />
+          <TableColumn fx:id="ngaynop" minWidth="0.0" prefWidth="202.00006103515625" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Ngày nộp" />
+            <TableColumn fx:id="danop" prefWidth="242.0" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Số tiền quyên góp" />
         </columns>
       </TableView>
       <Button fx:id="filter" layoutX="34.0" layoutY="81.0" mnemonicParsing="false" onAction="#showFilterBar" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">

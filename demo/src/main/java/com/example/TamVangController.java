@@ -2,6 +2,7 @@ package com.example;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -51,7 +52,7 @@ public class TamVangController {
     @FXML 
     TableColumn<TamVang,LocalDate> ngayvang;
     @FXML
-    TableColumn<TamVang,Void> chinhsua,chitiet,xoa;
+    TableColumn<TamVang,Void> chinhsua,chitiet,xoa,completed;
     @FXML
     AnchorPane filterbar;
     @FXML
@@ -152,7 +153,43 @@ public class TamVangController {
             }
         });
 
- 
+        completed.setCellFactory(col -> new TableCell<TamVang, Void>() {
+            private final Button btn1 = new Button("Hoàn thành");
+
+            {
+                btn1.setStyle("-fx-background-image: url('picture/tick.png'); "+
+                "-fx-background-position: center; "+
+                "-fx-background-repeat: no-repeat; " +
+                "-fx-background-size: contain; "  );
+
+                
+
+              btn1.setOnAction(event->{
+                    TamVang curItem = getTableRow().getItem();
+                    try {
+                        boolean t = TamVangDAL.updateTamVang1(" tamvvangtbl "," Completed "," 1 "," MaTamVang ",curItem.getMaTamVang());
+                        if(t==true){
+                            data.remove(curItem);
+                            table.refresh();
+                        }
+                    } catch (SQLException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    
+              });
+            }
+
+            @Override
+            public void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btn1);
+                }
+            }
+        });
 
         // nut tim kiem
         search.setOnKeyPressed(event -> { 
@@ -229,7 +266,7 @@ public class TamVangController {
         edit.id_text.setText(k.getMaNhanKhau());
         edit.lydo_text.setText(k.getLydo());
         edit.ngayvang.setValue(k.getNgayvang());
-        
+        edit.setNewTamVang(k);
         subStage.show();
         subStage.setOnHiding(event->{
             if(!edit.id_text.getText().equals(k.getMaNhanKhau())){

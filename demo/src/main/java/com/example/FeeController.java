@@ -91,6 +91,7 @@ public class FeeController {
                         try {
                             edit_fee(k);
                             
+                            table.refresh();
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -136,7 +137,7 @@ public class FeeController {
                         boolean t = khoanThuDAL.deleteKhoanThu("khoanthutbl","MaKhoanThu" ,curItem.getId());
                         if(t==true) {
                             data.remove(curItem);
-                            //table.refresh();
+                            table.refresh();
                         }
                         
                     }
@@ -191,7 +192,7 @@ public class FeeController {
         });
 
         completed.setCellFactory(col -> new TableCell<KhoanThu, Void>() {
-            private final Button btn1 = new Button();
+            private final Button btn1 = new Button("Hoàn thành");
 
             {
                 btn1.setStyle("-fx-background-image: url('picture/tick.png'); "+
@@ -313,7 +314,7 @@ public class FeeController {
         edit.id_text.setText(k.getId());
         edit.ten_text.setText(k.getTen());
         edit.loai.setValue(k.getLoai());
-
+        edit.k = k;
         subStage.show();
         subStage.setOnHiding(event->{
             k.setTen(edit.ten_text.getText());
@@ -330,15 +331,36 @@ public class FeeController {
             k.setGhichu(sotien);
             k.setDonvi(edit.donvi.getValue());
             k.setBatdau(edit.batdau.getValue());
-            table.refresh();
+            
+            
         });
+       
     }
     private void showChiTiet(KhoanThu k) throws IOException{
         if(!k.getLoai().toString().equals("Quyên góp")){
+            
             Stage subStage = new Stage();
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("CTkhoanthu.fxml"));
+            FXMLLoader fxmlLoader;
+            if(k.getDonvi().equals("Số điện/nước")){
+             fxmlLoader = new FXMLLoader(App.class.getResource("CTDienNuoc.fxml"));
+             Scene scene = new Scene(fxmlLoader.load(), 1000, 600); 
+             DienNuocController diennuoc = fxmlLoader.getController();
+             diennuoc.k = k;
+             diennuoc.maKT = k.getId();
+             diennuoc.tenKhoanThu = k.getTen();
+             diennuoc.tungay = k.getBatdau();
+             diennuoc.denngay = k.getHannop();
+             diennuoc.loadData();
+             subStage.setResizable(false);
+             subStage.setScene(scene);
+             subStage.setTitle(k.getTen());
+             subStage.show();
+        }
+            else{
+            fxmlLoader = new FXMLLoader(App.class.getResource("CTKhoanThu.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1000, 600); 
             CTKhoanThuController ctKThuController = fxmlLoader.getController();
+            ctKThuController.k = k;
             ctKThuController.maKT = k.getId();
             ctKThuController.tenKhoanThu = k.getTen();
             ctKThuController.tungay = k.getBatdau();
@@ -348,6 +370,10 @@ public class FeeController {
             subStage.setScene(scene);
             subStage.setTitle(k.getTen());
             subStage.show();
+            }
+            
+            
+            
         }
         // quyep gop thi man hinh chi tiet khoan thu se khac vi ko phai bat buoc
         else{

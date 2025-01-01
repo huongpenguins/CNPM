@@ -40,7 +40,7 @@ public class TamVangDAL extends Admin {
                     String maTamVang = resultSet.getString("MaTamVang");
                     String lydo = resultSet.getString("LyDo");
                     LocalDate ngayvang = resultSet.getDate("ThoiGianBatDau").toLocalDate();
-                    tamVang = new TamVang(resultSet.getString("MaTamVang"),maNhanKhau,r.getName(),r.getIdentityCard(),c.getTenCanHo(),lydo,ngayvang);
+                    tamVang = new TamVang(maTamVang,maNhanKhau,r.getName(),r.getIdentityCard(),c.getTenCanHo(),lydo,ngayvang);
                     data.add(tamVang);
                 }
             }
@@ -105,6 +105,10 @@ public class TamVangDAL extends Admin {
             }
             return false;
 }
+    
+    public static boolean updateTamVang1(String tableName, String columnName, String newValue, String conditionColumn, String conditionValue) throws SQLException {
+        return update(tableName, columnName, newValue, conditionColumn, conditionValue);
+    }
     //kiểm tra khóa ngoại chung
     public boolean checkForeignKey(String tableName, String columnName, String value) {
         String query = "SELECT 1 FROM " + tableName + " WHERE " + columnName + " = ?";

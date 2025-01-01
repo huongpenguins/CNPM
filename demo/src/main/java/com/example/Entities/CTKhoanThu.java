@@ -34,6 +34,15 @@ public class    CTKhoanThu {
             this.trangthai.set(this.getDanop() > this.getTiennop() ? "Dư": (this.getDanop() == this.getTiennop() ?  "Xong" : "Thiếu"));
         });
     }
+
+    public String getPhong() {
+        return this.phong.getValue();
+    }
+
+    public void setPhong(String phong) {
+         this.phong.set(phong);
+    }
+
     public String getTrangthai() {
         return this.trangthai.getValue();
     }

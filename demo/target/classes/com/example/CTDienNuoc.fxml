@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.RangeSlider?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="AnchorPane" stylesheets="@home.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.CTQuyengopController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="AnchorPane" stylesheets="@home.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.DienNuocController">
    <children>
       <Label layoutX="34.0" layoutY="23.0" prefHeight="38.0" prefWidth="180.0" text="Chi tiết khoản thu">
          <font>
@@ -30,12 +30,16 @@
          </graphic></Button>
       <TableView fx:id="table" layoutX="26.0" layoutY="154.0" prefHeight="381.0" prefWidth="948.0">
         <columns>
-            <TableColumn fx:id="tenKT" prefWidth="173.9999942779541" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Tên khoản thu" />
-            <TableColumn fx:id="id" prefWidth="124.00007629394531" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Mã hộ" />
-            <TableColumn fx:id="phong" prefWidth="124.00007629394531" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Phòng" />
-          <TableColumn fx:id="ten" prefWidth="206.6666259765625" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Tên chủ hộ" />
-          <TableColumn fx:id="ngaynop" minWidth="0.0" prefWidth="202.00006103515625" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Ngày nộp" />
-            <TableColumn fx:id="danop" prefWidth="242.0" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Số tiền quyên góp" />
+            <TableColumn fx:id="tenKT" prefWidth="103.77779388427734" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Tên khoản thu" />
+            <TableColumn fx:id="id" prefWidth="95.11122131347656" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Mã hộ" />
+            <TableColumn fx:id="phong" prefWidth="95.11122131347656" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Phòng" />
+          <TableColumn fx:id="ten" prefWidth="157.77786254882812" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Tên chủ hộ" />
+          <TableColumn fx:id="ngaynop" minWidth="0.0" prefWidth="110.0" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Ngày nộp" />
+            <TableColumn fx:id="tiennop" minWidth="6.000030517578125" prefWidth="134.66671752929688" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Số tiền nộp" />
+            <TableColumn fx:id="danop" prefWidth="122.6666259765625" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Số tiền đã nộp" />
+            <TableColumn fx:id="conthieu" prefWidth="102.0" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Thiếu/Dư" />
+            <TableColumn fx:id="trangthai" prefWidth="83.99993896484375" resizable="false" style="-fx-alignment: center; -fx-font-family: Arial; -fx-font-size: 14;" text="Trạng thái" />
+            <TableColumn fx:id="thanhtoan" prefWidth="116.0" style="-fx-font-family: Arial; -fx-font-size: 14; -fx-aligment: center;" />
         </columns>
       </TableView>
       <Button fx:id="filter" layoutX="34.0" layoutY="81.0" mnemonicParsing="false" onAction="#showFilterBar" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Filter">
@@ -53,9 +57,14 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="filterbar" layoutY="-139.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="680.0" style="-fx-background-color: #3f3e3e;">
+      <AnchorPane fx:id="filterbar" layoutY="-142.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="680.0" style="-fx-background-color: #3f3e3e;">
          <children>
-            <Label layoutX="146.0" layoutY="63.0" prefHeight="23.0" prefWidth="70.0" text="Số tiền nộp" textFill="WHITE">
+            <Label layoutX="25.0" layoutY="63.0" prefHeight="23.0" prefWidth="70.0" text="Số tiền nộp" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="252.0" layoutY="63.0" prefHeight="23.0" prefWidth="64.0" text="Còn thiếu" textFill="WHITE">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
@@ -88,18 +97,14 @@
                   <Font name="Arial" size="13.0" />
                </font>
             </Button>
-            <RangeSlider fx:id="tiennop_filter" blockIncrement="100000.0" highValue="1.0E7" layoutX="216.0" layoutY="68.0" lowValue="0.0" max="1.0E7" prefHeight="14.0" prefWidth="180.0" />
+            <RangeSlider fx:id="tienthieu_filter" highValue="1.0E7" layoutX="316.0" layoutY="68.0" lowValue="0.0" max="1.0E7" prefHeight="14.0" prefWidth="123.0" />
+            <RangeSlider fx:id="tiennop_filter" blockIncrement="100000.0" highValue="1.0E7" layoutX="95.0" layoutY="68.0" lowValue="0.0" max="1.0E7" prefHeight="14.0" prefWidth="123.0" />
          </children>
       </AnchorPane>
-      <Button fx:id="thongke" layoutX="162.0" layoutY="81.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="117.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Thống kê">
+      <Button fx:id="addfile" layoutX="162.0" layoutY="81.0" mnemonicParsing="false" onAction="#Addfile" prefHeight="38.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="Tải thông tin điện (nước)">
          <font>
             <Font name="Arial Bold" size="15.0" />
          </font>
       </Button>
-      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="176.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@picture/thongke.png" />
-         </image>
-      </ImageView>
    </children>
 </AnchorPane>

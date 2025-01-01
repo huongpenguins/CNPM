@@ -8,6 +8,8 @@ import com.example.login.ChangePassword;
 import com.example.login.LoginPage;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
@@ -57,6 +59,9 @@ public class AccountController {
     // tat ca ham duoi deu chuyen sang man hinh khac
     @FXML
     private void switchToChangeAccount() throws IOException {
+        // FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("add_fee.fxml"));
+        // AccountChangeController controller = new AccountChangeController();
+        // controller.setAccountInfo(hoten.getText(), diachi.getText(), email.getText(), sdt.getText(), cccd.getText(), chucvu.getText(), ngaysinh.getText(), gioitinh.getText(), manv.getText());
         App.setRoot("accountchange");
     }
 

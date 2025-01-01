@@ -1,9 +1,22 @@
 package com.example;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.function.Predicate;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.controlsfx.control.RangeSlider;
 
 import com.example.Entities.CTKhoanThu;
@@ -29,12 +42,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class CTKhoanThuController {
+public class DienNuocController {
     KhoanThu k;
     String maKT,tenKhoanThu;
     LocalDate tungay,denngay;
     @FXML
-    Button apply,thongke,addfile;
+    Button apply,addfile;
+
     @FXML
     AnchorPane filterbar;
     @FXML
@@ -60,6 +74,7 @@ public class CTKhoanThuController {
     
     public void initialize(){
         
+
         tiennop_filter.setHighValue(tiennop_filter.getMax());
         tiennop_filter.setLowValue(tiennop_filter.getMin());
         tienthieu_filter.setHighValue(tienthieu_filter.getMax());
@@ -87,6 +102,10 @@ public class CTKhoanThuController {
 
 
                 btn.setOnAction(event->{
+                    if(getTableView().getItems().get(getIndex())==null){
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("Chưa nhap so dien nuoc. Hay them file o tren");
+                    }
                     try {
                         ThanhToan(getTableView().getItems().get(getIndex()));
                     } catch (IOException e) {
@@ -106,6 +125,7 @@ public class CTKhoanThuController {
                     setGraphic(btn);
                     
                     try {
+                        
                         if(getTableRow().getItem().getDanop()
                         ==getTableRow().getItem().getTiennop()){
                             btn.setDisable(true);
@@ -126,13 +146,13 @@ public class CTKhoanThuController {
     }
     
 
-
+    
 
     public void loadData(){
-        data = ChiTietKhoanThuDAL.loadDataDT(maKT, "0", "Bắt buộc");
+        data = ChiTietKhoanThuDAL.loadDienNuoc(maKT, "0", "Bắt buộc");
         table.setItems(data);
     }
-      @FXML
+    @FXML
     private void Addfile(){
          FileChooser fileChooser = new FileChooser();
                 fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"));
@@ -140,14 +160,76 @@ public class CTKhoanThuController {
                 File file = fileChooser.showOpenDialog(addfile.getScene().getWindow());
 
                 if (file != null) {
-                    
-                    System.out.println("File đã chọn: " + file.getAbsolutePath());
-
-                    
-                    }
-                
+                    try {
+                        readFile(file);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                }
+            }
     }
+
+    private void readFile(File file) throws FileNotFoundException, IOException{
+        String[] column ={"MaKhoanThu","MaHoGiaDinh","So"};
+        String[] types = {"string","string","int"};
+        String maHoGiaDinh=null;
+        int so=-1;
+        String filePath = file.getAbsolutePath();
+        FileInputStream fs = new FileInputStream(filePath);
+        XSSFWorkbook wb = new XSSFWorkbook(fs);
+        XSSFSheet sheet = wb.getSheetAt(0);  // Lấy sheet đầu tiên
+        XSSFRow row;
+        XSSFCell cell;
+        int rows; 
+        rows = sheet.getPhysicalNumberOfRows();
+
+        int cols = 2; 
+
+        for(int r = 0; r < rows; r++) {
+            row = sheet.getRow(r);
+            if(row != null) {
+                for(int c = 0; c < cols; c++) {
+                    cell = row.getCell((short)c);
+                    if(cell != null) {
+                        if(c==0){
+                            if(cell.getCellType() == CellType.STRING){
+                               maHoGiaDinh = cell.toString(); 
+                            }
+                            else{
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setContentText("file dinh dang sai");
+                                return;
+                            }
+                            
+                        }
+                        else if(c==1){
+                            if(cell.getCellType() == CellType.NUMERIC){
+                            so = (int)cell.getNumericCellValue();
+                            }
+                            else{
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setContentText("file dinh dang sai");
+                                return;
+                            }
+                        }
+                        if(maHoGiaDinh!=null&&so!=-1){
+                        String[] value ={maKT,maHoGiaDinh,String.valueOf(so)};
+                        boolean t =Admin.insert1("SoDienNuoctbl", column, types, value);
+                        }
+                        else{
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setContentText("Khong the nhap so dien nuoc vi da ton tai");
+                        }
+                    }
+                }
+            }
+
+            data = ChiTietKhoanThuDAL.loadData1(maKT, "0", "Bắt buộc");
+        }
+
     
+    }
+
+
     private void ThanhToan(CTKhoanThu ct) throws IOException{
          Stage subStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("thanhtoan.fxml"));
@@ -165,13 +247,28 @@ public class CTKhoanThuController {
             
             if(thanhToanController.hoaDon==null) return;
             else{
-                
+                // for(CTKhoanThu i : data){
+                    
+                //     if(i.getId().equals(thanhToanController.hoaDon.getMaho())){
+                //         i.setDanop(i.getDanop()+thanhToanController.hoaDon.getSotiennop());
+                //         i.setNgaynop(thanhToanController.hoaDon.getThoidiem());// cap nhat ngay nop la ngay gan nhat
+                //         table.refresh();
+                //         return;
+                        
+                //     }
+                // }
+                // data.add(new CTKhoanThu(ct.getTenKT(), thanhToanController.hoaDon.getMaho(),
+                // ct.getTen(), thanhToanController.hoaDon.getThoidiem(),
+                //  ct.getTiennop(), thanhToanController.hoaDon.getSotiennop()));
+                // Tai lai csdl r cap nhat bangbang
                 table.refresh();
 
             }
         });
     }
-    FilteredList<CTKhoanThu> filter = new FilteredList<>(data,p->true);
+    
+  
+     private FilteredList<CTKhoanThu> filter = new FilteredList<>(data, p -> true);
     @FXML
     private void search(){
         String l = search.getText();
@@ -241,4 +338,5 @@ public class CTKhoanThuController {
         }
     }
     
+
 }
