@@ -33,7 +33,7 @@ public class ApartmentController {
     @FXML
     private TableColumn<CanHo, String> macanho;
     @FXML
-    private TableColumn<CanHo, String> mahokhau;
+    private TableColumn<CanHo, String> mahogiadinh;
     @FXML
     private TableColumn<CanHo, String> tencanho;
     @FXML
@@ -45,29 +45,29 @@ public class ApartmentController {
 
 
     private ObservableList<CanHo> masterData = FXCollections.observableArrayList();
-    private CanHoDAL canhoDal = new CanHoDAL(); // DAL cho CanHo
+    private CanHoDAL canhoDal = new CanHoDAL();// DAL cho CanHo
+
 
 
     public void initialize() {
-        if (sidebar != null) {
-            sidebar.setLayoutX(-sidebar.getPrefWidth());
-        }
 
         macanho.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMaCanHo()));
-        mahokhau.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMaHoKhau()));
+        mahogiadinh.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMaHoGiaDinh()));
         tencanho.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getTenCanHo()));
         tang.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getTang())));
         dientich.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getDienTich())));
         mota.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMoTa()));
 
+        if (sidebar != null) {
+            sidebar.setLayoutX(-sidebar.getPrefWidth());
+        }
 
         loadCanHoData();
-/*
+
         btnEdit.setDisable(true);
         btnDelete.setDisable(true);
         btnViewDetails.setDisable(true);
 
- */
 
         quanlycanho.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             boolean isSelected = newSelection != null;
@@ -89,19 +89,19 @@ public class ApartmentController {
         }
         masterData.clear();
         ArrayList<Object[]> results = canhoDal.searchCanHo("canhotbl", null, null);
-        if (results != null) {
+        if (results != null && !results.isEmpty()) {
 
-            for (Object[] row : results) {
+            for (Object[] row : results ) {
                 try {
-                    // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, Mota
+                    // Giả định thứ tự cột trong CSDL: MaCanHo, MaHoGiaDinh, TenCanHo, Tang, DienTich, Mota
                     String MaCanHo = row[0] != null ? row[0].toString() : "";
-                    String MaHoKhau = row[1] != null ? row[1].toString() : "";
+                    String MaHoGiaDinh = row[1] != null ? row[1].toString() : "";
                     String TenCanHo = row[2] != null ? row[2].toString() : "";
                     int Tang = row[3] != null ? Integer.parseInt(row[3].toString()) : 0; // Xử lý null và ép kiểu an toàn
                     float DienTich = row[4] != null ? Float.parseFloat(row[4].toString()) : 0.0f; // Xử lý null và ép kiểu an toàn
                     String MoTa = row[5] != null ? row[5].toString() : "";
                     CanHo canho = new CanHo(
-                            MaCanHo, MaHoKhau, TenCanHo,
+                            MaCanHo, MaHoGiaDinh, TenCanHo,
                             Tang, DienTich, MoTa
                     );
 
@@ -134,12 +134,12 @@ public class ApartmentController {
         if (results != null) {
             for (Object[] row : results) {
                 String MaCanHo = (String) row[0];
-                String MaHoKhau = (String) row[1];
+                String MaHoGiaDinh = (String) row[1];
                 String TenCanHo = (String) row[2];
                 int Tang = (int) row[3];
                 float DienTich = (float) row[4];
                 String MoTa = (String) row[5];
-                masterData.add(new CanHo(MaCanHo, MaHoKhau, TenCanHo, Tang, DienTich, MoTa));
+                masterData.add(new CanHo(MaCanHo, MaHoGiaDinh, TenCanHo, Tang, DienTich, MoTa));
             }
         }
         quanlycanho.setItems(masterData);
@@ -152,16 +152,16 @@ public class ApartmentController {
         result.ifPresent(data -> {
             String macanho = data.getKey();
             String[] details = data.getValue();
-            String mahokhau = details[0];
+            String mahogiadinh = details[0];
             String tencanho = details[1];
-            String tang = details[2];
-            String dientich = details[3];
+            int tang = Integer.parseInt(details[2]);
+            float dientich = Float.parseFloat(details[3]);
             String mota = details[4];
 
-            String[] columns = {"MaCanHo","MaHoKhau","TenCanHo","Tang","DienTich","MoTa"};
-            String[] values = {macanho, mahokhau, tencanho, tang, dientich, mota};
+            String[] columns = {"MaCanHo","MaHoGiaDinh","TenCanHo","Tang","DienTich","MoTa"};
+            String[] values = {macanho, mahogiadinh, tencanho, String.valueOf(tang), String.valueOf(dientich), mota};
 
-            boolean success = canhoDal.insertCanHo();
+            boolean success = canhoDal.insertCanHo("canhotbl", columns, values);
             if (success) {
                 showAlert("Thành công", "Căn hộ mới đã được thêm!");
                 loadCanHoData();
@@ -180,24 +180,37 @@ public class ApartmentController {
             result.ifPresent(data -> {
                 String macanho = data.getKey();
                 String[] details = data.getValue();
-                String mahokhau = details[0];
+                String mahogiadinh = details[0];
                 String tencanho = details[1];
-                String tang = details[2];
-                String dientich = details[3];
+                int tang = 0;  // Mặc định cho tầng
+                float dientich = 0.0f;  // Mặc định cho diện tích
                 String mota = details[4];
+
+// Kiểm tra và chuyển đổi tầng (cột 2) thành int
+                try {
+                    tang = Integer.parseInt(details[2]);  // Tầng cần phải là một số
+                } catch (NumberFormatException e) {
+                    showAlert("Lỗi", "Tầng phải là một số nguyên.");
+                    return;
+                }
+
+// Kiểm tra và chuyển đổi diện tích (cột 3) thành float
+                try {
+                    dientich = Float.parseFloat(details[3]);  // Diện tích cần phải là một số thực
+                } catch (NumberFormatException e) {
+                    showAlert("Lỗi", "Diện tích phải là một số thực.");
+                    return;
+                }
+
+
 
                 boolean allSuccess = true;
 
-                try {
-                    allSuccess &= canhoDal.updateCanHo("canhotbl", "MaHoKhau", mahokhau, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "MaHoGiaDinh", mahogiadinh, "MaCanHo", macanho);
                     allSuccess &= canhoDal.updateCanHo("canhotbl", "TenCanHo", tencanho, "MaCanHo", macanho);
-                    allSuccess &= canhoDal.updateCanHo("canhotbl", "Tang", tang, "MaCanHo", macanho);
-                    allSuccess &= canhoDal.updateCanHo("canhotbl", "DienTich", dientich, "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "Tang", String.valueOf(tang), "MaCanHo", macanho);
+                    allSuccess &= canhoDal.updateCanHo("canhotbl", "DienTich", String.valueOf(dientich), "MaCanHo", macanho);
                     allSuccess &= canhoDal.updateCanHo("canhotbl", "Mota", mota, "MaCanHo", macanho);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    allSuccess = false;
-                }
 
                 if (allSuccess) {
                     showAlert("Sửa thành công", "Thông tin căn hộ đã được cập nhật!");
@@ -233,24 +246,11 @@ public class ApartmentController {
             showAlert("Lỗi", "Vui lòng chọn căn hộ cần xóa!");
         }
     }
-
     @FXML
     private void viewCanHoDetails() {
-        CanHo selected = quanlycanho.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            String macanho = selected.getMaCanHo();
-
-            // Hiển thị dialog chi tiết
-            Dialog<Void> detailDialog = new Dialog<>();
-            detailDialog.setTitle("Chi tiết căn hộ - Mã: " + macanho);
-
-            ButtonType closeButtonType = new ButtonType("Đóng", ButtonBar.ButtonData.CANCEL_CLOSE);
-            detailDialog.getDialogPane().getButtonTypes().addAll(closeButtonType);
-
-        } else {
-            showAlert("Lỗi", "Vui lòng chọn căn hộ để xem chi tiết!");
-        }
+        // Không làm gì cả, chỉ để xử lý sự kiện nhấp vào nút "Xem chi tiết"
     }
+
 
     private Dialog<Pair<String, String[]>> createCanHoDialog(String title, CanHo canhoData) {
         Dialog<Pair<String, String[]>> dialog = new Dialog<>();
@@ -264,7 +264,7 @@ public class ApartmentController {
         grid.setVgap(10);
 
         TextField txtmacanho = new TextField();
-        TextField txtmahokhau = new TextField();
+        TextField txtmahogiadinh = new TextField();
         TextField txttencanho = new TextField();
         TextField txttang = new TextField();
         TextField txtdientich = new TextField();
@@ -273,21 +273,21 @@ public class ApartmentController {
 
         grid.add(new Label("Mã Căn Hộ:"), 0, 0);
         grid.add(txtmacanho, 1, 0);
-        grid.add(new Label("Mã Hộ Khẩu:"), 0, 1);
-        grid.add(txtmahokhau, 1, 1);
-        grid.add(new Label("Tầng:"), 0, 2);
-        grid.add(txttang, 1, 2);
-        grid.add(new Label("Diện tích:"), 0, 3);
-        grid.add(txtdientich, 1, 3);
-        grid.add(new Label("Tên Căn Hộ:"), 0, 4);
-        grid.add(txttencanho, 1, 4);
+        grid.add(new Label("Mã Hộ Gia Đình:"), 0, 1);
+        grid.add(txtmahogiadinh, 1, 1);
+        grid.add(new Label("Tên Căn Hộ:"), 0, 2);
+        grid.add(txttencanho, 1, 2);
+        grid.add(new Label("Tầng:"), 0, 3);
+        grid.add(txttang, 1, 3);
+        grid.add(new Label("Diện Tích:"), 0, 4);
+        grid.add(txtdientich, 1, 4);
         grid.add(new Label("Mô tả:"), 0, 5);
         grid.add(txtmota, 1, 5);
 
 
         if (canhoData != null) {
             txtmacanho.setText(canhoData.getMaCanHo());
-            txtmahokhau.setText(canhoData.getMaHoKhau());
+            txtmahogiadinh.setText(canhoData.getMaHoGiaDinh());
             txttencanho.setText(canhoData.getTenCanHo());
             txttang.setText(String.valueOf(canhoData.getTang()));
             txtdientich.setText(String.valueOf(canhoData.getDienTich()));
@@ -301,11 +301,11 @@ public class ApartmentController {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == okButtonType) {
                 return new Pair<>(txtmacanho.getText(), new String[]{
-                        txtmota.getText(),
-                        txtmahokhau.getText(),
+                        txtmahogiadinh.getText(),
                         txttencanho.getText(),
                         txttang.getText(),
                         txtdientich.getText(),
+                        txtmota.getText(),
 
                 });
             }
