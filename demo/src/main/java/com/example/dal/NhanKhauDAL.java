@@ -14,7 +14,15 @@ import java.util.ArrayList;
  * - Chứa hàm insertNhanKhau, updateNhanKhau, deleteNhanKhau, searchNhanKhau
  */
 public class NhanKhauDAL extends Admin {
-
+    // Kiểm tra trạng thái kết nối
+    private boolean isConnectionClosed(Connection conn) {
+        try {
+            return conn == null || conn.isClosed();
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi kiểm tra trạng thái kết nối: " + e.getMessage());
+            return true;
+        }
+    }
     //region Hàm loadData (demo)
     public static Resident loadData(String condition) {
         // Lấy 1 Resident có MaNhanKhau = condition
@@ -53,13 +61,17 @@ public class NhanKhauDAL extends Admin {
      * - Thường dùng kiểm tra MaHoGiaDinh trước khi insert/update
      */
     public boolean checkForeignKey(String tableName, String columnName, String value) {
+        Connection conn = getConnectionAdmin();
+        if (conn == null || isConnectionClosed(conn)) {
+            System.err.println("Lỗi: Kết nối không khả dụng trong checkForeignKey.");
+            return false;
+        }
         String query = "SELECT 1 FROM " + tableName + " WHERE " + columnName + " = ?";
 
-        try (Connection conn = getConnectionAdmin();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, value);
             try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next(); // true nếu tìm thấy
+                return rs.next(); // trả về true nếu tìm thấy
             }
         } catch(SQLException e) {
             System.err.println("Lỗi khi kiểm tra khóa ngoại: " + e.getMessage());
@@ -73,10 +85,12 @@ public class NhanKhauDAL extends Admin {
      * Insert 1 bản ghi vào nhankhautbl.
      * - Yêu cầu: cột MaHoGiaDinh phải tồn tại ở hogiadinhtbl
      */
-    public boolean insertNhanKhau(String[] tableName, String[] columns, String[] types) {
+    public boolean insertNhanKhau(String tableName, String[] columns, String[] types) {
         // (logic cũ, console-based?)
         // Hoặc nếu code JavaFX, bạn có insert1(...)? Tùy.
         // Nên cẩn thận: MaHoGiaDinh -> check hogiadinhtbl
+
+        /*
         int maHoIndex = -1;
         for (int i = 0; i < columns.length; i++) {
             if ("MaHoGiaDinh".equalsIgnoreCase(columns[i])) {
@@ -94,8 +108,9 @@ public class NhanKhauDAL extends Admin {
             System.err.println("Error: MaHoGiaDinh không tồn tại trong bảng hogiadinhtbl");
             return false;
         }
+        */
         // Gọi super.insert(...) => console-based
-        return super.insert("nhankhautbl", columns, types);
+        return super.insertRecord(tableName, columns, types);
     }
     //endregion
 
@@ -131,8 +146,41 @@ public class NhanKhauDAL extends Admin {
         // Xóa
         return super.delete("nhankhautbl", conditionColumn, conditionValue);
     }
+    public boolean deleteNhanKhauP(String conditionColumn, String conditionValue) throws SQLException {
+        // Kiểm tra: MaNhanKhau có tham chiếu tamtru, tamvang
+        if ("MaNhanKhau".equalsIgnoreCase(conditionColumn)) {
+            if (isReferencedInOtherTables(conditionValue)) {
+                System.err.println("Error: Không thể xóa vì MaNhanKhau đang được tham chiếu!");
+                return false;
+            }
+        }
+        // Xóa
+        return super.deleteP("nhankhautbl", conditionColumn, conditionValue);
+    }
 
     //region Kiểm tra tham chiếu
+    private boolean isReferencedInOtherTables(String conditionValue) {
+        Connection conn = getConnectionAdmin();
+        if (conn == null || isConnectionClosed(conn)) {
+            System.err.println("Lỗi: Kết nối không khả dụng trong isReferencedInOtherTables.");
+            return false;
+        }
+    // Nguy hiểm
+        if (checkForeignKey("tamvangtbl", "MaNhanKhau", conditionValue)) {
+            return false;
+        }
+        if (checkForeignKey("tamtrutbl", "MaNhanKhau", conditionValue)) {
+            return false;
+        }
+    // Nguy hieem
+        /*
+        if (checkForeignKey("chitietkhoanthutbl", "MaHoGiaDinh", conditionValue)) {
+            return true;
+        }
+        */
+        return false;
+    }
+    /*
     private boolean isReferencedInOtherTables(String tableName, String columnName, String value) {
         // Demo:
         if (checkForeignKey("tamvangtbl", columnName, value)) {
@@ -143,7 +191,8 @@ public class NhanKhauDAL extends Admin {
         }
         return false;
     }
-    //endregion
+    */
+
     //endregion
 
     //region searchNhanKhau

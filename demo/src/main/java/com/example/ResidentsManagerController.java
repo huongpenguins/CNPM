@@ -166,20 +166,18 @@ public class ResidentsManagerController {
 
         if (keyword.isEmpty()) {
             // Nếu ô tìm kiếm rỗng => Load all
+            loadResidentData();
             results = nhanKhauDal.searchNhanKhau("nhankhautbl", null, null);
         } else {
             // Logic cũ: Nếu keyword là số, tìm theo "MaNhanKhau"
             // Nếu rỗng => tìm theo "HoTen"
-            if (keyword.matches("\\d+")) {
+
                 results = nhanKhauDal.searchNhanKhau("nhankhautbl", "MaNhanKhau", keyword);
                 if (results == null || results.isEmpty()) {
                     results = nhanKhauDal.searchNhanKhau("nhankhautbl", "HoTen", keyword);
                 }
-            } else {
-                // Tìm theo Họ Tên
-                results = nhanKhauDal.searchNhanKhau("nhankhautbl", "HoTen", keyword);
             }
-        }
+
 
         masterData.clear();
         if (results != null) {
@@ -242,7 +240,7 @@ public class ResidentsManagerController {
             };
 
             // 3. Gọi DAL để insert
-            boolean success = nhanKhauDal.insertNhanKhau(null, columns, values);
+            boolean success = nhanKhauDal.insertNhanKhau("nhankhautbl", columns, values);
             if (success) {
                 // 4. Thông báo & load lại data
                 showAlert("Thêm thành công", "Cư dân mới đã được thêm!");
@@ -318,7 +316,7 @@ public class ResidentsManagerController {
      * Gọi DAL -> deleteNhanKhau("MaNhanKhau", selectedResident.getId());
      */
     @FXML
-    private void deleteResident() {
+    private void deleteResident() throws SQLException {
         Resident selectedResident = tableResidents.getSelectionModel().getSelectedItem();
         if (selectedResident != null) {
             // Hỏi xác nhận
@@ -330,7 +328,7 @@ public class ResidentsManagerController {
             Optional<ButtonType> result = confirmAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 // Gọi DAL xóa
-                boolean success = nhanKhauDal.deleteNhanKhau("MaNhanKhau", selectedResident.getId());
+                boolean success = nhanKhauDal.deleteNhanKhauP("MaNhanKhau", selectedResident.getId());
                 if (success) {
                     showAlert("Xóa thành công", "Cư dân đã được xóa khỏi hệ thống!");
                     loadResidentData();
