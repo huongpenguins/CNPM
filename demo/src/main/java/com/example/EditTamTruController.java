@@ -15,9 +15,9 @@ import javafx.stage.Stage;
 
 public class EditTamTruController {
     TamTru newTamTru;
-
+    String maTamTru;
     @FXML
-    TextField id_text,dctamtru_text;
+    TextField id_text,dctamtru_text, dcthuongtru_text;
     @FXML
     DatePicker ngaybdtamtru;
     @FXML
@@ -31,6 +31,7 @@ public class EditTamTruController {
     @FXML
     private void xacnhan() throws IOException{
         if(id_text.getText().isEmpty()) return;
+        if(dcthuongtru_text.getText().isEmpty()) return;
         if(dctamtru_text.getText().isEmpty()) return;
         if(ngaybdtamtru.getValue()==null) return;
         try {
@@ -41,14 +42,14 @@ public class EditTamTruController {
 
         ArrayList<Object[]> newTV = new ArrayList<>();
         TamTruDAL tamtruDAL = new TamTruDAL();
-        String[] colums = new String[]{"MaNhanKhau","DiaChiTamTru","NgayBatDauTamTru"};
-        String[] types=new String[]{"string","string","date"};
+        String[] colums = new String[]{"MaTamTru","MaNhanKhau","DiaChiThuongTru", "DiaChiTamTru","NgayBatDauTamTru"};
+        String[] types=new String[]{"string","string","string", "string","date"};
         //newTT = tamTruDAL.update1("tamtrutbl", column,types,);
-        String[] newValue = {id_text.getText(), ngaybdtamtru.getValue().toString(),dctamtru_text.getText()};
+        String[] newValue = {maTamTru,id_text.getText(),dcthuongtru_text.getText(),dctamtru_text.getText(), ngaybdtamtru.getValue().toString()};
         StringBuffer condition = new StringBuffer("MaTamTru = ");
-        condition.append("'").append(id_text.getText()).append("'");
+        condition.append("'").append(maTamTru).append("'");
 
-        boolean t= KhoanThuDAL.update1("khoanthutbl", colums, types,newValue,condition.toString());
+        boolean t= TamTruDAL.update1("tamtrutbl", colums, types,newValue,condition.toString());
 
         Stage thisStage = (Stage)save.getScene().getWindow();
         thisStage.close();

@@ -70,11 +70,11 @@ public class TamTruController {
 
 
         // lien ket cot voi thuoc tinh trong TamTru
-        dcthuongtru.setCellValueFactory(new PropertyValueFactory<TamTru,String>("DiaChiThuongTru"));
-        ten.setCellValueFactory(new PropertyValueFactory<TamTru,String>("HoTen"));
-        dctamtru.setCellValueFactory(new PropertyValueFactory<TamTru,String>("DiaChiTamTru"));
+        dcthuongtru.setCellValueFactory(new PropertyValueFactory<TamTru,String>("DcThuongTru"));
+        ten.setCellValueFactory(new PropertyValueFactory<TamTru,String>("ten"));
+        dctamtru.setCellValueFactory(new PropertyValueFactory<TamTru,String>("DcTamTru"));
         cccd.setCellValueFactory(new PropertyValueFactory<TamTru,String>("CCCD"));
-        ngaybdtamtru.setCellValueFactory(new PropertyValueFactory<TamTru,LocalDate>("NgayBatDauTamTru"));
+        ngaybdtamtru.setCellValueFactory(new PropertyValueFactory<TamTru,LocalDate>("Ngaybdtamtru"));
 
 
         table.setItems(data);
@@ -84,10 +84,9 @@ public class TamTruController {
             private final Button btn = new Button("Sửa");
             {
                 btn.setStyle("-fx-background-image: url('picture/edit.png'); "+
-                "-fx-background-position: center; "+
-                "-fx-background-repeat: no-repeat; " +
-                "-fx-background-size: contain; "  );
-
+                        "-fx-background-position: center; "+
+                        "-fx-background-repeat: no-repeat; " +
+                        "-fx-background-size: contain; "  );
    
                 btn.setOnAction(event->{
                     TamTru k = getTableView().getItems().get(getIndex());
@@ -120,13 +119,12 @@ public class TamTruController {
             private final Button btn1 = new Button("Xoá");
 
             {
-                btn1.setStyle("-fx-background-image: url('picture/xoa.png; ') "+
-                "-fx-background-position: center; "+
-                "-fx-background-repeat: no-repeat; " +
-                "-fx-background-size: contain; "  );
-
-   
                 btn1.setOnAction(event->{
+                    btn1.setStyle("-fx-background-image: url('picture/xoa.png'); "+
+                            "-fx-background-position: center; "+
+                            "-fx-background-repeat: no-repeat; " +
+                            "-fx-background-size: contain; "  );
+
 
                     TamTru curItem = getTableRow().getItem();
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -136,7 +134,7 @@ public class TamTruController {
 
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
-                        boolean t = tamtruDAL.deleteTamTru("tamtrutbl","MaTamTru" ,curItem.getMaNhanKhau());
+                        boolean t = tamtruDAL.deleteTamTru("tamtrutbl","MaTamTru" ,curItem.getMaTamTru());
                         if(t==true) {
                             data.remove(curItem);
                             table.refresh();
@@ -212,7 +210,7 @@ public class TamTruController {
         subStage.show();
         subStage.setOnHiding(event->{
 
-            if(addTamTruController.newTamTru==null) return;
+            if(addTamTruController.listNew.isEmpty()) return;
             else{
                 for(TamTru i : addTamTruController.listNew){
                     data.add(i);
@@ -231,7 +229,9 @@ public class TamTruController {
         subStage.setResizable(false);
         subStage.setScene(scene);
         subStage.setTitle("Sửa tạm trú");
+        edit.maTamTru = (k.getMaTamTru());
         edit.id_text.setText(k.getMaNhanKhau());
+        edit.dcthuongtru_text.setText(k.getDcThuongTru());
         edit.dctamtru_text.setText(k.getDcTamTru());
         edit.ngaybdtamtru.setValue(k.getNgaybdtamtru());
 
@@ -240,6 +240,7 @@ public class TamTruController {
             if(!edit.id_text.getText().equals(k.getMaNhanKhau())){
 
                 k.setMaNhanKhau(edit.id_text.getText());
+                k.setDcThuongTru(edit.dcthuongtru_text.getText());
                 k.setDcTamTru(edit.dctamtru_text.getText());
                 k.setNgaybdtamtru(edit.ngaybdtamtru.getValue());
 
@@ -343,6 +344,10 @@ public class TamTruController {
     @FXML
     private void switchToAccount() throws IOException {
         App.setRoot("account");
+    }
+
+    public static void main(String[] args) {
+
     }
 
 }
