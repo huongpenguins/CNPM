@@ -24,8 +24,13 @@ public class TamVangDAL extends Admin {
         ObservableList<TamVang> data = FXCollections.observableArrayList();
         TamVang tamVang;
         ResultSet resultSet=null;
-        StringBuffer query = new StringBuffer("SELECT * FROM TamVangTBL WHERE completed = ");
+        StringBuffer query = new StringBuffer("SELECT * FROM TamVangTBL tv ")
+        .append(" join nhankhautbl nk on tv.MaNhanKhau = nk.MaNhanKhau ")
+        .append(" join hogiadinhtbl gd on gd.MaNhanKhau = nk.maNhanKhau ")
+        .append(" join canhotbl ch on ch.MaCanHo = gd.MaCanHo ")
+        .append(" WHERE completed = ") ;
         query.append(condition);
+        
         Statement statement;
 
         try {
@@ -33,16 +38,15 @@ public class TamVangDAL extends Admin {
             resultSet=statement.executeQuery(query.toString());
             while (resultSet.next()) {
                 String maNhanKhau = resultSet.getString("MaNhanKhau");
-                Resident r =NhanKhauDAL.loadData(maNhanKhau);
-                if(r!=null){
-                    CanHo c = CanHoDAL.loadData(r.getHouseholdId());
-                    if(c==null) continue;
-                    String maTamVang = resultSet.getString("MaTamVang");
-                    String lydo = resultSet.getString("LyDo");
-                    LocalDate ngayvang = resultSet.getDate("ThoiGianBatDau").toLocalDate();
-                    tamVang = new TamVang(maTamVang,maNhanKhau,r.getName(),r.getIdentityCard(),c.getTenCanHo(),lydo,ngayvang);
-                    data.add(tamVang);
-                }
+                String ten = resultSet.getString("HoTen");
+                String cccd = resultSet.getString("CCCD");
+                String canho = resultSet.getString("TenCanHo");
+                String maTamVang = resultSet.getString("MaTamVang");
+                String lydo = resultSet.getString("LyDo");
+                LocalDate ngayvang = resultSet.getDate("ThoiGianBatDau").toLocalDate();
+                tamVang = new TamVang(maTamVang,maNhanKhau,ten,cccd,canho,lydo,ngayvang);
+                data.add(tamVang);
+                
             }
             return data;
         } catch (SQLException e) {

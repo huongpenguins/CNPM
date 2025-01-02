@@ -17,14 +17,23 @@ public class CTQuyenGop {
     SimpleIntegerProperty danop;
 
 
-    public CTQuyenGop(String maKT,String tenKT, String id,String ten, 
+    public CTQuyenGop(String maKT,String tenKT, String id,String phong, String ten, 
     LocalDate ngaynop, int danop) {
         this.maKT = new SimpleStringProperty(maKT);
         this.id = new SimpleStringProperty(id);
         this.ten = new SimpleStringProperty(ten);
+        this.phong = new SimpleStringProperty(phong);
         this.tenKT= new SimpleStringProperty(tenKT);
         this.danop = new SimpleIntegerProperty(danop);
         this.ngaynop = new SimpleObjectProperty<>(ngaynop);
+    }
+
+    public String getPhong() {
+        return this.phong.getValue();
+    }
+
+    public void setPhong(String phong) {
+        this.phong.set(phong);
     }
 
     public String getMaKT() {

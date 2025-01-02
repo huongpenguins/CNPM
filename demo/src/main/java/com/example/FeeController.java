@@ -376,7 +376,7 @@ public class FeeController {
             ctQGopController.tenKhoanThu = k.getTen();
             ctQGopController.tungay = k.getBatdau();
             ctQGopController.denngay = k.getHannop();
-            
+            ctQGopController.loadData();
             subStage.setResizable(false);
             subStage.setScene(scene);
             subStage.setTitle(k.getTen());

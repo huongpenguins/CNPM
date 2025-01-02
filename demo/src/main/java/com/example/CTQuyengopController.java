@@ -28,9 +28,10 @@ import javafx.stage.Stage;
 public class CTQuyengopController {
     String maKT;
     String tenKhoanThu;
+    
     LocalDate tungay,remove,denngay;
     @FXML
-    Button apply,thongke;
+    Button apply,add;
     @FXML
     AnchorPane filterbar;
     @FXML
@@ -77,6 +78,7 @@ public class CTQuyengopController {
     
     public void loadData(){
        data = ChiTietKhoanThuDAL.loadDataQuyenGop(maKT, "0", "Quyên góp");
+       table.setItems(data);
     }
     @FXML
     private void ThongKe(){
@@ -92,8 +94,7 @@ public class CTQuyengopController {
         subStage.setScene(scene);
         subStage.setTitle("Thanh toán");
         t.maKhoanThu = maKT;
-        t.maHo = id_text.getText();
-        
+        t.maHo = null;
         
         subStage.show();
         subStage.setOnHiding(event->{
@@ -108,11 +109,17 @@ public class CTQuyengopController {
                         return;
                         
                     }
+                    else{
+                         loadData();
+                         table.refresh();
+
+
+                    }
                 }
                 // lay ttin ten tu ma ho
 
 
-                data.add(new CTQuyenGop(maKT,tenKhoanThu, t.hoaDon.getMaho(), " ", t.hoaDon.getThoidiem(), t.hoaDon.getSotiennop()));
+              
                
 
             }

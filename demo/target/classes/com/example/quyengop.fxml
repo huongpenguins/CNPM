@@ -91,14 +91,14 @@
             <RangeSlider fx:id="tiennop_filter" blockIncrement="100000.0" highValue="1.0E7" layoutX="216.0" layoutY="68.0" lowValue="0.0" max="1.0E7" prefHeight="14.0" prefWidth="180.0" />
          </children>
       </AnchorPane>
-      <Button fx:id="thongke" layoutX="162.0" layoutY="81.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="117.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="      Thống kê">
+      <Button fx:id="add" layoutX="162.0" layoutY="81.0" mnemonicParsing="false" onAction="#Add" prefHeight="38.0" prefWidth="103.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 80;" text="    Add">
          <font>
             <Font name="Arial Bold" size="15.0" />
          </font>
       </Button>
       <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="176.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@picture/thongke.png" />
+            <Image url="@picture/add_icon.png" />
          </image>
       </ImageView>
    </children>
