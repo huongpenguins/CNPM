@@ -4,100 +4,44 @@ import javafx.beans.property.*;
 
 public class CanHo {
     private StringProperty maCanHo;
-    private StringProperty maHoGiaDinh;
     private StringProperty tenCanHo;
     private IntegerProperty tang;
     private FloatProperty dienTich;
     private StringProperty moTa;
 
-    // Constructor
-    public CanHo(String maCanHo, String maHoGiaDinh, String tenCanHo, int tang, float dienTich, String moTa) {
+    // Chỉ để hiển thị, lấy từ hogiadinhtbl (nếu có):
+    private StringProperty maHoGiaDinh;
+
+    // Constructor 5 tham số (chuẩn cho canhotbl)
+    public CanHo(String maCanHo, String tenCanHo, int tang, float dienTich, String moTa) {
         this.maCanHo = new SimpleStringProperty(maCanHo);
-        this.maHoGiaDinh = new SimpleStringProperty(maHoGiaDinh);
         this.tenCanHo = new SimpleStringProperty(tenCanHo);
         this.tang = new SimpleIntegerProperty(tang);
         this.dienTich = new SimpleFloatProperty(dienTich);
         this.moTa = new SimpleStringProperty(moTa);
+        this.maHoGiaDinh = new SimpleStringProperty("");
     }
 
-    private String ten;  // Thuộc tính tên căn hộ
-
-    // Getter cho thuộc tính ten
-    public String getTen() {
-        return ten;
-    }
-
-    // Getters and Setters using Properties
-    public StringProperty maCanHoProperty() {
-        return maCanHo;
-    }
-
-    public String getMaCanHo() {
-        return maCanHo.get();
-    }
-
-    public void setMaCanHo(String maCanHo) {
-        this.maCanHo.set(maCanHo);
-    }
-
-    public StringProperty maHoGiaDinhProperty() {
-        return maHoGiaDinh;
-    }
-
-    public String getMaHoGiaDinh() {
-        return maHoGiaDinh.get();
-    }
-
-    public void setMaHoGiaDinh(String maHoGiaDinh) {
+    // Constructor 6 tham số (để hiển thị thêm MaHoGiaDinh từ JOIN)
+    public CanHo(String maCanHo, String tenCanHo, int tang, float dienTich, String moTa, String maHoGiaDinh) {
+        this(maCanHo, tenCanHo, tang, dienTich, moTa);
+        if (maHoGiaDinh == null) {
+            maHoGiaDinh = "";
+        }
         this.maHoGiaDinh.set(maHoGiaDinh);
     }
 
-    public StringProperty tenCanHoProperty() {
-        return tenCanHo;
-    }
+    public String getMaCanHo()     { return maCanHo.get(); }
+    public String getTenCanHo()    { return tenCanHo.get(); }
+    public int    getTang()        { return tang.get(); }
+    public float  getDienTich()    { return dienTich.get(); }
+    public String getMoTa()        { return moTa.get(); }
+    public String getMaHoGiaDinh() { return maHoGiaDinh.get(); }
 
-    public String getTenCanHo() {
-        return tenCanHo.get();
-    }
-
-    public void setTenCanHo(String tenCanHo) {
-        this.tenCanHo.set(tenCanHo);
-    }
-
-    public IntegerProperty tangProperty() {
-        return tang;
-    }
-
-    public int getTang() {
-        return tang.get();
-    }
-
-    public void setTang(int tang) {
-        this.tang.set(tang);
-    }
-
-    public FloatProperty dienTichProperty() {
-        return dienTich;
-    }
-
-    public float getDienTich() {
-        return dienTich.get();
-    }
-
-    public void setDienTich(float dienTich) {
-        this.dienTich.set(dienTich);
-    }
-
-    public StringProperty moTaProperty() {
-        return moTa;
-    }
-
-    public String getMoTa() {
-        return moTa.get();
-    }
-
-    public void setMoTa(String moTa) {
-        this.moTa.set(moTa);
-    }
+    public void setMaCanHo(String value)     { this.maCanHo.set(value); }
+    public void setTenCanHo(String value)    { this.tenCanHo.set(value); }
+    public void setTang(int value)           { this.tang.set(value); }
+    public void setDienTich(float value)     { this.dienTich.set(value); }
+    public void setMoTa(String value)        { this.moTa.set(value); }
+    public void setMaHoGiaDinh(String value) { this.maHoGiaDinh.set(value); }
 }
-
