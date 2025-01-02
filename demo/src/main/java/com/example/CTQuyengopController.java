@@ -91,6 +91,9 @@ public class CTQuyengopController {
         subStage.setResizable(false);
         subStage.setScene(scene);
         subStage.setTitle("Thanh toán");
+        t.maKhoanThu = maKT;
+        t.maHo = id_text.getText();
+        
         
         subStage.show();
         subStage.setOnHiding(event->{

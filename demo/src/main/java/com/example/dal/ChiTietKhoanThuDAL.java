@@ -17,48 +17,55 @@ import java.util.ArrayList;
 
 public class ChiTietKhoanThuDAL extends Admin {
 
-    //  public static ObservableList<CTKhoanThu> loadData1(String maKT,String completed,String Loai){
-    //     ObservableList<CTKhoanThu> data = FXCollections.observableArrayList();
-    //     ResultSet resultSet=null;
-    //     StringBuffer query = new StringBuffer("SELECT kt.MaKhoanThu,kt.TenKhoanThu,ch.MaCanHo,ch.TenCanHo,nk.HoTen, MAX(hd.ThoiDiemNop) as NgayNop, SUM(hd.SoTienDaNop) as SoTienNop, ")
-    //     .append("CASE ")
-    //     .append("    WHEN kt.DonVi = 'Số điên/nước' THEN kt.SoTien * (SELECT so FROM SoDienNuoctbl where MaKhoanthu =  '").append(maKT).append("' AND MaHoGiaDinh = gd.MaHoGiaDinh) ")  // Trường hợp Loai = "Dien"
-    //     .append("    WHEN kt.DonVi = 'Diện tích' THEN kt.SoTien * ch.DienTich ")  
-    //     .append("    WHEN kt.DonVi = 'Xe' THEN kt.SoTien * (SELECT SUM(MaXe) from xetbl where MaHoGiaDinh = gd.MaHoGiaDinh ) ")  
-    //     .append("    ELSE kt.SoTien ")  
-    //     .append("END as SoTienPhaiNop ")
-    //     .append(" FROM (KhoanThutbl  join HoaDonTBL hd on kt.MaKhoanThu = hd.MaKhoanThu ")
-    //     .append(" join HoGiaDinhtbl gd on gd.MaHoGiaDinh = hd.MaHoGiaDinh ")
-    //     .append(" join CanHotbl ch on ch.MaCanHo = gd.MaCanHo ") 
-    //     .append(" join NhanKhautbl nk on nk.MaNhanKhau = gd.MaNhanKhau ")
-    //     .append(" WHERE kt.completed = ").append(completed).append(" AND kt.Loai = ").append("'").append(Loai).append("' ")
-    //     .append(" AND kt.MaKhoanThu = '").append(maKT).append("' ")
-    //     .append(" GROUP BY kt.MaKhoanThu,kt.TenKhoanThu,ch.MaCanHo, nk.HoTen,ch.TenCanHo,gd.MaHoGiaDinh ");
-    //     Statement statement;
-    //     try {
-    //         statement = connection_admin.createStatement();
-    //         resultSet=statement.executeQuery(query.toString());
-    //         while (resultSet.next()) {
-    //             String maKhoanThu = resultSet.getString("MaKhoanThu");
-    //             String tenKhoanThu = resultSet.getString("TenKhoanThu");
-    //             String tenChuHo = resultSet.getString("HoTen");
-    //             String maCanHo =resultSet.getString("MaCanHo");
-    //             String tenCanHo = resultSet.getString("TenCanHo");
-    //             int soTienPhaiNop =resultSet.getInt("SoTienNop");
-    //             LocalDate ngayNop = resultSet.getDate("NgayNop").toLocalDate();
-    //             int soTienDaNop = resultSet.getInt("SoTienPhaiNop");
+     public static ObservableList<CTKhoanThu> loadData1(String maKT,String completed,String Loai){
+        ObservableList<CTKhoanThu> data = FXCollections.observableArrayList();
+        ResultSet resultSet=null;
+        StringBuffer query = new StringBuffer("SELECT kt.MaKhoanThu,kt.TenKhoanThu,gd.MaHoGiaDinh,ch.TenCanHo,nk.HoTen, MAX(hd.ThoiDiemNop) as NgayNop, SUM(hd.SoTienDaNop) as SoTienNop, ")
+        .append("CASE ")
+        .append("    WHEN kt.DonVi = 'Số điên/nước' THEN kt.SoTien * (SELECT so FROM SoDienNuoctbl where MaKhoanthu =  '").append(maKT).append("' AND MaHoGiaDinh = gd.MaHoGiaDinh) ")  // Trường hợp Loai = "Dien"
+        .append("    WHEN kt.DonVi = 'Diện tích' THEN kt.SoTien * ch.DienTich ")  
+        .append("    WHEN kt.DonVi = 'Xe' THEN kt.SoTien * (SELECT SUM(MaXe) from xetbl where MaHoGiaDinh = gd.MaHoGiaDinh ) ")  
+        .append("    ELSE kt.SoTien ")  
+        .append("END as SoTienPhaiNop ")
+        .append( " FROM KhoanThutbl kt CROSS JOIN hogiadinhtbl gd ")
+        .append(" left join HoaDonTBL hd on ( kt.MaKhoanThu = hd.MaKhoanThu and hd.MaHoGiaDinh = gd.MaHoGiaDinh ) ")
+        .append(" left join canhotbl ch on ch.MaCanHo = gd.MaCanHo ")
+        .append(" left join NhanKhautbl nk on nk.MaNhanKhau = gd.MaNhanKhau ")
+        .append(" WHERE kt.completed = ").append(completed).append(" AND kt.Loai = ").append("'").append(Loai).append("' ")
+        .append(" AND kt.MaKhoanThu = '").append(maKT).append("' ")
+        .append(" GROUP BY kt.MaKhoanThu,kt.TenKhoanThu,gd.MaHoGiaDinh, nk.HoTen,ch.TenCanHo,gd.MaHoGiaDinh ");
+        Statement statement;
+        try {
+            statement = connection_admin.createStatement();
+            resultSet=statement.executeQuery(query.toString());
+            while (resultSet.next()) {
+                String maKhoanThu = resultSet.getString("MaKhoanThu");
+                String tenKhoanThu = resultSet.getString("TenKhoanThu");
+                String tenChuHo = resultSet.getString("HoTen");
+                String maHoGiaDinh =resultSet.getString("MaHoGiaDinh");
+                String tenCanHo = resultSet.getString("TenCanHo");
+                int soTienDaNop =resultSet.getInt("SoTienNop");
+                LocalDate ngayNop = null;
+                Date sqlDate = resultSet.getDate("NgayNop");  
+                if (sqlDate != null) {
+                    ngayNop = sqlDate.toLocalDate(); 
+                } else {
+                    ngayNop = null; 
+                }
+                int soTienPhaiNop = resultSet.getInt("SoTienPhaiNop");
 
-    //             CTKhoanThu ctKhoanThu= new CTKhoanThu(maKhoanThu,tenKhoanThu,maCanHo,tenCanHo,tenChuHo,ngayNop,soTienPhaiNop,soTienDaNop);
-    //             data.add(ctKhoanThu); // Thêm đối tượng KhoanThu vào ObservableList
-    //         }
-    //         return data;
-    //     } catch (SQLException e) {
-    //         // TODO Auto-generated catch block
-    //         e.printStackTrace();
-    //     }
-    //    return null;
+                CTKhoanThu ctKhoanThu= new CTKhoanThu(maKhoanThu,tenKhoanThu,maHoGiaDinh,tenCanHo,tenChuHo,ngayNop,soTienPhaiNop,soTienDaNop);
+                data.add(ctKhoanThu); // Thêm đối tượng KhoanThu vào ObservableList
+            }
+            return data;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       return null;
 
-    // }
+    }
+
     public static ObservableList<CTKhoanThu> loadDataDT(String maKT,String completed,String Loai){
         ObservableList<CTKhoanThu> data = FXCollections.observableArrayList();
         ResultSet resultSet=null;

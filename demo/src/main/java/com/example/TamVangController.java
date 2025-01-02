@@ -274,7 +274,7 @@ public class TamVangController {
             k.setMaNhanKhau(edit.id_text.getText());
             k.setLydo(edit.lydo_text.getText());
             k.setNgayvang(edit.ngayvang.getValue());
-
+            
             table.refresh();
             }
             

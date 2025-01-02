@@ -149,7 +149,7 @@ public class DienNuocController {
     
 
     public void loadData(){
-        data = ChiTietKhoanThuDAL.loadDienNuoc(maKT, "0", "Bắt buộc");
+        data = ChiTietKhoanThuDAL.loadData1(maKT, "0", "Bắt buộc");
         table.setItems(data);
     }
     @FXML
@@ -237,7 +237,8 @@ public class DienNuocController {
         Scene scene = new Scene(fxmlLoader.load(), 500, 445);
         ThanhToanController thanhToanController = fxmlLoader.getController();
         thanhToanController.maHo = ct.getId();
-        thanhToanController.soTien = ct.getTiennop(); // so tien phai nop
+        thanhToanController.maKhoanThu = maKT;
+        //thanhToanController.soTien = ct.getTiennop(); // so tien phai nop
         thanhToanController.tenKhoanThu = ct.getTenKT();
         subStage.setResizable(false);
         subStage.setScene(scene);

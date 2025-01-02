@@ -44,7 +44,7 @@ public class ThanhToanController {
         this.hoaDon = new HoaDon(id.getText(),maKhoanThu, sotien, ngaynop);
     // luu hoa Don vao csdl
             HoaDonDAL hoaDonDAL= new HoaDonDAL();
-            String[] colums = new String[]{"MaKhoanThu","MaHoKhau","SoTienDaNop","ThoiDiemNop"};
+            String[] colums = new String[]{"MaKhoanThu","MaHoGiaDinh","SoTienDaNop","ThoiDiemNop"};
             String[] types=new String[]{"string","string","int","date"};
             String[] newValue = {maKhoanThu, maHo,sotiennop.getText(),LocalDate.now().toString()};
             boolean t = hoaDonDAL.insert1("hoadontbl", colums, types,newValue);
