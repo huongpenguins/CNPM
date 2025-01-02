@@ -79,11 +79,7 @@ public class TamVangController {
             private final Button btn = new Button("Sửa");
            
             {    
-                btn.setStyle("-fx-background-image: url('picture/edit.png'); "+
-                             "-fx-background-position: center; "+
-                             "-fx-background-repeat: no-repeat; " +
-                             "-fx-background-size: contain; "  );
-            
+                
                 
                btn.setOnAction(event->{
                 TamVang k = getTableView().getItems().get(getIndex());
@@ -271,11 +267,9 @@ public class TamVangController {
         subStage.setOnHiding(event->{
             if(!edit.id_text.getText().equals(k.getMaNhanKhau())){
                 
-            k.setMaNhanKhau(edit.id_text.getText());
-            k.setLydo(edit.lydo_text.getText());
-            k.setNgayvang(edit.ngayvang.getValue());
+            data = TamVangDAL.loadData("0");
             
-            table.refresh();
+            table.setItems(data);
             }
             
         });

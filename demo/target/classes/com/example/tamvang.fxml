@@ -154,7 +154,7 @@
                   <Font name="Arial" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="text_maphong" layoutX="450.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
+            <TextField fx:id="text_phong" layoutX="450.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
             <DatePicker fx:id="ngayvang_date" layoutX="285.0" layoutY="62.0" prefHeight="25.0" prefWidth="123.0" />
             <Button fx:id="remove" layoutX="512.0" layoutY="59.0" mnemonicParsing="false" onAction="#Remove" prefHeight="31.0" prefWidth="70.0" text="Remove">
                <font>

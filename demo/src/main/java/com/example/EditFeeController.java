@@ -69,8 +69,14 @@ public class EditFeeController {
                 } catch (Exception e) {
                     
                 } 
-     
+                k.setTen(ten_text.getText());
+                k.setLoai(loai.getValue().toString());
+                k.setBatdau(batdau.getValue());
+                k.setDonvi(donvi.getValue());
+                k.setHannop(hannop.getValue());
+                k.setGhichu(sotien);
             }
+            
             Stage thisStage = (Stage)save.getScene().getWindow();
             thisStage.close();
 

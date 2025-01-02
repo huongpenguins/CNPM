@@ -299,7 +299,7 @@ public class FeeController {
         
     }
         
-    private void edit_fee(KhoanThu k) throws IOException{
+    private void edit_fee(KhoanThu kt) throws IOException{
         Stage subStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("edit_fee.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, 600);
@@ -307,31 +307,32 @@ public class FeeController {
         subStage.setResizable(false);
         subStage.setScene(scene);
         subStage.setTitle("Sửa phí thu");
-        edit.batdau.setValue(k.getBatdau());
-        edit.donvi.setValue(k.getDonvi());
-        edit.ghichu.setText(k.ghichu.getValue().toString());
-        edit.hannop.setValue(k.getHannop());
-        edit.id_text.setText(k.getId());
-        edit.ten_text.setText(k.getTen());
-        edit.loai.setValue(k.getLoai());
-        edit.k = k;
+        edit.batdau.setValue(kt.getBatdau());
+        edit.donvi.setValue(kt.getDonvi());
+        edit.ghichu.setText(kt.ghichu.getValue().toString());
+        edit.hannop.setValue(kt.getHannop());
+        edit.id_text.setText(kt.getId());
+        edit.ten_text.setText(kt.getTen());
+        edit.loai.setValue(kt.getLoai());
+        edit.k = kt;
         subStage.show();
         subStage.setOnHiding(event->{
-            k.setTen(edit.ten_text.getText());
-            k.setLoai(edit.loai.getValue());
-            k.setHannop(edit.hannop.getValue());
-            Integer sotien=null;
-            try {
-                sotien=Integer.parseInt(edit.ghichu.getText());
+            // kt.setTen(edit.ten_text.getText());
+            // kt.setLoai(edit.loai.getValue());
+            // kt.setHannop(edit.hannop.getValue());
+            // Integer sotien=null;
+            // try {
+            //     sotien=Integer.parseInt(edit.ghichu.getText());
             
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Nhập sai số tiền");
-                alert.showAndWait();
-            } 
-            k.setGhichu(sotien);
-            k.setDonvi(edit.donvi.getValue());
-            k.setBatdau(edit.batdau.getValue());
-            
+            // } catch (Exception e) {
+            //     Alert alert = new Alert(Alert.AlertType.ERROR, "Nhập sai số tiền");
+            //     alert.showAndWait();
+            // } 
+            // kt.setGhichu(sotien);
+            // kt.setDonvi(edit.donvi.getValue());
+            // kt.setBatdau(edit.batdau.getValue());
+            data = KhoanThuDAL.loadData("0");
+            table.setItems(data);
             
         });
        

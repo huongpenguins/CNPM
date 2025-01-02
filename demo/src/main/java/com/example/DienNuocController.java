@@ -263,7 +263,9 @@ public class DienNuocController {
                 // ct.getTen(), thanhToanController.hoaDon.getThoidiem(),
                 //  ct.getTiennop(), thanhToanController.hoaDon.getSotiennop()));
                 // Tai lai csdl r cap nhat bangbang
-                table.refresh();
+                data = ChiTietKhoanThuDAL.loadData1(maKT, "0", "Bắt buộc");
+                table.setItems(data);
+                
 
             }
         });

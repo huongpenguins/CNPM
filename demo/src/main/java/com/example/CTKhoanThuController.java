@@ -168,8 +168,9 @@ public class CTKhoanThuController {
             
             if(thanhToanController.hoaDon==null) return;
             else{
-                
-                table.refresh();
+                data = ChiTietKhoanThuDAL.loadData1(maKT, "0", "Bắt buộc");
+                table.setItems(data);
+               
 
             }
         });
