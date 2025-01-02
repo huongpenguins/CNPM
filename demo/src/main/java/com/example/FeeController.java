@@ -235,7 +235,7 @@ public class FeeController {
         search.setOnKeyPressed(event -> { 
             if(event.getCode() == KeyCode.ENTER)
                 search();
-            
+
          });
 
 
@@ -244,9 +244,10 @@ public class FeeController {
     
 
 
-    FilteredList<KhoanThu> filter = new FilteredList<>(data,p->true);
+    
     @FXML
     private void search(){
+        FilteredList<KhoanThu> filter = new FilteredList<>(data,p->true);
         String l = search.getText();
         // cap nhat observablelist data de hien thi DL
 
@@ -276,6 +277,7 @@ public class FeeController {
         filter.setPredicate(searchFilter);
 
         table.setItems(filter);
+        table.refresh();
     }
     
     @FXML
@@ -317,20 +319,7 @@ public class FeeController {
         edit.k = kt;
         subStage.show();
         subStage.setOnHiding(event->{
-            // kt.setTen(edit.ten_text.getText());
-            // kt.setLoai(edit.loai.getValue());
-            // kt.setHannop(edit.hannop.getValue());
-            // Integer sotien=null;
-            // try {
-            //     sotien=Integer.parseInt(edit.ghichu.getText());
-            
-            // } catch (Exception e) {
-            //     Alert alert = new Alert(Alert.AlertType.ERROR, "Nhập sai số tiền");
-            //     alert.showAndWait();
-            // } 
-            // kt.setGhichu(sotien);
-            // kt.setDonvi(edit.donvi.getValue());
-            // kt.setBatdau(edit.batdau.getValue());
+        
             data = KhoanThuDAL.loadData("0");
             table.setItems(data);
             
@@ -398,6 +387,7 @@ public class FeeController {
 
     @FXML 
     private void applyFilter(){
+        FilteredList<KhoanThu> filter = new FilteredList<>(data,p->true);
         Predicate<KhoanThu> pFilter = khoanThu ->{
             boolean chk_ten = text_ten.getText().isEmpty()||khoanThu.getTen().toLowerCase().contains(text_ten.getText().toLowerCase());
             boolean chk_loai=text_loai.getText().isEmpty()||khoanThu.getLoai().toLowerCase().contains(text_loai.getText().toLowerCase());
@@ -410,10 +400,12 @@ public class FeeController {
 
         filter.setPredicate(pFilter);
         table.setItems(filter);
+        table.refresh();
         filterbar.setLayoutY(-131);
     }
     @FXML
     private void Remove(){
+        FilteredList<KhoanThu> filter = new FilteredList<>(data,p->true);
         text_ten.clear();
         text_ghichu.clear();
         text_loai.clear();
@@ -422,6 +414,7 @@ public class FeeController {
         Predicate<KhoanThu> remove = khoanThu ->true;
         filter.setPredicate(remove);
         table.setItems(filter);
+        table.refresh();
         filterbar.setLayoutY(-131);
     }
 

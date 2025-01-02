@@ -15,7 +15,7 @@ public class CanHoDAL extends Admin {
     public static CanHo loadData(String condition){
 
         ResultSet resultSet=null;
-        StringBuffer query = new StringBuffer("SELECT * FROM CanHoTBL WHERE MaHoGiaDinh = ");
+        StringBuffer query = new StringBuffer("SELECT * FROM CanHoTBL join HoGiaDinhtbl gd WHERE gd.MaHoGiaDinh = ");
         query.append("'").append(condition).append("'");
         Statement statement;
         try {
@@ -23,13 +23,13 @@ public class CanHoDAL extends Admin {
             resultSet=statement.executeQuery(query.toString());
             while (resultSet.next()) {
                 String id = resultSet.getString("MaCanHo");
-                String householdId = resultSet.getString("MaHoGiaDinh");
                 String name = resultSet.getString("TenCanHo");
+                
                 int floor = resultSet.getInt("Tang");
                 float area = resultSet.getFloat("DienTich");
                 String description = resultSet.getString("MoTa");
 
-                CanHo canHo = new CanHo(id, name, floor, area, description, householdId);
+                CanHo canHo = new CanHo(id, name, floor, area, description);
                 return canHo;
             }
 

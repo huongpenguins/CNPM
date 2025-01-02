@@ -118,9 +118,10 @@ public class CTQuyengopController {
             }
         });
     }
-    FilteredList<CTQuyenGop> filter = new FilteredList<>(data,p->true);
+    
     @FXML
     private void search(){
+        FilteredList<CTQuyenGop> filter = new FilteredList<>(data,p->true);
         String l = search.getText();
         // cap nhat observablelist data de hien thi DL
 
@@ -145,9 +146,11 @@ public class CTQuyengopController {
         filter.setPredicate(searchFilter);
 
         table.setItems(filter);
+        table.refresh();
     }
     @FXML
         private void applyFilter(){
+            FilteredList<CTQuyenGop> filter = new FilteredList<>(data,p->true);
         Predicate<CTQuyenGop> pFilter = CTQuyenGop ->{
             boolean chk_id = id_text.getText().isEmpty()||CTQuyenGop.getId().toLowerCase().contains(id_text.getText().toLowerCase());
             boolean chk_ten=ten_text.getText().isEmpty()||CTQuyenGop.getTen().toLowerCase().contains(ten_text.getText().toLowerCase());
@@ -159,10 +162,12 @@ public class CTQuyengopController {
 
         filter.setPredicate(pFilter);
         table.setItems(filter);
+        table.refresh();
         filterbar.setLayoutY(-131);
     }
     @FXML
     private void Remove(){
+        FilteredList<CTQuyenGop> filter = new FilteredList<>(data,p->true);
         id_text.clear();
         ten_text.clear();
         ngaynop_date.setValue(null);
@@ -171,6 +176,7 @@ public class CTQuyengopController {
         Predicate<CTQuyenGop> remove = khoanThu ->true;
         filter.setPredicate(remove);
         table.setItems(filter);
+        table.refresh();
         filterbar.setLayoutY(-131);
     }
     @FXML 

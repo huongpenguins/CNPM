@@ -166,9 +166,10 @@ public class TamTruController {
         });
 
     }
-    FilteredList<TamTru> filter = new FilteredList<>(data,p->true);
+    
     @FXML
     private void search(){
+        FilteredList<TamTru> filter = new FilteredList<>(data,p->true);
         String l = search.getText();
         // cap nhat observablelist data de hien thi DL
 
@@ -196,6 +197,7 @@ public class TamTruController {
         filter.setPredicate(searchFilter);
 
         table.setItems(filter);
+        table.refresh();
     }
 
     @FXML
@@ -252,6 +254,7 @@ public class TamTruController {
 
     @FXML
     private void applyFilter(){
+        FilteredList<TamTru> filter = new FilteredList<>(data,p->true);
         Predicate<TamTru> pFilter = TamTru ->{
             boolean chk_ten = text_ten.getText().isEmpty()||TamTru.getTen().toLowerCase().contains(text_ten.getText().toLowerCase());
             boolean chk_cccd=text_cccd.getText().isEmpty()||TamTru.getCCCD().toLowerCase().contains(text_cccd.getText().toLowerCase());
@@ -264,10 +267,12 @@ public class TamTruController {
 
         filter.setPredicate(pFilter);
         table.setItems(filter);
+        table.refresh();
         filterbar.setLayoutY(-131);
     }
     @FXML
     private void Remove(){
+        FilteredList<TamTru> filter = new FilteredList<>(data,p->true);
         text_ten.clear();
         text_cccd.clear();
         text_dcthuongtru.clear();
@@ -276,6 +281,7 @@ public class TamTruController {
         Predicate<TamTru> remove = TamTru ->true;
         filter.setPredicate(remove);
         table.setItems(filter);
+        table.refresh();
         filterbar.setLayoutY(-131);
     }
 

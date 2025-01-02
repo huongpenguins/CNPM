@@ -53,7 +53,7 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="filterbar" layoutY="-139.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="680.0" style="-fx-background-color: #3f3e3e;">
+      <AnchorPane fx:id="filterbar" layoutY="-153.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="118.0" prefWidth="680.0" style="-fx-background-color: #3f3e3e;">
          <children>
             <Label layoutX="146.0" layoutY="63.0" prefHeight="23.0" prefWidth="70.0" text="Số tiền nộp" textFill="WHITE">
                <font>
@@ -78,12 +78,12 @@
                </font>
             </Label>
             <DatePicker fx:id="ngaynop_date" layoutX="527.0" layoutY="24.0" prefHeight="25.0" prefWidth="123.0" />
-            <Button fx:id="remove" layoutX="567.0" layoutY="59.0" mnemonicParsing="false" onAction="#Remove" prefHeight="31.0" prefWidth="70.0" text="Remove">
+            <Button fx:id="remove" layoutX="553.0" layoutY="59.0" mnemonicParsing="false" onAction="#Remove" prefHeight="31.0" prefWidth="84.0" text="Remove">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="apply" layoutX="495.0" layoutY="59.0" mnemonicParsing="false" onAction="#applyFilter" prefHeight="31.0" prefWidth="64.0" text="Apply">
+            <Button fx:id="apply" layoutX="454.0" layoutY="59.0" mnemonicParsing="false" onAction="#applyFilter" prefHeight="31.0" prefWidth="84.0" text="Apply">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>

@@ -272,9 +272,10 @@ public class DienNuocController {
     }
     
   
-     private FilteredList<CTKhoanThu> filter = new FilteredList<>(data, p -> true);
+     
     @FXML
     private void search(){
+        FilteredList<CTKhoanThu> filter = new FilteredList<>(data, p -> true);
         String l = search.getText();
         // cap nhat observablelist data de hien thi DL
 
@@ -301,9 +302,11 @@ public class DienNuocController {
         filter.setPredicate(searchFilter);
 
         table.setItems(filter);
+        table.refresh();
     }
     @FXML
         private void applyFilter(){
+            FilteredList<CTKhoanThu> filter = new FilteredList<>(data, p -> true);
         Predicate<CTKhoanThu> pFilter = ctkhoanThu ->{
             boolean chk_id = id_text.getText().isEmpty()||ctkhoanThu.getId().toLowerCase().contains(id_text.getText().toLowerCase());
             boolean chk_ten=ten_text.getText().isEmpty()||ctkhoanThu.getTen().toLowerCase().contains(ten_text.getText().toLowerCase());
@@ -316,10 +319,12 @@ public class DienNuocController {
 
         filter.setPredicate(pFilter);
         table.setItems(filter);
+        table.refresh();
         filterbar.setLayoutY(-131);
     }
     @FXML
     private void Remove(){
+        FilteredList<CTKhoanThu> filter = new FilteredList<>(data, p -> true);
         id_text.clear();
         ten_text.clear();
         ngaynop_date.setValue(null);
@@ -330,6 +335,7 @@ public class DienNuocController {
         Predicate<CTKhoanThu> remove = khoanThu ->true;
         filter.setPredicate(remove);
         table.setItems(filter);
+        table.refresh();
         filterbar.setLayoutY(-131);
     }
     @FXML 

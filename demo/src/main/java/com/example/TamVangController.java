@@ -195,9 +195,10 @@ public class TamVangController {
          });
          
     }
-     FilteredList<TamVang> filter = new FilteredList<>(data,p->true);
+     
     @FXML
     private void search(){
+        FilteredList<TamVang> filter = new FilteredList<>(data,p->true);
         String l = search.getText();
         // cap nhat observablelist data de hien thi DL
 
@@ -225,6 +226,8 @@ public class TamVangController {
         filter.setPredicate(searchFilter);
 
         table.setItems(filter);
+        table.refresh();
+
     }
     
     @FXML
@@ -277,6 +280,7 @@ public class TamVangController {
 
     @FXML 
     private void applyFilter(){
+        FilteredList<TamVang> filter = new FilteredList<>(data,p->true);
         Predicate<TamVang> pFilter = TamVang ->{
             boolean chk_ten = text_ten.getText().isEmpty()||TamVang.getTen().toLowerCase().contains(text_ten.getText().toLowerCase());
             boolean chk_cccd=text_cccd.getText().isEmpty()||TamVang.getCccd().toLowerCase().contains(text_cccd.getText().toLowerCase());
@@ -289,10 +293,12 @@ public class TamVangController {
 
         filter.setPredicate(pFilter);
         table.setItems(filter);
+        table.refresh();
         filterbar.setLayoutY(-131);
     }
     @FXML
     private void Remove(){
+        FilteredList<TamVang> filter = new FilteredList<>(data,p->true);
         text_ten.clear();
         text_cccd.clear();
         text_lydo.clear();
@@ -301,6 +307,7 @@ public class TamVangController {
         Predicate<TamVang> remove = TamVang ->true;
         filter.setPredicate(remove);
         table.setItems(filter);
+        table.refresh();
         filterbar.setLayoutY(-131);
     }
 
