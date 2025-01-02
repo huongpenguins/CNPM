@@ -60,7 +60,7 @@
                 <Button fx:id="btnAdd" layoutX="20.0" layoutY="30.0" onAction="#addCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Thêm căn hộ" />
                 <Button fx:id="btnEdit" layoutX="20.0" layoutY="100.0" onAction="#updateCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Sửa căn hộ" />
                 <Button fx:id="btnDelete" layoutX="20.0" layoutY="170.0" onAction="#deleteCanHo" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Xóa căn hộ" />
-            <Button fx:id="btnViewDetails" layoutX="22.0" layoutY="242.0" onAction="#viewCanHoDetails" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Chi tiết" />
+             <!--   <Button fx:id="btnViewDetails" layoutX="22.0" layoutY="242.0" onAction="#viewCanHoDetails" prefHeight="50.0" prefWidth="160.0" styleClass="button2" stylesheets="@manager/home2.css" text="Chi tiết" /> -->
             </children>
         </AnchorPane>
 
@@ -122,3 +122,4 @@
         </VBox>
     </children>
 </AnchorPane>
+
