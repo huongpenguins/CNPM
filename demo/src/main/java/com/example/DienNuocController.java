@@ -211,9 +211,13 @@ public class DienNuocController {
                                 return;
                             }
                         }
-                        if(maHoGiaDinh!=null&&so!=-1){
-                        String[] value ={maKT,maHoGiaDinh,String.valueOf(so)};
-                        boolean t =Admin.insert1("SoDienNuoctbl", column, types, value);
+                        if(maHoGiaDinh!=null&&so!=-1) {
+                            String[] value = {maKT, maHoGiaDinh, String.valueOf(so)};
+                            boolean t = Admin.insert1("SoDienNuoctbl", column, types, value);
+                            if (t) {
+                                maHoGiaDinh = null;
+                                so = -1;
+                            }
                         }
                         else{
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -225,6 +229,7 @@ public class DienNuocController {
 
             data = ChiTietKhoanThuDAL.loadDienNuoc(maKT, "0", "Bắt buộc");
             table.setItems(data);
+            table.refresh();
         }
 
     

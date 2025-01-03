@@ -1,10 +1,8 @@
 package com.example.dal;
 
 import com.example.Admin;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.sql.PreparedStatement;
-import java.sql.Connection;
+
+import java.sql.*;
 import java.util.ArrayList;
 
 public class HoGiaDinhDAL extends Admin {
@@ -168,4 +166,46 @@ public class HoGiaDinhDAL extends Admin {
         return list;
     }
 
+    public ArrayList<Object[]> getPaymentDetailsForHousehold1(String householdId) {
+        ArrayList<Object[]> data =  new ArrayList<>();
+        ResultSet rs=null;
+        StringBuffer query = new StringBuffer("SELECT kt.MaKhoanThu,kt.TenKhoanThu,kt.ThoiGianBatDau,kt.ThoiGianKetThuc,kt.SoTien as TienQuyDinh,kt.DonVi,kt.Loai, MAX(hd.ThoiDiemNop) as ThoiDiemNop, SUM(hd.SoTienDaNop) as SoTienDaNop, ")
+                .append("CASE ")
+                .append("    WHEN kt.DonVi = 'Số điên/nước' THEN kt.SoTien * (SELECT so FROM SoDienNuoctbl where MaKhoanthu = kt.MaKhoanThu AND MaHoGiaDinh = gd.MaHoGiaDinh) ")
+                .append("    WHEN kt.DonVi = 'Diện tích' THEN kt.SoTien * ch.DienTich ")
+                .append("    WHEN kt.DonVi = 'Xe' THEN kt.SoTien * (SELECT SUM(MaXe) from xetbl where MaHoGiaDinh = gd.MaHoGiaDinh ) ")
+                .append("    ELSE kt.SoTien ")
+                .append("END as SoTienPhaiNop ")
+                .append( " FROM KhoanThutbl kt CROSS JOIN hogiadinhtbl gd ")
+                .append(" left join HoaDonTBL hd on ( kt.MaKhoanThu = hd.MaKhoanThu and hd.MaHoGiaDinh = gd.MaHoGiaDinh ) ")
+                .append(" left join canhotbl ch on ch.MaCanHo = gd.MaCanHo ")
+                .append(" left join NhanKhautbl nk on nk.MaNhanKhau = gd.MaNhanKhau ")
+                .append(" WHERE gd.MaHoGiaDinh = '").append(householdId).append("' ")
+                .append(" AND kt.completed =0 ")
+                .append(" GROUP BY kt.MaKhoanThu,kt.TenKhoanThu,kt.ThoiGianBatDau,kt.ThoiGianKetThuc,kt.SoTien,kt.DonVi,kt.Loai,gd.MaHoGiaDinh, nk.HoTen,ch.TenCanHo,gd.MaHoGiaDinh ");
+        Statement statement;
+        try {
+            statement = connection_admin.createStatement();
+            rs= ((Statement) statement).executeQuery(query.toString());
+            while (rs.next()) {
+                Object[] row = new Object[11];
+                row[0] = rs.getString("MaKhoanThu");
+                row[1] = rs.getString("TenKhoanThu");
+                row[2] = rs.getDate("ThoiGianBatDau");
+                row[3] = rs.getDate("ThoiGianKetThuc");
+                row[4] = rs.getInt("TienQuyDinh");
+                row[5] = rs.getString("DonVi");
+                row[6] = rs.getString("loai");
+                row[7] = rs.getInt("SoTienDaNop");  // cẩn thận với null => default 0
+                row[8] = rs.getDate("ThoiDiemNop");
+                row[10] =rs.getInt("SoTienPhaiNop");
+                data.add(row);
+            }
+            return data;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

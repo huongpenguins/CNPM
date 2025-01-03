@@ -323,7 +323,7 @@ public class FamiliesManagerController {
 
         // 2) Lấy chi tiết khoản thu & hoá đơn & điện/nước
         //    (giả sử bạn đã viết hàm này bên DAL)
-        ArrayList<Object[]> paymentRows = hoGiaDinhDal.getPaymentDetailsForHousehold(householdId);
+        ArrayList<Object[]> paymentRows = hoGiaDinhDal.getPaymentDetailsForHousehold1(householdId);
 
         // -----------------------------
         // TẠO GIAO DIỆN HIỂN THỊ
@@ -371,23 +371,16 @@ public class FamiliesManagerController {
         colDonVi.setCellValueFactory(param ->
                 new javafx.beans.property.SimpleStringProperty((String) param.getValue()[5]));
 
-        // Chỉ số điện nước (nếu có)
-        TableColumn<Object[], Number> colSoDienNuoc = new TableColumn<>("Chỉ Số (Điện/Nước)");
-        colSoDienNuoc.setCellValueFactory(param -> {
-            return new javafx.beans.property.SimpleIntegerProperty((Integer) param.getValue()[9]);
-        });
+        // // Chỉ số điện nước (nếu có)
+        // TableColumn<Object[], Number> colSoDienNuoc = new TableColumn<>("Chỉ Số (Điện/Nước)");
+        // colSoDienNuoc.setCellValueFactory(param -> {
+        //     return new javafx.beans.property.SimpleIntegerProperty((Integer) param.getValue()[9]);
+        // });
 
         // Tính tổng tiền = SoTien * soDienNuoc (nếu DonVi = 'số'), ngược lại = SoTien
         TableColumn<Object[], Number> colTongTien = new TableColumn<>("Tổng Tiền");
         colTongTien.setCellValueFactory(param -> {
-            int soTienQuyDinh = (Integer) param.getValue()[4];
-            String donVi = (String) param.getValue()[5];
-            int soDN = (Integer) param.getValue()[9];
-            if (donVi != null && donVi.equalsIgnoreCase("số")) {
-                return new javafx.beans.property.SimpleIntegerProperty(soTienQuyDinh * soDN);
-            } else {
-                return new javafx.beans.property.SimpleIntegerProperty(soTienQuyDinh);
-            }
+            return new javafx.beans.property.SimpleIntegerProperty((Integer) param.getValue()[10]);
         });
 
         TableColumn<Object[], Number> colTienDaNop = new TableColumn<>("Đã Nộp");
@@ -405,11 +398,7 @@ public class FamiliesManagerController {
         TableColumn<Object[], Number> colConThieu = new TableColumn<>("Còn Thiếu");
         colConThieu.setCellValueFactory(param -> {
             // Lấy tổng tiền
-            int soTienQuyDinh = (Integer) param.getValue()[4];
-            String donVi = (String) param.getValue()[5];
-            int soDN = (Integer) param.getValue()[9];
-            int tongTien = (donVi != null && donVi.equalsIgnoreCase("số"))
-                    ? soTienQuyDinh * soDN : soTienQuyDinh;
+            int tongTien = (Integer) param.getValue()[10];
 
             // Lấy đã nộp
             int daNop = 0;
@@ -421,9 +410,8 @@ public class FamiliesManagerController {
 
         paymentTable.getColumns().addAll(
                 colMaKhoanThu, colTenKhoanThu, colSoTien, colDonVi,
-                colSoDienNuoc, colTongTien, colTienDaNop, colConThieu
+                colTongTien, colTienDaNop, colConThieu
         );
-
         // Nạp dữ liệu
         paymentTable.setItems(FXCollections.observableArrayList(paymentRows));
 
