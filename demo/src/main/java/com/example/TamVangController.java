@@ -268,12 +268,11 @@ public class TamVangController {
         edit.setNewTamVang(k);
         subStage.show();
         subStage.setOnHiding(event->{
-            if(!edit.id_text.getText().equals(k.getMaNhanKhau())){
-                
+
             data = TamVangDAL.loadData("0");
             
             table.setItems(data);
-            }
+
             
         });
     }

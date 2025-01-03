@@ -90,7 +90,7 @@ public class ChiTietKhoanThuDAL extends Admin {
                 String tenChuHo = resultSet.getString("HoTen");
                 String maCanHo =resultSet.getString("MaCanHo");
                 String tenCanHo = resultSet.getString("TenCanHo");
-                int soTienPhaiNop =resultSet.getInt("SoTienNop");
+                int soTienPhaiNop =resultSet.getInt("SoTienPhaiNop");
                 LocalDate ngayNop = null;
                 Date sqlDate = resultSet.getDate("NgayNop");  
                 if (sqlDate != null) {
@@ -98,7 +98,7 @@ public class ChiTietKhoanThuDAL extends Admin {
                 } else {
                     ngayNop = null; 
                 }
-                int soTienDaNop = resultSet.getInt("SoTienPhaiNop");
+                int soTienDaNop = resultSet.getInt("SoTienNop");
 
                 CTKhoanThu ctKhoanThu= new CTKhoanThu(maKhoanThu,tenKhoanThu,maCanHo,tenCanHo,tenChuHo,ngayNop,soTienPhaiNop,soTienDaNop);
                 data.add(ctKhoanThu); // Thêm đối tượng KhoanThu vào ObservableList

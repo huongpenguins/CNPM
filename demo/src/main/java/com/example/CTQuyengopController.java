@@ -98,31 +98,9 @@ public class CTQuyengopController {
         
         subStage.show();
         subStage.setOnHiding(event->{
-            if(t.hoaDon==null) return;
-            else{
-                for(CTQuyenGop i : data){
-                    
-                    if(i.getId().equals(t.hoaDon.getMaho())){
-                        i.setDanop(i.getDanop()+t.hoaDon.getSotiennop());
-                        i.setNgaynop(t.hoaDon.getThoidiem());
-                        table.refresh();
-                        return;
-                        
-                    }
-                    else{
+
                          loadData();
                          table.refresh();
-
-
-                    }
-                }
-                // lay ttin ten tu ma ho
-
-
-              
-               
-
-            }
         });
     }
     

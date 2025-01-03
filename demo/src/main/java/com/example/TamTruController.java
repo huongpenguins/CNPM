@@ -87,11 +87,14 @@ public class TamTruController {
                         "-fx-background-position: center; "+
                         "-fx-background-repeat: no-repeat; " +
                         "-fx-background-size: contain; "  );
-   
+
                 btn.setOnAction(event->{
                     TamTru k = getTableView().getItems().get(getIndex());
+
                     try {
                         edit_tamtru(k);
+
+
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -239,15 +242,10 @@ public class TamTruController {
 
         subStage.show();
         subStage.setOnHiding(event->{
-            if(!edit.id_text.getText().equals(k.getMaNhanKhau())){
 
-                k.setMaNhanKhau(edit.id_text.getText());
-                k.setDcThuongTru(edit.dcthuongtru_text.getText());
-                k.setDcTamTru(edit.dctamtru_text.getText());
-                k.setNgaybdtamtru(edit.ngaybdtamtru.getValue());
+                data = TamTruDAL.loadData("0");
+                table.setItems(data);
 
-                table.refresh();
-            }
 
         });
     }

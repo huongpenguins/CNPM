@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DatabaseToolSources">
-    <data-source name="localhost1" uuid="6e41bb63-28d9-429d-9ff6-8a232f34b2d3" type="MYSQL">
+    <data-source name="localhost" uuid="82834218-1bde-454e-9e36-fec99e0844da" type="MYSQL">
       <base-info connect-type="DB_DEFAULT" product="MySQL" version="8.0.40" major-version="8" minor-version="0" jdbc-name="MySQL Connector/J" jdbc-version="mysql-connector-j-8.2.0 (Revision: 06a1f724497fd81c6a659131fda822c9e5085b6c)" jdbc-major-version="8" jdbc-minor-version="2" />
       <user-name>root</user-name>
       <schema-mapping>
